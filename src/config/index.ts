@@ -1,6 +1,6 @@
 export const config = {
-    APP_NAME: "Oakyard Properties",
-    APP_DESECRIPTION: "Best seller of lands and properties in Abuja",
+    APP_NAME: "AnyaGirldchild Foundation",
+    APP_DESECRIPTION: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
     APP_PRIMARY_API_BASE_URL: process.env.NEXT_PUBLIC_APP_PRIMARY_API_BASE_URL || "http://localhost:3000/v1",
     APP_PRIMARY_API_REFRESH_TOKEN_KEY: "jwt", //has to be in sync with api
     APP_PRIMARY_API_ACCESS_TOKEN_KEY: "accessToken", //does not have to be in sync with api

@@ -8,6 +8,7 @@ import ThemeProvider from "@/provider/ThemeProvider";
 import { Toaster } from "react-hot-toast";
 import PBHeader from "@/modules/public/pblayout/PBHeader";
 import PBFooter from "@/modules/public/pblayout/PBFooter";
+import { AosProvider } from "@/modules/shared";
 
 const inter = Inter({ subsets: ["latin"], variable: "--inter", weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], fallback: ["cursive"] });
 const mulish = Mulish({ weight: ["200", "300", "400", "500", "600", "700", "800", "900"], subsets: ["latin"], variable: "--mulish", fallback: ["Helvetica", "Arial", "sans-serif"] });
@@ -25,14 +26,15 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${inter.variable} antialiased relative`}>
+      <body className={`${mulish.variable} ${inter.variable} antialiased relative`}>
          <AntdRegistry>
           <ThemeProvider>
             <Toaster /> 
-             <PBHeader />
-            <div className="font-inter min-h-[80vh]"> {children} </div>
-             <PBFooter />
-            {/* </DashLayout> */}
+            <AosProvider>
+              <PBHeader />
+              <div className="font-inter min-h-[80vh]"> {children} </div>
+              <PBFooter />
+            </AosProvider>
            </ThemeProvider>
         </AntdRegistry> 
       </body>

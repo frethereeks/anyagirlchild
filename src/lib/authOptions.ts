@@ -1,6 +1,6 @@
 import { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { User } from '@prisma/client';
+// import { User } from '@prisma/client';
 import jwt from "jsonwebtoken"
 // import { authenticateByRole } from './authByRole';
 // import { fetchUser } from '@/actions';
@@ -79,14 +79,21 @@ export const authOptions: NextAuthOptions = {
         },
         jwt({ token, user }) {
             if (user) {
-                const currentUser = user as unknown as User
+                const currentUser = user as unknown as {
+                    id: string
+                    email: string
+                    image: string
+                    firstname: string
+                    lastname: string
+                    role: string
+                }
                 return {
                     ...token,
-                    id: currentUser.id,
-                    email: currentUser.email,
-                    image: currentUser.image,
-                    name: `${currentUser.firstname} ${currentUser.lastname}`,
-                    role: currentUser.role
+                    id: currentUser?.id,
+                    email: currentUser?.email,
+                    image: currentUser?.image,
+                    name: `${currentUser?.firstname} ${currentUser?.lastname}`,
+                    role: currentUser?.role
                 }
             }
 

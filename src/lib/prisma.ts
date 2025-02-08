@@ -14,7 +14,7 @@ const globalForPrisma = globalThis as unknown as {
 const prisma = globalForPrisma.prisma ?? prismaClientSingleton()
 
 // Middleware to handle category deletion and menu reassignment
-prisma.$use(async (params, next) => {
+/* prisma.$use(async (params, next) => {
     if (params.model === 'Category' && params.action === 'delete') {
         const categoryIdToDelete = params.args.where.id;
         console.log({categoryIdToDelete})
@@ -37,7 +37,7 @@ prisma.$use(async (params, next) => {
 
     // Proceed with the original Prisma operation
     return next(params);
-});
+}); */
 
 export default prisma
 
