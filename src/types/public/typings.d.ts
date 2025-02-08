@@ -1,0 +1,21 @@
+type THeaderLinks = {
+    id: number;
+    title: string;
+    link: string;
+}
+
+type TBlogItemProp = {
+    id: string
+    title: string
+    slug: string
+    // image: string,
+    text: string,
+    category: string,
+    createdAt: Date | string,
+    author?: {
+        id: string
+        firstname: string
+        lastname: string
+        image: string
+    },
+}

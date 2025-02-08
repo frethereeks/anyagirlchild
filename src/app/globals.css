@@ -2,20 +2,154 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+*, *::after, *::before {
+  margin: 0;
+  padding: 0;
+  outline: none !important;
+  outline: 0 !important;
+  transition: all .35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  overflow-x: hidden;
+}
+
+@layer components {
+  .overlay {
+    @apply top-0 left-0 absolute w-full h-full;
+  }
+
+  .after-overlay {
+    @apply after:top-0 after:left-0 after:absolute after:w-full after:h-full;
+  }
+
+  .before-overlay {
+    @apply before:top-0 before:left-0 before:absolute before:w-full before:h-full;
+  }
+
+  .bg-orange-grad {
+    @apply bg-gradient-to-br from-orange-600 to-orange-400;
+  }
+
+  .bg-primary-grad {
+    @apply bg-gradient-to-br from-primary to-blue-700;
+  }
+
+  .bg-purple-grad {
+    @apply bg-gradient-to-br from-indigo-600 to-indigo-400;
+  }
+
+  .bg-red-grad {
+    @apply bg-gradient-to-br from-danger to-rose-600;
+  }
+
+  .bg-green-grad {
+    @apply bg-gradient-to-br from-teal-500 to-teal-400;
+  }
+
+  .bg-dark-grad {
+    @apply bg-gradient-to-br from-slate-700 to-slate-600;
+  }
+
+  .heading-one {
+    @apply font-bold text-3xl md:text-4xl;
+  }
+
+  .heading-two {
+    @apply font-bold text-2xl md:text-3xl;
+  }
+
+  .heading-three {
+    @apply font-semibold text-xl md:text-2xl;
+  }
+
+  .heading-four {
+    @apply font-semibold text-lg md:text-xl;
+  }
+
+  .heading-five {
+    @apply font-semibold text-base md:text-lg;
+  }
+
+  .text-default {
+    @apply font-medium text-sm md:text-lg;
+  }
+
+  .text-small {
+    @apply font-normal text-xs md:text-sm;
+  }
+
+  .text-xsmall {
+    @apply font-normal text-[.65rem] md:text-xs;
+  }
+
+  .text-xxsmall {
+    @apply font-normal text-[.5rem] md:text-[.65rem];
+  }
+
+  .card {
+    @apply bg-white p-2 md:p-4 rounded-md;
+  }
+
+  .button {
+    @apply py-2 px-4 md:px-6 rounded-md text-white text-xs md:text-sm font-medium cursor-pointer whitespace-nowrap;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 20px;
+    height: 20px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 100vh;
+    border: 3px solid #f7f4ed;
+    background: #e0cbcb;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #c0a0b9;
+  }
+
+  .x-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 2px;
+  }
+
+  .x-scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: transparent;
+  }
+
+  .x-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 100vh;
+    border: 3px solid transparent;
+    background: transparent;
+  }
+
+  .x-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #2f77eb;
+  }
+
+  td,
+  th {
+    padding: 0.5rem .25rem;
+  }
+
+  /* tbody tr:not(:last-child){
+    border-bottom: 1px solid #e9edf3;
+  } */
+}
+
+@media screen and (max-width: 640px) {
+  .container {
+    min-width: 100% !important;
+  }
 }
