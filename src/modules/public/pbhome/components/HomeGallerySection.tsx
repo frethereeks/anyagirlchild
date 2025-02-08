@@ -6,9 +6,8 @@ import React from 'react'
 
 export default function HomeGallerySection() {
   return (
-    <section className="relative flex flex-col gap-4 px-4 py-20 md:py-32 bg-background">
+    <section className="relative flex flex-col gap-4 px-4 py-20 md:py-28 bg-background">
       <h4 className="text-2xl md:text-4xl text-secondary text-center font-bold">Our Works</h4>
-      {/* <h4 className="text-center text-2xl md:text-4xl text-text font-bold">Welcome to <span className="text-secondary">Anya Girlchild</span> Foundation</h4> */}
       <p className="text-center text-small text-slate-500 leading-loose max-w-3xl mx-auto">Our approach involves not only education but also moral development, career mentorship, and self-care, ensuring that these girls grow into well-rounded, empowered individuals who can lead and inspire change in their communities.</p>
       <div className="container mx-auto relative grid md:grid-cols-2 gap-4 justify-center items-center rounded-md pt-10">
         <div className="flex-1 rounded-tl-3xl relative overflow-hidden min-h-64 py-48">
