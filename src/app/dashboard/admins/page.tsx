@@ -1,4 +1,4 @@
-import AdminContainer from '@/modules/dashboard/admin/AdminContainer'
+import AdminContainer from '@/modules/dashboard/admins/AdminContainer'
 import { DashBreadCrumb } from '@/modules/dashboard/layout'
 import React from 'react'
 

@@ -3,7 +3,6 @@ import moment from "moment"
 import { TableColumnsType, Tooltip } from "antd"
 import Image from "next/image"
 import { ASSET_URL } from "@/assets"
-import { LuTickets } from "react-icons/lu"
 
 export const ADMIN_COLUMN = (): TableColumnsType<TAdminProps> => ([
     {

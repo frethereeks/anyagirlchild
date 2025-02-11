@@ -1,8 +1,12 @@
-import React from 'react'
+"use client"
+import React, { useState } from 'react'
 import { blogData } from '@/data/blogData'
 import BlogCard from './components/BlogCard'
+import { DEFAULT_PAGE_SIZE } from '@/constants'
 
 export default function PBBlogContainer() {
+  const [currentPage, setCurrentPage] = useState<number>(0)
+
   return (
     <main className='flex flex-col gap-4'>
       <section className="py-10 md:py-20 px-4 relative bg-backdrop">
@@ -19,17 +23,21 @@ export default function PBBlogContainer() {
               blogData.map(blog => <BlogCard key={blog.id} {...blog} />)
             }
           </div>
+          <div className='flex justify-end gap-2'>
+            {
+              blogData.length > DEFAULT_PAGE_SIZE && 
+              Array.from({ length: Math.ceil((blogData.length || 0) / DEFAULT_PAGE_SIZE) }).map((_, val) => (
+                <button key={val} className={`w-6 h-6 md:w-8 md:h-8 flex justify-center items-center border border-grey text-xs sm:text-sm rounded-md cursor-pointer ${val === currentPage ? 'hover:bg-gray bg-dark hover:text-dark/60 text-backdrop' : 'bg-gray hover:bg-dark text-dark/60 hover:text-backdrop'}`}>{
+                val}</button>
+              ))
+            }
+          </div>
         </div>
         {/* <div className="container mx-auto p-4 flex justify-center items-center gap-2">
           <button
             className="w-5 h-5 md:w-7 md:h-7 flex justify-center items-center border border-grey bg-gray hover:bg-dark text-dark/60 hover:text-backdrop text-xs sm:text-sm rounded-md cursor-pointer">
             <Icon name="ion:chevron-back" size="15" />
           </button>
-          <button v-for="num in 8"
-            className="w-6 h-6 md:w-8 md:h-8 flex justify-center items-center border border-grey text-xs sm:text-sm rounded-md cursor-pointer"
-                    :className="num == 1 ? 'hover:bg-gray bg-dark hover:text-dark/60 text-backdrop' : 'bg-gray hover:bg-dark text-dark/60 hover:text-backdrop'">{{
-            num
-          }}</button>
         <button
           className="w-5 h-5 md:w-7 md:h-7 flex justify-center items-center border border-grey bg-gray hover:bg-dark text-dark/60 hover:text-backdrop text-xs sm:text-sm rounded-md cursor-pointer">
           <Icon name="ion:chevron-forward" size="15" />

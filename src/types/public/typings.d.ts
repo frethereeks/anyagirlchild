@@ -8,7 +8,8 @@ type TBlogItemProp = {
     id: string
     title: string
     slug: string
-    // image: string,
+    // image?: string,
+    status?: "Active" | "Pending" | "Disabled"
     text: string,
     category: string,
     createdAt: Date | string,

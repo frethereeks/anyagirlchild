@@ -1,22 +1,22 @@
 "use client"
 import { Table } from 'antd'
 import React from 'react'
-import { ADMIN_COLUMN } from '../columns'
+import { ADMIN_COLUMN } from '../../admins/columns'
 import Link from 'next/link'
 import { appRoutePaths } from '@/routes/paths'
 import { IoChevronForward } from 'react-icons/io5'
 
 export default function OverviewDonations() {
-  
+
   return (
     <aside className="card p-4 flex flex-col gap-4 text-text min-w-52 overflow-x-scroll">
-      <Table 
+      <Table
         key={"82034798a09834"}
         pagination={{
-            hideOnSinglePage: true,
-            // pageSize: 10,
-            showSizeChanger: false,
-            showQuickJumper: false,
+          hideOnSinglePage: true,
+          // pageSize: 10,
+          showSizeChanger: false,
+          showQuickJumper: false,
         }}
         caption={
           <div className='flex justify-between items-center gap-4 text-text pb-4'>
