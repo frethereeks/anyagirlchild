@@ -89,7 +89,7 @@ body {
   }
 
   .card {
-    @apply bg-white p-2 md:p-4 rounded-md;
+    @apply bg-white p-2 md:p-4 rounded-md text-text shadow-lg shadow-background;
   }
 
   .button {

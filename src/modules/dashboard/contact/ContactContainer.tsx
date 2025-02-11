@@ -1,7 +1,13 @@
 import React from 'react'
+import { DashBreadCrumb } from '../layout'
 
 export default function ContactContainer() {
   return (
-    <div>ContactContainer</div>
+    <>
+      <DashBreadCrumb />
+      <main className='flex flex-col gap-4'>
+
+      </main>
+    </>
   )
 }

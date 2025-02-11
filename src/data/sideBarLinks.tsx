@@ -1,6 +1,6 @@
 import { appRoutePaths } from "@/routes/paths"
-import { GrUserSettings, GrUserWorker } from "react-icons/gr"
-import { LuLayoutDashboard, LuScrollText, LuUtensilsCrossed } from "react-icons/lu";
+import { GrSettingsOption, GrUserAdmin, GrUserSettings, GrUserWorker } from "react-icons/gr"
+import { LuCamera, LuGalleryHorizontal, LuGalleryHorizontalEnd, LuGalleryThumbnails, LuGalleryVertical, LuLayoutDashboard, LuMessageSquareText, LuScrollText, LuTickets, LuUtensilsCrossed } from "react-icons/lu";
 
 type SidebarProps = {
     id: string
@@ -18,26 +18,38 @@ export const sideBarLinks: SidebarProps[] = [
     },
     {
         id: '8q2s03x5068q21',
-        title: 'Users',
-        icon: <GrUserWorker />,
-        link: appRoutePaths.adminuser,
+        title: 'Admins',
+        icon: <GrUserAdmin />,
+        link: appRoutePaths.adminadmin,
     },
     {
         id: '8q2s03x5068q22',
-        title: 'Sales',
+        title: 'Blog Posts',
         icon: <LuScrollText />,
-        link: appRoutePaths.adminsales,
+        link: appRoutePaths.adminblogs,
     },
     {
         id: '8q2s03x5068q23',
-        title: 'Menu',
-        icon: <LuUtensilsCrossed />,
-        link: appRoutePaths.adminmenu,
+        title: 'Gallery',
+        icon: <LuGalleryVertical />,
+        link: appRoutePaths.admingallery,
     },
     {
         id: '8q2s03x5068q24',
-        title: 'Profile',
-        icon: <GrUserSettings />,
-        link: appRoutePaths.adminprofile,
+        title: 'Donations',
+        icon: <LuTickets />,
+        link: appRoutePaths.admindonations,
+    },
+    {
+        id: '8q2s03x5068q25',
+        title: 'Contact',
+        icon: <LuMessageSquareText />,
+        link: appRoutePaths.admincontact,
+    },
+    {
+        id: '8q2s03x5068q26',
+        title: 'Settings',
+        icon: <GrSettingsOption />,
+        link: appRoutePaths.adminsettings,
     },
 ]

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Mulish } from 'next/font/google'
-import "./globals.css";
+import "../globals.css";
 // import { AosProvider, Footer, Header } from '@/components'
 
 import { AntdRegistry } from '@ant-design/nextjs-registry'

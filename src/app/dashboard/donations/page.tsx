@@ -1,8 +1,12 @@
 import DonationsContainer from '@/modules/dashboard/donations/DonationsContainer'
+import { DashBreadCrumb } from '@/modules/dashboard/layout'
 import React from 'react'
 
 export default async function AdminDonationsPage() {
   return (
-    <DonationsContainer />
+    <>
+      <DashBreadCrumb />
+      <DonationsContainer />
+    </>
   )
 }

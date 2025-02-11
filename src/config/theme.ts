@@ -1,28 +1,27 @@
 import { ThemeConfig } from "antd";
 
 const THEME_COLOR = {
-    primary: "#382a33",
-    accentColor: "#777",
-    "light-primary": "#382a3335",
-    "lighter-primary": "#382a3315",
-    secondary: "#ee791d",
+    primary: "#0d182d",
+    accentColor: "#64748b",
+    "light-primary": "#16a39435",
+    "lighter-primary": "#16a39415",
+    secondary: "#16a394",
     "light-secondary": "#ffe8ca",
-    background: "#fcf9f6",
+    background: "#f2f2f2",
     "light-grey": "#e5e6eb",
     // text: "#b8a8a8",
-    text: "#584455",
+    text: "#64748b",
 }
 
 const fontFamily = {
-    eugusto: "var(--eugusto)",
-    urbanist: "var(--urbanist)",
-    inspiration: "var(--inspiration)",
+    mulish: "var(--mulish)",
+    inter: "var(--inter)",
 }
 
 export const appThemeConfig: ThemeConfig = {
     cssVar: true,
     token: {
-        fontFamily: fontFamily.eugusto,
+        fontFamily: fontFamily.mulish,
         colorPrimary: THEME_COLOR.primary,
         colorLinkHover: THEME_COLOR.accentColor,
         colorLink: THEME_COLOR.accentColor,
@@ -34,15 +33,15 @@ export const appThemeConfig: ThemeConfig = {
             siderBg: THEME_COLOR.text,
             headerBg: THEME_COLOR["light-secondary"],
             screenXS: 200,
-            fontFamily: fontFamily.urbanist,
+            fontFamily: fontFamily.inter,
             fontSize: 12,
         },
         Table: {
-            headerBg: THEME_COLOR.background,
-            headerColor: THEME_COLOR.primary,
-            rowHoverBg: THEME_COLOR["light-primary"],
-            rowSelectedBg: THEME_COLOR["light-primary"],
-            rowSelectedHoverBg: THEME_COLOR["lighter-primary"],
+            // headerBg: THEME_COLOR["light-primary"],
+            headerColor: THEME_COLOR.text,
+            rowHoverBg: THEME_COLOR["background"],
+            rowSelectedBg: THEME_COLOR["background"],
+            rowSelectedHoverBg: THEME_COLOR["background"],
             fontFamily: "arial",
             // fontSizeLG: 16,
             // fontSizeSM: 12,

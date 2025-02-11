@@ -13,13 +13,13 @@ export const authRoutes = {
  * This is a list of routes or pages that are used for authentication of the admin. e.g dashboard, orders management etc
  */
 export const adminRoutes = {
-    admindashboard: "/admin/dashboard",
-    adminmenu: "/admin/menu",
-    admincontact: "/admin/contact",
-    adminuser: "/admin/users",
-    adminmenuEdit: (id:string) =>  `/admin/menu/edit/${id}`,
-    adminprofile: "/admin/profile",
-    adminsales: "/admin/sales",
+    admindashboard: "/dashboard/overview",
+    admingallery: "/dashboard/gallery",
+    admincontact: "/dashboard/contact",
+    adminadmin: "/dashboard/admins",
+    admindonations: "/dashboard/donations",
+    adminsettings: "/dashboard/settings",
+    adminblogs: "/dashboard/blogs",
 }
 
 /**

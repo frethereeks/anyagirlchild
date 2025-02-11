@@ -1,7 +1,11 @@
 import React from 'react'
+import { DashBreadCrumb } from '../layout'
 
 export default function BlogContainer() {
   return (
-    <div>BlogContainer</div>
+    <>
+      <DashBreadCrumb />
+      <div>BlogContainer</div>
+    </>
   )
 }
