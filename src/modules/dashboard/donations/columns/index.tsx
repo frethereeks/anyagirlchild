@@ -9,7 +9,7 @@ export const DONATION_COLUMN = (): TableColumnsType<TDonationProps> => ([
         title: "Full Name",
         render: (_, val) => (
             <div className="flex items-center gap-2">
-                <div className={`h-8 w-8 rounded-md ${val.status === "success" ? 'bg-purple-grad' : val.status === "failed" ? "bg-red-grad" : "bg-dark-grad"}  text-white text-xl grid place-items-center flex-shrink-0`}>
+                <div className={`h-8 w-8 rounded-md ${val.status === "Success" ? 'bg-purple-grad' : val.status === "Failed" ? "bg-red-grad" : "bg-dark-grad"}  text-white text-xl grid place-items-center flex-shrink-0`}>
                     <LuTickets />
                 </div>
                 <h4 className="flex-1 text-sm text-text font-semibold">{val.fullname}</h4>
@@ -27,7 +27,7 @@ export const DONATION_COLUMN = (): TableColumnsType<TDonationProps> => ([
         key: "Status",
         title: "Status",
         render: (_, val) => (
-            <p className={`text-sm capitalize ${val.status === "success" ? 'text-secondary' : val.status === "failed" ? 'text-danger' : 'text-text'} font-medium`}>{val.status}</p>
+            <p className={`text-sm capitalize ${val.status === "Success" ? 'text-secondary' : val.status === "Failed" ? 'text-danger' : 'text-text'} font-medium`}>{val.status}</p>
         ),
     },
     {
@@ -40,7 +40,7 @@ export const DONATION_COLUMN = (): TableColumnsType<TDonationProps> => ([
                 title={val.purpose}
                 placement="bottomLeft"
             >
-                <p className="text-sm text-text truncate line-clamp-1 font-medium">{val.purpose.slice(0, 40)}{val.purpose.length > 40 ? "..." : ""}</p>
+                <p className="text-sm text-text truncate line-clamp-1 font-medium" title={val.purpose}>{val.purpose.slice(0, 40)}{val.purpose.length > 40 ? "..." : ""}</p>
             </Tooltip>
         ),
     },

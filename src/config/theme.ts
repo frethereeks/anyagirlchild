@@ -23,7 +23,7 @@ export const appThemeConfig: ThemeConfig = {
     token: {
         fontFamily: fontFamily.mulish,
         colorPrimary: THEME_COLOR.primary,
-        colorLinkHover: THEME_COLOR.accentColor,
+        colorLinkHover: "inherit",
         colorLink: THEME_COLOR.accentColor,
         fontSize: 16
     },
@@ -43,19 +43,15 @@ export const appThemeConfig: ThemeConfig = {
             rowSelectedBg: THEME_COLOR["background"],
             rowSelectedHoverBg: THEME_COLOR["background"],
             fontFamily: "arial",
-            // fontSizeLG: 16,
-            // fontSizeSM: 12,
             fontSize: 14,
-            // cellPaddingBlock: 10,
             cellPaddingInline: 4,
-            // paddingContentVertical: 0,
         },
         Button: {
             primaryColor: THEME_COLOR.background,
             colorPrimaryBg: THEME_COLOR.primary
         },
         Dropdown: {
-            zIndexPopup: 80000,
+            zIndexPopup: 800,
         },
         Input: {
             colorBgContainer: THEME_COLOR.background,
@@ -66,8 +62,13 @@ export const appThemeConfig: ThemeConfig = {
         },
         Select: {
             colorBgContainer: THEME_COLOR.background,
-            zIndexPopup: 80000,
+            zIndexPopup: 810,
         },
+        Tooltip: {
+            zIndexPopupBase: 850,
+            zIndexPopup: 860,
+            zIndexBase: 870,
+        }
     },
 
 }

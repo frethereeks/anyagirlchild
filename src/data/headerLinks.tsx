@@ -17,7 +17,7 @@ export const headerLinks: THeaderLinks[] = [
         link: appRoutePaths.gallery,
     },
     {
-        id: 15927348772,
+        id: 15927348773,
         title: 'Blog',
         link: appRoutePaths.blog,
     },

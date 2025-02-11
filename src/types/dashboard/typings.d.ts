@@ -2,6 +2,11 @@ type TDashLayoutProps = {
     children: React.ReactNode | React.ReactNode[]
 }
 
+type TAdminRole = "Root" | "Admin"
+type TMessageStatus = "Read" | "Unread"
+type TStatus = "Active" | "Pending" | "Disabled"
+type TTransactionStatus = "Success" | "Failed" | "Pending"
+
 type TAdminProps = {
     id: string
     firstname: string
@@ -9,9 +14,20 @@ type TAdminProps = {
     image: string
     password: string
     email: string
+    address?: string
     lastLogin: Date
-    role: "Root" | "Admin"
-    status: "Active" | "Pending" | "Disabled"
+    role: TAdminRole
+    status: TStatus
+    createdAt: Date
+    updatedAt: Date
+}
+
+type TContactProps = {
+    id: string
+    fullname: string
+    email: string
+    status: TMessageStatus
+    message: string
     createdAt: Date
     updatedAt: Date
 }
@@ -20,7 +36,7 @@ type TDonationProps = {
     id: string
     fullname: string
     amount: number
-    status: "success" | "failed" | "pending"
+    status: TTransactionStatus
     purpose: string
     createdAt: Date
     updatedAt: Date

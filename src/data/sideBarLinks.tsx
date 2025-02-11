@@ -1,6 +1,6 @@
 import { appRoutePaths } from "@/routes/paths"
-import { GrSettingsOption, GrUserAdmin, GrUserSettings, GrUserWorker } from "react-icons/gr"
-import { LuCamera, LuGalleryHorizontal, LuGalleryHorizontalEnd, LuGalleryThumbnails, LuGalleryVertical, LuLayoutDashboard, LuMessageSquareText, LuScrollText, LuTickets, LuUtensilsCrossed } from "react-icons/lu";
+import { GrArticle, GrSettingsOption, GrUserAdmin, GrGallery } from "react-icons/gr"
+import { LuGalleryVertical, LuLayoutDashboard, LuMessageSquareText, LuTickets } from "react-icons/lu";
 
 type SidebarProps = {
     id: string
@@ -25,13 +25,13 @@ export const sideBarLinks: SidebarProps[] = [
     {
         id: '8q2s03x5068q22',
         title: 'Blog Posts',
-        icon: <LuScrollText />,
+        icon: <GrArticle />,
         link: appRoutePaths.adminblogs,
     },
     {
         id: '8q2s03x5068q23',
         title: 'Gallery',
-        icon: <LuGalleryVertical />,
+        icon: <GrGallery />,
         link: appRoutePaths.admingallery,
     },
     {

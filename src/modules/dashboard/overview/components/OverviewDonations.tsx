@@ -6,41 +6,12 @@ import Link from 'next/link'
 import { appRoutePaths } from '@/routes/paths'
 import { IoChevronForward } from 'react-icons/io5'
 import { DONATION_COLUMN } from '../../donations/columns'
+import { donationData } from '@/data'
 
 export default function OverviewDonations() {
 
-    const data: TDonationProps[] = [
-        {
-            id: "8299170asdvaiu20",
-            fullname: "Angela Monroe",
-            amount: 300000,
-            purpose: "Help the girl child get a better education",
-            status: "success",
-            createdAt: new Date("12/01/2024"),
-            updatedAt: new Date("12/01/2024"),
-        },
-        {
-            id: "8299170asdvaiu21",
-            fullname: "Faith Ugochi",
-            amount: 20000,
-            purpose: "Never let her suffer like the child of my neighbor did. Help the girl child get a better education",
-            status: "pending",
-            createdAt: new Date("01/30/2025"),
-            updatedAt: new Date("01/30/2025"),
-        },
-        {
-            id: "8299170asdvaiu22",
-            fullname: "Adaobi Anderson",
-            amount: 142500,
-            purpose: "God bless everyone behind this initiative. Please, keep it up and never let her suffer like the child of my neighbor did. Help the girl child get a better education",
-            status: "failed",
-            createdAt: new Date("02/02/2025"),
-            updatedAt: new Date("02/02/2025"),
-        },
-    ]
-
     return (
-        <aside className="card p-4 flex flex-col gap-4 text-text min-w-52 overflow-x-scroll">
+        <aside className="card p-4 flex flex-col gap-4 text-text min-w-52">
             <Table
                 key={"82034798a09834"}
                 pagination={{
@@ -51,12 +22,12 @@ export default function OverviewDonations() {
                 }}
                 caption={
                     <div className='flex justify-between items-center gap-4 text-text pb-4'>
-                        <h4 className="text-default text-primary font-bold pl-4 border-l-4 border-primary">Recent Donations</h4>
-                        <Link href={appRoutePaths.admindonations} className='py-1.5 px-4 rounded-md bg-primary hover:bg-primary text-white opacity-70 text-xs flex items-center gap-2'>View All <IoChevronForward /></Link>
+                        <h4 className="text-default text-secondary font-bold pl-4 border-l-4 border-secondary">Recent Donations</h4>
+                        <Link href={appRoutePaths.admindonations} className='py-1.5 px-4 rounded-md bg-secondary hover:bg-secondary text-white text-xs flex items-center gap-2'>View All <IoChevronForward /></Link>
                     </div>
                 }
                 scroll={{ x: "max-content" }}
-                dataSource={data}
+                dataSource={donationData}
                 columns={DONATION_COLUMN()}
             />
         </aside>

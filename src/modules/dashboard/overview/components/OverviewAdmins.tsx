@@ -5,6 +5,7 @@ import { ADMIN_COLUMN } from '../../admins/columns'
 import Link from 'next/link'
 import { appRoutePaths } from '@/routes/paths'
 import { IoChevronForward } from 'react-icons/io5'
+import { adminData } from '@/data'
 
 export default function OverviewDonations() {
 
@@ -21,11 +22,11 @@ export default function OverviewDonations() {
         caption={
           <div className='flex justify-between items-center gap-4 text-text pb-4'>
             <h4 className="text-default text-danger font-bold pl-4 border-l-4 border-danger">Admin Overview</h4>
-            <Link href={appRoutePaths.adminadmin} className='py-1.5 px-4 rounded-md bg-danger hover:bg-danger text-white opacity-70 text-xs flex items-center gap-2'>View All <IoChevronForward /></Link>
+            <Link href={appRoutePaths.adminadmin} className='py-1.5 px-4 rounded-md bg-danger hover:bg-danger text-white text-xs flex items-center gap-2'>View All <IoChevronForward /></Link>
           </div>
         }
         scroll={{ x: "max-content" }}
-        dataSource={[]}
+        dataSource={adminData}
         columns={ADMIN_COLUMN()}
       />
     </aside>
