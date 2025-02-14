@@ -13,7 +13,7 @@ export default {
   theme: {
     extend: {
       screen: {
-        'xs': '512px'
+        'xs': '360px'
       },
       colors: {
         background: '#f2f2f2',

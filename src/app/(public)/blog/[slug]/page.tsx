@@ -1,3 +1,5 @@
+import { blogData } from '@/data';
+import PBBlogSingleContainer from '@/modules/public/pbblog/pbblogsingle/PBBlogSingleContainer';
 import React from 'react'
 
 type TPageParams = {
@@ -24,7 +26,8 @@ export async function generateMetadata({ params: { slug } }: TPageParams) {
 
 export default async function SingleBlogPage({ params: { slug } }: TPageParams) {
   console.log('slug', slug)
+  const data = await blogData.find(blog => blog.slug === slug)
   return (
-    <div>SingleBlogPage</div>
+    <PBBlogSingleContainer data={data} role="Root" />
   )
 }

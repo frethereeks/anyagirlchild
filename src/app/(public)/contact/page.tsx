@@ -1,7 +1,6 @@
 import React from 'react'
-import { ASSET_URL } from '@/assets'
-import PBBreadCrumb from '@/modules/public/pblayout/PBBreadCrumb'
 import { Metadata } from 'next';
+import PBContactContainer from '@/modules/public/pbcontact/PBContactContainer';
 
 
 export const metadata: Metadata = {
@@ -12,8 +11,9 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
     return (
-        <main className='flex flex-col gap-4'>
-            <PBBreadCrumb image={ASSET_URL["donation_vanunload"]} />
+        <main className='flex flex-col gap-4 py-10'>
+            {/* <PBBreadCrumb image={ASSET_URL["donation_vanunload"]} /> */}
+            <PBContactContainer />
         </main>
     )
 }

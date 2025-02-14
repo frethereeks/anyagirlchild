@@ -52,16 +52,6 @@ export default function DashLayout({ children, image }: { children: React.ReactN
                         <div className="flex lg:justify-center items-center flex-shrink-0 relative -mt-2">
                             <Link href={appRoutePaths.home} className='text-danger text-lg md:text-xl -tracking-[.15rem] font-black font-mulish leading-none uppercase'>Anyagirlchild <span className='bg-secondary text-white grid place-items-center text-xs w-max text-center tracking-[.22rem] lg:tracking-[.3rem] uppercase -my-1 lg:-my-1 pl-1.5 md:pl-2.5'>FOUNDATION</span></Link>
                         </div>
-                        {/* 
-                            <form className="flex items-center gap-2 border-b-[2px] border-primary ml-52 w-full max-w-lg md:max-w-xl">
-                                <input type='search' placeholder='What would you like to eat?' className='flex-1 text-sm lg:text-sm border-transparent hover:border-transparent bg-transparent text-primary outline-none hover:outline-none' />
-                                <button type="submit" className='p-2'>
-                                    <IoSearchOutline className='text-secondary' />
-                                </button>
-                            </form> 
-                            */}
-                        {/* <button onClick={() => setOpenSidebar(!openSideBar)} className='group p-2 bg-secondary/20 hover:bg-primary text-primary hover:text-white text-xl rounded-md ml-auto mx-4'> 
-                            */}
                         <div className="flex items-center gap-2">
                             {image}
                             <button onClick={() => setOpenSidebar(prev => !prev)} className={`group py-2 px-2 bg-secondary hover:bg-secondary/80 text-white text-lg rounded-md ml-auto mx-4`}>
@@ -102,10 +92,7 @@ export default function DashLayout({ children, image }: { children: React.ReactN
                     <Flex vertical className='w-full bg-[#f9f9f9]' style={{ paddingTop: 20 }}>
                         <Content style={{
                             margin: '14px 4px',
-                            // padding: 24,
                             minHeight: 280,
-                            // background: colorBgContainer,
-                            // borderRadius: borderRadiusLG,
                         }} className='bg-[#f9f9f9] rounded-lg py-4 px-2 mr-8 pt-14'>{children}</Content>
                     <Footer />
                     </Flex>
