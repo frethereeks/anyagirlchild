@@ -20,3 +20,11 @@ type TBlogItemProp = {
         image: string
     },
 }
+
+type TAuthProps = {
+    fullname: string
+    image?: string
+    email: string
+    password: string
+    confPassword: string
+}

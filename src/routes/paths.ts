@@ -4,8 +4,10 @@
  */
 export const authRoutes = {
     // auth
-    signIn: "/auth/signin",
-    signUp: "/register",
+    signin: "/auth/login",
+    signup: "/auth/signup",
+    verify: "/auth/verify",
+    logout: "/auth/logout",
 };
 
 /**
@@ -35,10 +37,6 @@ export const publicRoutes = {
     contact: "/contact",
     donation: "/donation",
     search: "/search",
-    signin: "/auth/signin",
-    signup: "/auth/signup",
-    verify: "/auth/verify",
-    logout: "/auth/logout",
 }
 /**
  * App Route Paths

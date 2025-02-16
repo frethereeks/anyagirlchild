@@ -55,7 +55,11 @@ export const appThemeConfig: ThemeConfig = {
         },
         Input: {
             colorBgContainer: THEME_COLOR.background,
-            hoverBorderColor: THEME_COLOR["light-primary"]
+            hoverBorderColor: THEME_COLOR["light-primary"],
+            controlOutline: "transparent",
+            controlOutlineWidth: 0,
+            colorText: THEME_COLOR.text,
+            controlInteractiveSize: 10,
         },
         InputNumber: {
             colorBgContainer: THEME_COLOR.background,

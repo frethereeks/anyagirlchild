@@ -1,19 +1,20 @@
 "use client"
 
 import { ASSET_URL } from '@/assets';
-import { TBlogProps } from '@/data/blogData';
+import { blogData, TBlogProps } from '@/data/blogData';
 import { appRoutePaths } from '@/routes/paths';
 import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
+import BlogCard from '../components/BlogCard';
 
-type TPageProps = { data: TBlogProps | undefined; role: string; }
+type TPageProps = { data: TBlogProps | undefined; role: string | undefined; }
 
 export default function PBBlogSingleContainer({ data, role }: TPageProps) {
   return (
-    <main className='flex flex-col bg-white py-10'>
-      <section className="relative">
+    <main className='flex flex-col xl:flex-row gap-4 lg:gap-8 bg-white py-10'>
+      <section className="relative flex-1 px-4">
         <aside className="container mx-auto flex flex-col justify-end items-center px-4 pt-64 relative">
           <div className="h-4/5 w-full absolute top-0 left-0">
             <Image src={data?.image ?? ASSET_URL["wallet"]} alt={data?.title!} className=' object-cover object-top' fill />
@@ -41,10 +42,17 @@ export default function PBBlogSingleContainer({ data, role }: TPageProps) {
         </aside>
         <aside className="container mx-auto flex flex-col justify-end items-center p-4 relative">
           <article className="flex flex-col gap-4 py-10">
-            <p className="text-small text-text leading-loose flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: data?.text.slice(0, 300)! }}></p>
+            <div className="text-small text-text leading-loose flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: data?.text! }}></div>
           </article>
         </aside>
       </section>
+      <aside className='w-full xl:max-w-lg px-4 flex flex-col gap-4 sticky top-0 right-0'>
+        {
+          blogData.filter(item => item.id !== data?.id).slice(0,3).map(blog => (
+            <BlogCard key={blog.id} {...blog} />
+          ))
+        }
+      </aside>
     </main>
   )
 }

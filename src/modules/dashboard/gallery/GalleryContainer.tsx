@@ -40,8 +40,8 @@ export default function GalleryContainer() {
         <section className='flex flex-col lg:flex-row gap-4'>
             <aside className="card flex flex-col gap-8 w-full lg:max-w-[20rem] py-10">
                 <div className="hidden lg:flex flex-col items-center py-4">
-                    <div className="relative h-[10rem] w-[10rem] rounded-full mx-auto bg-dark-grad flex-shrink-0">
-                        <Image src={data?.image || ASSET_URL["little_child"]} alt={data.firstname} className="object-cover object-top h-[10rem] w-[10rem] rounded-full" fill />
+                    <div className="relative h-[10rem] w-[10rem] lg:w-full rounded-full mx-auto bg-dark-grad flex-shrink-0">
+                        <Image src={data?.image || ASSET_URL["little_child"]} alt={data.firstname} className="object-cover object-top h-[10rem] w-[10rem] lg:w-full rounded-full" fill />
                         <div className="absolute z-20 h-6 w-6 rounded-full grid place-items-center bg-white text-blue-500 bottom-4 right-2 text-xl">
                             <RiVerifiedBadgeFill />
                         </div>
@@ -63,7 +63,7 @@ export default function GalleryContainer() {
                             className="w-full max-w-xl flex-1 flex flex-col gap-0">
                             <h4 className="text-default font-bold text-text p-4 border-l-4 border-secondary py-2 mb-8">Basic Info</h4>
                             <div className="flex flex-col lg:flex-row gap-4 p-4">
-                                <h4 className="w-[10rem] text-base pt-4 text-text font-semibold">Profile Picture:</h4>
+                                <h4 className="w-[10rem] lg:w-full text-base pt-4 text-text font-semibold">Profile Picture:</h4>
                                 <div className="flex-1 flex flex-col md:flex-row md:items-center gap-4">
                                     <div className="relative h-20 w-20 rounded-full overflow-hidden bg-dark-grad flex-shrink-0">
                                         <Image src={data?.image || ASSET_URL["little_child"]} alt={data.firstname} className="object-cover object-top" fill />
@@ -75,7 +75,7 @@ export default function GalleryContainer() {
                                 </div>
                             </div>
                             <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] text-base text-text font-semibold">First Name:</h4>
+                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">First Name:</h4>
                                 <div className="flex-1 flex flex-col md:flex-row gap-2">
                                     <Form.Item<TAdminProps> name="firstname" noStyle className='flex-1' initialValue={data?.firstname}>
                                         <Input style={{ background: "transparent" }} type='text' placeholder={`First Name e.g. ${data?.firstname}`} required className='border border-background bg-white rounded-sm p-3' />
@@ -83,7 +83,7 @@ export default function GalleryContainer() {
                                 </div>
                             </div>
                             <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] text-base text-text font-semibold">Last Name:</h4>
+                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Last Name:</h4>
                                 <div className="flex-1 flex flex-col md:flex-row gap-2">
                                     <Form.Item<TAdminProps> name="lastname" noStyle className='flex-1' initialValue={data?.lastname}>
                                         <Input style={{ background: "transparent" }} type='text' placeholder={`Last Name e.g. ${data?.lastname}`} required className='border border-background bg-white rounded-sm p-3' />
@@ -91,7 +91,7 @@ export default function GalleryContainer() {
                                 </div>
                             </div>
                             <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] text-base text-text font-semibold">Email:</h4>
+                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Email:</h4>
                                 <div className="flex-1 flex flex-col md:flex-row gap-2">
                                     <Form.Item<TAdminProps> name="email" noStyle className='flex-1' initialValue={data?.email}>
                                         <Input style={{ background: "transparent" }} type='email' placeholder={`Email e.g. ${data?.email}`} required className='border border-background bg-white rounded-sm p-3' />
@@ -108,7 +108,7 @@ export default function GalleryContainer() {
                             className="w-full max-w-xl flex-1 flex flex-col gap-0">
                             <h4 className="text-default font-semibold text-text p-4 border-l-4 border-secondary py-2 mb-8 flex gap-2 ">Password Update <button className="bg-danger/20 text-danger text-xs font-normal py-0.5 px-2 rounded-sm">Security</button> </h4>
                             <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] text-base text-text font-semibold">Current Password:</h4>
+                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Current Password:</h4>
                                 <div className="flex-1 flex flex-col md:flex-row gap-2">
                                     <Form.Item<TAdminSecurityProps> name="password" noStyle className='flex-1' >
                                         <Input style={{ background: "transparent" }} type='text' placeholder={`Old Password`} required className='border border-background bg-white rounded-sm p-3' />
@@ -116,7 +116,7 @@ export default function GalleryContainer() {
                                 </div>
                             </div>
                             <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] text-base text-text font-semibold">New Password:</h4>
+                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">New Password:</h4>
                                 <div className="flex-1 flex flex-col md:flex-row gap-2">
                                     <Form.Item<TAdminSecurityProps> name="newpassword" noStyle className='flex-1'>
                                         <Input style={{ background: "transparent" }} type='password' placeholder={`Use a Strong Password`} required className='border border-background bg-white rounded-sm p-3' />
@@ -124,7 +124,7 @@ export default function GalleryContainer() {
                                 </div>
                             </div>
                             <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] text-base text-text font-semibold">Confirm Password:</h4>
+                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Confirm Password:</h4>
                                 <div className="flex-1 flex flex-col md:flex-row gap-2">
                                     <Form.Item<TAdminSecurityProps> name="confirmpassword" noStyle className='flex-1'>
                                         <Input style={{ background: "transparent" }} type='password' placeholder={`Use a Strong Password`} required className='border border-background bg-white rounded-sm p-3' />
@@ -196,40 +196,40 @@ export default function GalleryContainer() {
                             <h2 className="text-2xl font-bold text-sky-700 pb-3 border-b border-slate-200">Basic Information</h2>
                             <form action="" className="flex flex-col gap-4 py-4 px-2 md:px-4">
                                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] text-base text-text font-semibold">Organization Name:</h4>
+                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Organization Name:</h4>
                                     <div className="flex-1 flex flex-col md:flex-row gap-2">
                                         <input type='text' placeholder={`Organization Name e.g. C-STEMP Limited`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
                                     </div>
                                 </div>
                                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] text-base text-text font-semibold">Contact Person:</h4>
+                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Contact Person:</h4>
                                     <input type='text' placeholder={`Contact Person e.g. Joana Bishop`} pattern='[A-Z][a-z]\s[A-Z][a-z]+' required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3 capitalize' />
                                 </div>
                                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] text-base text-text font-semibold">Type of Construction Work:</h4>
+                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Type of Construction Work:</h4>
                                     <input type='text' placeholder={`Construction Type e.g. Plumbing`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
                                 </div>
                                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] text-base text-text font-semibold">Designation:</h4>
+                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Designation:</h4>
                                     <input type='text' placeholder={`Designation`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
                                 </div>
                                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] text-base text-text font-semibold">Phone Number:</h4>
+                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Phone Number:</h4>
                                     <div className="flex-1 flex gap-2 relative">
                                         <div className="bg-slate-200 text-slate-500 text-base grid place-items-center px-4">+234</div>
                                         <input type='text' placeholder={`e.g. 7089237612`} pattern='[0-9]${10}' required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
                                     </div>
                                 </div>
                                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] text-base text-text font-semibold">Email:</h4>
+                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Email:</h4>
                                     <input type='email' placeholder={`someone@email.com`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
                                 </div>
                                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] text-base text-text font-semibold">Business Address:</h4>
+                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Business Address:</h4>
                                     <input type='text' placeholder={`Address`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
                                 </div>
                                 <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] text-base text-text font-semibold">Type of Construction Work:</h4>
+                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Type of Construction Work:</h4>
                                     <div className="flex-1 grid grid-cols-2 flex-wrap gap-2 relative">
                                         <label htmlFor="residential" className='cursor-pointer flex items-center gap-3 border border-slate-300 bg-white rounded-sm text-base p-3'>
                                             <input type="radio" name="construction-type" id="residential" /> Residential
