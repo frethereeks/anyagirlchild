@@ -18,7 +18,7 @@ export default function PBBlogContainer() {
               inspiration and expert insights with our blog section, offering a deep dive into trends and tips
               for elevating your living spaces</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 md:justify-center auto-rows-fr gap-2 sm:gap-4 lg:gap-6 py-10">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:justify-center auto-rows-fr gap-2 sm:gap-4 lg:gap-6 py-10">
             {
               blogData.map(blog => <BlogCard key={blog.id} {...blog} />)
             }
@@ -44,7 +44,7 @@ export default function PBBlogContainer() {
         </button>
 
       </div> */}
-      </section >
-    </main >
+      </section>
+    </main>
   )
 }

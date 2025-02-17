@@ -46,7 +46,7 @@ export default function PBBlogSingleContainer({ data, role }: TPageProps) {
           </article>
         </aside>
       </section>
-      <aside className='w-full xl:max-w-lg px-4 flex flex-col gap-4 sticky top-0 right-0'>
+      <aside className='w-full xl:max-w-lg px-4 flex flex-col gap-4 h-max max-h-max sticky top-0 right-0'>
         {
           blogData.filter(item => item.id !== data?.id).slice(0,3).map(blog => (
             <BlogCard key={blog.id} {...blog} />

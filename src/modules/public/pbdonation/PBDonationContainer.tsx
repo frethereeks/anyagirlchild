@@ -47,7 +47,7 @@ export default function PBDonationContainer() {
         <div className="flex flex-col gap-1 -mt-3">
           <label htmlFor="amount" className="w-full text-sm md:text-base text-text/70 font-medium">Amount:</label>
           <Form.Item<TDonationProps> name="amount" id="amount">
-            <InputNumber type='number' className='text-text/70 lowercase' placeholder='Starting from 1000' min={1000} required style={{ background: "transparent" }} />
+            <InputNumber type='number' className='text-text/70 w-full' placeholder='Starting from 1000' min={1000} required style={{ background: "transparent", width: "100%" }} />
           </Form.Item>
         </div>
         <div className="flex flex-col gap-1">
@@ -56,7 +56,7 @@ export default function PBDonationContainer() {
             <TextArea className='' rows={5} placeholder='Not mandatory but if you have a specific purpose you prefer the donation channeled into. Feel free to state it. Thanks.' required style={{ background: "transparent" }} />
           </Form.Item>
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 pt-4">
           <button disabled={loading} type='submit' className='button bg-secondary'>{loading ? 'Processing...' : 'Donate'}</button>
         </div>
         {/* <p className="text-xs md:text-sm text-text text-center pb-4">We&apos;ll get back to you in 1-2 business days</p> */}
