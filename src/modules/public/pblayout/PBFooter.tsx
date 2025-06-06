@@ -14,12 +14,12 @@ export default function PBFooter() {
       <div className="overlay bg-primary z-10 shadow-none opacity-70 backdrop-blur-sm"></div>
       <div className="container mx-auto relative z-20 flex flex-wrap sm:grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10 py-10 rounded-md text-white">
         <aside className="flex flex-col sm:justify-center gap-4 w-full col-span-2 md:col-span-1">
-          <Link href="/" className="flex py-2 gap-2">
-            <div className="w-16 min-h-16 flex justify-center items-center rounded-md overflow-hidden relative bg-primary flex-shrink-0">
+          <Link href="/" className="flex items-center py-2 gap-2">
+            <div className="w-14 min-h-14 flex justify-center items-center rounded-md overflow-hidden relative bg-backdrop flex-shrink-0">
               {/* <IoFileTrayStackedSharp key={82346} className="text-sm text-white" /> */}
-              <Image src={ASSET_URL["wallet"]} alt='AnyaGirlchild Logo' fill={true} className='object-cover flex-shrink-0' />
+              <Image src={ASSET_URL["anya_girlchild_logo"]} alt='AnyaGirlchild Logo' fill={true} className='object-cover flex-shrink-0' />
             </div>
-            <div className="flex flex-col justify-center w-max">
+            <div className="flex flex-col justify-center w-max -translate-y-1">
               <h1 className={`text-white text-2xl sm:text-3xl w-max font-extrabold uppercase tracking-tight flex items-center`}>Anya<p className={`tracking-normal text-danger`}>GirlChild</p></h1>
               <p className="text-lg text-text text-center font-semibold tracking-[.5rem] leading-none uppercase w-full py-0.5 px-3 whitespace-pre-wrap bg-white">Foundation</p>
             </div>
@@ -32,8 +32,8 @@ export default function PBFooter() {
             <Link href={appRoutePaths.contact} className="leading-loose flex items-center gap-3">
               <span className="h-6 w-6 text-lg flex-shrink-0 grid place-items-center"><IoLocateOutline /></span> 35 Asheik Jarma, Jabi. Abuja
             </Link>
-            <Link href={`mailto:anyagirlchildfoundation@gmail.com`} className="leading-loose flex items-center gap-3">
-              <span className="h-6 w-6 text-lg flex-shrink-0 grid place-items-center"><LuMessageSquare /></span> anyagirlchildfoundation@gmail.com
+            <Link href={`mailto: info@anyagirlchild.com`} className="leading-loose flex items-center gap-3">
+              <span className="h-6 w-6 text-lg flex-shrink-0 grid place-items-center"><LuMessageSquare /></span> info@anyagirlchild.com
             </Link>
             <Link href={`tel:08038859276`} className="leading-loose flex items-center gap-3">
               <span className="h-6 w-6 text-lg flex-shrink-0 grid place-items-center"><LuPhoneCall /></span> 08038859276
@@ -47,8 +47,8 @@ export default function PBFooter() {
             <Link href={appRoutePaths.gallery} className="leading-loose">Gallery</Link>
             <Link href={appRoutePaths.blog} className="leading-loose">Blog</Link>
             {/* <Link href={appRoutePaths.contact} className="leading-loose">Contact</Link> */}
-            <Link href={appRoutePaths.contact} className="leading-loose">Privacy Policy</Link>
-            <Link href={appRoutePaths.contact} className="leading-loose">Terms &amp; Conditions</Link>
+            <Link href={appRoutePaths.privacyPolicy} className="leading-loose">Privacy Policy</Link>
+            <Link href={appRoutePaths.termsAndConditions} className="leading-loose">Terms &amp; Conditions</Link>
           </div>
         </aside>
       </div>

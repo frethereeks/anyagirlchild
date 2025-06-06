@@ -11,7 +11,19 @@ import group_donation from "./group_donation.jpg"
 import healthcare_nurse from "./healthcare_nurse.jpg"
 import hungry_man from "./hungry_man.jpg"
 import little_child from "./little_child.jpg"
-import wallet from "./wallet.jpg"
+import payment_key from "./payment_key.jpg" 
+import payment_master_card from "./payment_master_card.jpg" 
+import payment_secure from "./payment_secure.jpg"
+import anya_girlchild_logo from "./logo.jpg"
+
+import anyagirlchild_addressing from "./anyagirlchild_addressing.jpg" 
+import anyagirlchild_douvet_gift from "./anyagirlchild_douvet_gift.jpg" 
+import anyagirlchild_with_ngos from "./anyagirlchild_with_ngos.jpg" 
+import anyagirlchild_represented from "./anyagirlchild_represented.jpg" 
+import anyagirlchild_award from "./anyagirlchild_award.jpg" 
+import anyagirlchild_outreach from "./anyagirlchild_outreach.jpg" 
+import anyagirl_6 from "./anyagirl_6.jpg" 
+import anyagirlchild_gift_girls from "./anyagirlchild_gift_girls.jpg"
 
 export const ASSET_URL =  {
     adult_intervention,
@@ -23,5 +35,17 @@ export const ASSET_URL =  {
     healthcare_nurse,
     hungry_man,
     little_child,
-    wallet,
+    payment_key,
+    payment_master_card,
+    payment_secure,
+    anya_girlchild_logo,
+    anyagirlchild_addressing,
+    anyagirlchild_douvet_gift,
+    anyagirlchild_with_ngos,
+    anyagirlchild_represented,
+    anyagirlchild_award,
+    anyagirlchild_outreach,
+    anyagirl_6,
+    anyagirlchild_gift_girls,
 }
+

@@ -1,5 +1,6 @@
 import React from 'react'
 import { AboutGallerySection, AboutMainSection, AboutQuoteSection } from './components'
+import { HomeGallerySection } from '../pbhome/components'
 
 export default function PBAboutContainer() {
   return (
@@ -7,6 +8,7 @@ export default function PBAboutContainer() {
       <AboutMainSection />
       <AboutQuoteSection />
       <AboutGallerySection />
+      <HomeGallerySection />
     </main>
   )
 }

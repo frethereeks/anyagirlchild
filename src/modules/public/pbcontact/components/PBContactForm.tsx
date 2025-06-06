@@ -1,24 +1,41 @@
 "use client"
 
-import { Form, Input } from 'antd'
+import { createContact } from '@/app/action'
+import { TContactProps } from '@/types'
+import { Form, Input, notification } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import TextArea from 'antd/es/input/TextArea'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 export default function PBContactForm() {
   const [form] = useForm<TContactProps>()
   const [loading, setLoading] = useState<boolean>(false)
+    const router = useRouter()
 
   const handleSubmit = async (data: TContactProps) => {
     setLoading(true)
+    notification.info({ message: 'Sending message...', key: "123" })
     try {
-      console.log('data', data)
-
+      const formData = new FormData()
+      Object.entries(data).map(([key, value]) => {
+        formData.append(key, value as unknown as string)
+      })
+      const res = await createContact(formData)
+      if (res?.error) {
+        notification.error({ message: res?.message, key: "123" })
+      }
+      else {
+        notification.success({ message: res?.message, key: "123" })
+        router.refresh()
+        form.resetFields()
+      }
     } catch (error) {
-
+      notification.error({ message: 'Unable to send message. Please, check your internet connection and try again', key: "123" })
     }
     finally {
       setLoading(false)
+      router.refresh()
     }
   }
 

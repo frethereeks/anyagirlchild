@@ -2,16 +2,21 @@ import React from 'react'
 import { OverviewAdmins, OverviewBlogs, OverviewDonations, OverviewGallery, OverviewGraph, OverviewSections } from './components'
 import Link from 'next/link'
 import { appRoutePaths } from '@/routes/paths'
-import { LuMessageSquareDot } from 'react-icons/lu'
 import { BiMessageDetail } from "react-icons/bi";
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib';
+import { fetchDashboarData } from '@/app/action';
 
-export default function OverviewContainer() {
-
+export default async function OverviewContainer() {
+  const session = await getServerSession(authOptions);
+  const user = session?.user;
+  const res = await fetchDashboarData()
+  
   return (
     <main className='flex flex-col gap-4 w-full'>
       <aside className="card flex justify-between items-center gap-2">
         <div className="flex-1 flex flex-col">
-          <h4 className="heading-three font-bold">Hello, Felicity</h4>
+          <h4 className="heading-three font-bold">Hello, {user?.name}</h4>
           <p className="text-small">Here you can manage your Anyagirlchild Foundation Outlook</p>
         </div>
         <Link href={appRoutePaths.admincontact} className="w-10 h-10 text-danger hover:text-danger text-lg md:text-2xl grid place-items-center rounded-md cursor-pointer">
@@ -20,14 +25,18 @@ export default function OverviewContainer() {
       </aside>
       <aside className="sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2 flex flex-col gap-4">
-          <OverviewSections />
-          <OverviewGraph />
-          <OverviewAdmins />
-          <OverviewDonations />
+          <OverviewSections 
+            totalDonation={res?.data?.donationData?.reduce((oldValue, el) => +(el.amount) + oldValue, 0) || 0} 
+            totalBlog={res?.data?.blogData.length || 0} 
+            totalGallery={res?.data?.galleryData.length || 0} 
+          />
+          {/* <OverviewGraph /> */}
+          {/* <OverviewAdmins adminData={res?.data?.adminData || []}/> */}
+          {/* <OverviewDonations donationData={res?.data?.donationData || []} /> */}
         </div>
         <section className="flex flex-col gap-4">
-          <OverviewGallery />
-          <OverviewBlogs />
+          <OverviewGallery galleryData={res?.data?.galleryData || []} />
+          {/* <OverviewBlogs blogData={res?.data?.blogData || []} /> */}
         </section>
       </aside>
     </main>

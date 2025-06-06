@@ -1,12 +1,12 @@
-"use client"
-import { blogData } from '@/data/blogData'
+// "use client"
 import { appRoutePaths } from '@/routes/paths'
+import { TBlogItemProp } from '@/types'
 import { List } from 'antd'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function OverviewBlogs() {
+export default function OverviewBlogs({blogData }: { blogData: TBlogItemProp[] }) {
     return (
         <aside className = "card p-4 flex flex-col gap-4 text-text">
             <List
@@ -26,7 +26,7 @@ export default function OverviewBlogs() {
                                 className='text-text items-center'
                                 avatar={
                                     <figure className='relative py-10 w-20 rounded-md overflow-hidden flex-shrink-0 border'>
-                                        <Image src={val.image} alt={val.title} className='overlay object-cover' fill/>
+                                        <Image src={val.image!} alt={val.title} className='overlay object-cover' fill/>
                                     </figure>
                                 }
                                 title={<h5 className='font-semibold text-text text-sm' dangerouslySetInnerHTML={{ __html: val.title }}></h5>}

@@ -11,7 +11,7 @@ export default function HomeAboutSection() {
             <div className="container mx-auto relative grid md:grid-cols-2 gap-4 md:gap-8 justify-center items-center py-10 rounded-md">
                 <div className="flex-1 min-h-80">
                     <div className="max-w-lg py-40 ml-auto overflow-hidden relative rounded-md flex flex-col gap-4">
-                        <Image src={ASSET_URL['little_child']} alt='little_child' className='object-cover object-top overlay' fill />
+                        <Image src={ASSET_URL['hungry_man']} alt='hungry_girl' className='object-cover object-top overlay' fill />
                     </div>
                 </div>
                 <div className="flex-1 py-5 relative rounded-md">

@@ -2,6 +2,8 @@ import React from 'react'
 import { Metadata } from 'next';
 import BlogContainer from '@/modules/dashboard/blog/BlogContainer'
 import { DashBreadCrumb } from '@/modules/dashboard/layout'
+import { fetchBlogPosts, fetchUser } from '@/app/action';
+import { TBlogItemProp } from '@/types';
 
 
 export const metadata: Metadata = {
@@ -10,10 +12,14 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminBlogPage() {
+  const user = await fetchUser()
+  const res = await fetchBlogPosts()
+  const data = res.data as TBlogItemProp[]
+
   return (
     <>
       <DashBreadCrumb />
-      <BlogContainer />
+      <BlogContainer data={data || []} role={user.role} />
     </>
   )
 }

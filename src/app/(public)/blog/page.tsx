@@ -3,6 +3,8 @@ import { ASSET_URL } from '@/assets'
 import PBBreadCrumb from '@/modules/public/pblayout/PBBreadCrumb'
 import PBBlogContainer from '@/modules/public/pbblog/PBBlogContainer'
 import { Metadata } from 'next';
+import { fetchBlogPosts } from '@/app/action';
+import { TBlogItemProp } from '@/types';
 
 
 export const metadata: Metadata = {
@@ -11,11 +13,13 @@ export const metadata: Metadata = {
 };
 
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const res = await fetchBlogPosts() 
+  const data = res.data as TBlogItemProp[]
   return (
     <main className='flex flex-col gap-4'>
       <PBBreadCrumb image={ASSET_URL["little_child"]} />
-      <PBBlogContainer />
+      <PBBlogContainer data={data} />
     </main>
   )
 }

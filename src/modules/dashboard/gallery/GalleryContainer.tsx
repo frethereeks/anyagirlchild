@@ -1,329 +1,123 @@
 "use client"
+import React, { useState } from 'react'
+import { Modal } from 'antd';
+import { blogData } from '@/data/blogData'
+import { DEFAULT_PAGE_SIZE } from '@/constants'
+import AddGallery from './components/AddGallery';
+import { TGalleryProps } from '@/types';
+import { triggerModal } from '@/lib/features/reducers/siteSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/features/hooks';
+import { $Enums } from '@prisma/client';
+import Image from 'next/image';
+import { AiOutlineDelete, AiOutlineCheck } from 'react-icons/ai';
+import { DeleteModal, UpdateStatus } from '@/modules/shared';
+import { FiGrid } from 'react-icons/fi';
+import { FaCheck, FaList } from 'react-icons/fa6';
+import { GrGallery } from 'react-icons/gr';
 
-import React, { useRef, useState } from 'react'
-import { ASSET_URL } from '@/assets'
-import Image from 'next/image'
-import { RiVerifiedBadgeFill } from "react-icons/ri";
-import { useForm } from 'antd/es/form/Form';
-import { Form, Input } from 'antd';
-
-type TAdminSecurityProps = {
-    password: string
-    newpassword: string
-    confirmpassword: string
+type TPageProps = {
+    data: TGalleryProps[] | undefined
+    role: $Enums.Role
 }
 
-export default function GalleryContainer() {
-    const [activeForm, setActiveForm] = useState<"info" | "security" | "candidates">("info")
-    const [form] = useForm<TAdminProps>()
-    const [passForm] = useForm<TAdminSecurityProps>()
-    const [openDialog, setOpenDialog] = useState<boolean>(false)
-    const dialogRef = useRef<HTMLDialogElement | null>()
-    const [candidates, setCandidates] = useState<any[]>([])
+export default function GalleryContainer({ data, role }: TPageProps) {
+    const [currentPage, setCurrentPage] = useState<number>(0)
+    const [viewType, setViewType] = useState<"grid" | "list">("grid")
+    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+    const [selectedData, setSelectedData] = useState<TGalleryProps | undefined>(undefined)
+    const [deleteModal, setDeleteModal] = useState<boolean>(false)
+    const site = useAppSelector(state => state.site)
+    const dispatch = useAppDispatch()
 
-    const data: TAdminProps = {
-        id: "829zxc92941020a82",
-        firstname: "Felicity",
-        lastname: "Anyanwu",
-        email: "felicity.ananyanwu@anyagirlchild.com",
-        role: "Root",
-        image: "",
-        status: "Active",
-        password: "123456",
-        address: "35 Asheik Jarma, Jabi. Abuja, Nigeria",
-        lastLogin: new Date("2/11/2025"),
-        createdAt: new Date("1/25/2025"),
-        updatedAt: new Date("2/11/2025"),
+    React.useEffect(() => {
+        if (site.selectedId) {
+            setSelectedData(data?.find(el => el.id === site.selectedId))
+        }
+        // eslint-disable-next-line
+    }, [site.selectedId, dispatch])
+
+    React.useEffect(() => {
+        if (!deleteModal) {
+            setSelectedRowKeys([])
+        }
+        // eslint-disable-next-line
+    }, [deleteModal])
+
+    const handleDelete = (key: string) => {
+        setDeleteModal(!deleteModal)
+        setSelectedRowKeys([key])
     }
 
+    const handleClick = (val: number) => {
+
+    }
+
+
+
     return (
-        <section className='flex flex-col lg:flex-row gap-4'>
-            <aside className="card flex flex-col gap-8 w-full lg:max-w-[20rem] py-10">
-                <div className="hidden lg:flex flex-col items-center py-4">
-                    <div className="relative h-[10rem] w-[10rem] lg:w-full rounded-full mx-auto bg-dark-grad flex-shrink-0">
-                        <Image src={data?.image || ASSET_URL["little_child"]} alt={data.firstname} className="object-cover object-top h-[10rem] w-[10rem] lg:w-full rounded-full" fill />
-                        <div className="absolute z-20 h-6 w-6 rounded-full grid place-items-center bg-white text-blue-500 bottom-4 right-2 text-xl">
-                            <RiVerifiedBadgeFill />
-                        </div>
+        <>
+            <DeleteModal key={"8012469234"} openModal={deleteModal} closeModal={setDeleteModal} data={selectedRowKeys} table='gallery' resetSelected={() => setSelectedRowKeys([])} />
+            <Modal
+                open={site.openModal}
+                footer={<></>}
+                onCancel={() => dispatch(triggerModal({ id: undefined, open: false }))}
+                afterClose={() => setSelectedData(undefined)}
+                className='min-w-48 md:min-w-96'
+            >
+                <AddGallery key={"i2304897q234"} data={selectedData} />
+            </Modal>
+            <main className='relative flex flex-col gap-4'>
+                <aside className="card p-2 sm:p-4 flex justify-between items-center gap-4">
+                    <h4 className="text-default text-text font-bold">Gallery Images</h4>
+                    <button onClick={() => dispatch(triggerModal({ id: undefined, open: true }))} className='py-1.5 px-4 rounded-md bg-danger hover:bg-danger text-white text-xs flex items-center gap-2'><GrGallery /> Add Image</button>
+                </aside>
+                <aside className="card p-2 sm:p-4 flex flex-col gap-4 text-text min-w-52 overflow-x-scroll">
+                    <div className="flex flex-col sm:flex-row sm:items-end gap-2">
+                        {(selectedRowKeys.length > 0) &&
+                            <div className="flex flex-col select-none">
+                                <p className="text-text text-xs">Delete selection</p>
+                                <button onClick={() => setDeleteModal(!deleteModal)} className="button py-1 px-4 bg-danger flex items-center gap-1 w-max"><AiOutlineDelete /> Delete All</button>
+                            </div>
+                        }
+                        <UpdateStatus key="902384" data={selectedRowKeys} table='gallery' statusType={$Enums.ViewStatus} />
                     </div>
-                    <h4 className="flex-1 text-base pt-4 text-dark-text font-semibold">{data.firstname} {data.lastname}</h4>
-                    <p className="flex-1 text-xs text-text opacity-80 font-medium">{data.email}</p>
-                </div>
-                <h4 className="text-base lg:text-lg text-text font-semibold pl-4">Account</h4>
-                <div className="flex flex-row lg:flex-col -mt-5">
-                    <button onClick={() => setActiveForm("info")} className={`text-sm text-center lg:text-left font-medium p-4 py-3 -ml-0 lg:-ml-4 ${activeForm === "info" ? 'lg:border-l-4 border-l-0 pl-0 lg:pl-4 border-b-2 lg:border-b-0 border-secondary' : 'lg:border-l-4 lg:border-transparent'} `}>Personal Information</button>
-                    <button onClick={() => setActiveForm("security")} className={`text-sm text-center lg:text-left font-medium p-4 py-3 -ml-0 lg:-ml-4 ${activeForm === "security" ? 'lg:border-l-4 border-l-0 pl-0 lg:pl-4 border-b-2 lg:border-b-0 border-secondary' : 'lg:border-l-4 lg:border-transparent'} `}>Login & Security</button>
-                </div>
-            </aside>
-            <aside className='card flex-1 flex flex-col gap-0'>
-                {
-                    activeForm === "info" ?
-                        <Form
-                            form={form}
-                            className="w-full max-w-xl flex-1 flex flex-col gap-0">
-                            <h4 className="text-default font-bold text-text p-4 border-l-4 border-secondary py-2 mb-8">Basic Info</h4>
-                            <div className="flex flex-col lg:flex-row gap-4 p-4">
-                                <h4 className="w-[10rem] lg:w-full text-base pt-4 text-text font-semibold">Profile Picture:</h4>
-                                <div className="flex-1 flex flex-col md:flex-row md:items-center gap-4">
-                                    <div className="relative h-20 w-20 rounded-full overflow-hidden bg-dark-grad flex-shrink-0">
-                                        <Image src={data?.image || ASSET_URL["little_child"]} alt={data.firstname} className="object-cover object-top" fill />
+                    <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] lg:grid-cols-6 auto-rows-fr md:justify-center gap-2 sm:gap-4 lg:gap-6 py-4">
+                        {
+                            data?.map(el => ({ ...el, key: el.id }))?.map(gallery =>
+                                <figure key={gallery.id} className="relative">
+                                    <div className="group relative border-2 border-text/50 rounded-md overflow-hidden h-32 md:h-40 cursor-pointer">
+                                        {
+                                            role !== "USER" &&
+                                            <div className={`absolute top-0  ${selectedRowKeys.find(el => el === gallery.key) ? 'md:top-0' : ' md:-top-full md:group-hover:top-0'} text-white left-0 w-full p-2 bg-primary/40 flex justify-between gap-2 z-10`}>
+                                                <button onClick={() => setSelectedRowKeys(prev => [...prev, gallery.key])} className={`cursor-pointer rounded-md w-6 h-6 grid place-items-center border border-text/50 ${selectedRowKeys.find(el => el === gallery.key) ? 'bg-secondary' : 'bg-backdrop'} text-white`}>
+                                                    <FaCheck />
+                                                </button>
+                                                <button onClick={() => handleDelete(gallery.key)} className="cursor-pointer rounded-md w-6 h-6 grid place-items-center bg-danger text-white">
+                                                    <AiOutlineDelete />
+                                                </button>
+                                            </div>
+                                        }
+                                        <Image onClick={() => {
+                                            setSelectedData(gallery)
+                                            dispatch(triggerModal({ id: gallery.id, open: true }))
+                                        }} src={gallery.image!} alt={gallery.image || gallery.title} className='object-cover object-top' fill />
                                     </div>
-                                    <div className="flex-1 flex gap-4">
-                                        <button className="button bg-secondary">Upload Photo</button>
-                                        <button className="button bg-transparent text-danger border px-6">Delete</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">First Name:</h4>
-                                <div className="flex-1 flex flex-col md:flex-row gap-2">
-                                    <Form.Item<TAdminProps> name="firstname" noStyle className='flex-1' initialValue={data?.firstname}>
-                                        <Input style={{ background: "transparent" }} type='text' placeholder={`First Name e.g. ${data?.firstname}`} required className='border border-background bg-white rounded-sm p-3' />
-                                    </Form.Item>
-                                </div>
-                            </div>
-                            <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Last Name:</h4>
-                                <div className="flex-1 flex flex-col md:flex-row gap-2">
-                                    <Form.Item<TAdminProps> name="lastname" noStyle className='flex-1' initialValue={data?.lastname}>
-                                        <Input style={{ background: "transparent" }} type='text' placeholder={`Last Name e.g. ${data?.lastname}`} required className='border border-background bg-white rounded-sm p-3' />
-                                    </Form.Item>
-                                </div>
-                            </div>
-                            <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Email:</h4>
-                                <div className="flex-1 flex flex-col md:flex-row gap-2">
-                                    <Form.Item<TAdminProps> name="email" noStyle className='flex-1' initialValue={data?.email}>
-                                        <Input style={{ background: "transparent" }} type='email' placeholder={`Email e.g. ${data?.email}`} required className='border border-background bg-white rounded-sm p-3' />
-                                    </Form.Item>
-                                </div>
-                            </div>
-                            <div className="flex justify-end gap-4">
-                                <button className="button bg-secondary font-semibold">Save Changes</button>
-                            </div>
-                        </Form>
-                        :
-                        <Form
-                            form={passForm}
-                            className="w-full max-w-xl flex-1 flex flex-col gap-0">
-                            <h4 className="text-default font-semibold text-text p-4 border-l-4 border-secondary py-2 mb-8 flex gap-2 ">Password Update <button className="bg-danger/20 text-danger text-xs font-normal py-0.5 px-2 rounded-sm">Security</button> </h4>
-                            <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Current Password:</h4>
-                                <div className="flex-1 flex flex-col md:flex-row gap-2">
-                                    <Form.Item<TAdminSecurityProps> name="password" noStyle className='flex-1' >
-                                        <Input style={{ background: "transparent" }} type='text' placeholder={`Old Password`} required className='border border-background bg-white rounded-sm p-3' />
-                                    </Form.Item>
-                                </div>
-                            </div>
-                            <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">New Password:</h4>
-                                <div className="flex-1 flex flex-col md:flex-row gap-2">
-                                    <Form.Item<TAdminSecurityProps> name="newpassword" noStyle className='flex-1'>
-                                        <Input style={{ background: "transparent" }} type='password' placeholder={`Use a Strong Password`} required className='border border-background bg-white rounded-sm p-3' />
-                                    </Form.Item>
-                                </div>
-                            </div>
-                            <div className="flex flex-col lg:flex-row lg:items-center gap-4 p-4">
-                                <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Confirm Password:</h4>
-                                <div className="flex-1 flex flex-col md:flex-row gap-2">
-                                    <Form.Item<TAdminSecurityProps> name="confirmpassword" noStyle className='flex-1'>
-                                        <Input style={{ background: "transparent" }} type='password' placeholder={`Use a Strong Password`} required className='border border-background bg-white rounded-sm p-3' />
-                                    </Form.Item>
-                                </div>
-                            </div>
-                            <div className="flex justify-end gap-4">
-                                <button className="button bg-secondary font-semibold">Update Password</button>
-                            </div>
-                        </Form>
-                }
-            </aside>
-        </section>
-        
+                                    <p className="text-xs md:text-xs text-text text-left font-medium">{gallery.title}</p>
+                                </figure>
+                            )
+                        }
+                    </div>
+                    <div className='flex justify-end gap-2'>
+                        {
+                            blogData.length > DEFAULT_PAGE_SIZE &&
+                            Array.from({ length: Math.ceil((blogData.length || 0) / DEFAULT_PAGE_SIZE) }).map((_, val) => (
+                                <button onClick={() => handleClick(val)} key={val} className={`w-6 h-6 md:w-8 md:h-8 flex justify-center items-center border border-grey text-xs sm:text-sm rounded-md cursor-pointer ${val === currentPage ? 'hover:bg-gray bg-dark hover:text-dark/60 text-backdrop' : 'bg-gray hover:bg-dark text-dark/60 hover:text-backdrop'}`}>{
+                                    val}</button>
+                            ))
+                        }
+                    </div>
+                </aside>
+            </main>
+        </>
     )
 }
-/*
- <main className='flex flex-col'>
-    <section className="relative flex flex-col justify-center py-20 px-4">
-        <div className="absolute w-3/4 right-0 h-full">
-            <Image src={ASSET_URL['wallet']} alt='' className='object-cover object-center' fill />
-        </div>
-        <div className="container mx-auto relative z-10">
-            <div className="flex flex-col justify-center items-center bg-white shadow-lg shadow-text/50 px-4 py-8 md:px-8 md:py-14 w-full max-w-xl">
-                <h2 className="text-2xl md:text-4xl text-center text-sky-700 font-inter font-black">I-LEAP PROJECT ARTISAN NOMINATION FORM</h2>
-                <h2 className="text-lg text-center text-text font-medium italic">(For Use by Developers & Contractors)</h2>
-                <div className="flex flex-col gap-2 mt-4"></div>
-                <p className="text-sm md:text-base text-text"></p>
-            </div >
-        </div >
-    </section >
-    <section className="relative flex flex-col justify-center py-20">
-        <div className="container mx-auto flex flex-col lg:flex-row gap-4">
-            <aside className="card p-4 flex flex-col gap-8 w-full lg:max-w-[20rem] py-10">
-                <div className="hidden lg:flex flex-col items-center py-4">
-                    <div className="relative h-[8rem] w-[8rem] rounded-full mx-auto bg-dark-grad flex-shrink-0">
-                        <Image src={data?.image || ASSET_URL["little_child"]} alt={data.firstname} className="object-cover object-top h-[8rem] w-[8rem] rounded-full" fill />
-                        <div className="absolute z-20 h-6 w-6 rounded-full grid place-items-center bg-white text-blue-500 bottom-4 right-0 text-xl">
-                            <RiVerifiedBadgeFill />
-                        </div>
-                    </div>
-                    <h4 className="flex-1 text-base pt-4 text-dark-text font-semibold">C-STEMP Limited</h4>
-                    <p className="flex-1 text-xs text-text opacity-80 font-medium">support@cstemp.org</p>
-                </div>
-                <h4 className="text-lg lg:text-2xl text-text font-semibold">Section Guides</h4>
-                <div className="flex flex-row flex-wrap lg:flex-col -mt-5">
-                    <button onClick={() => setActiveForm("info")} className={`text-sm text-center lg:text-left font-medium p-4 py-3 -ml-0 lg:-ml-4 ${activeForm === "info" ? 'lg:border-l-4 border-l-0 pl-0 lg:pl-4 border-b-2 lg:border-b-0 border-secondary' : 'lg:border-l-4 lg:border-transparent'} `}>General Overview</button>
-                    <button onClick={() => setActiveForm("security")} className={`text-sm text-center lg:text-left font-medium p-4 py-3 -ml-0 lg:-ml-4 ${activeForm === "security" ? 'lg:border-l-4 border-l-0 pl-0 lg:pl-4 border-b-2 lg:border-b-0 border-secondary' : 'lg:border-l-4 lg:border-transparent'} `}>Developer/Contractor Info</button>
-                    <button onClick={() => setActiveForm("candidates")} className={`text-sm text-center lg:text-left font-medium p-4 py-3 -ml-0 lg:-ml-4 ${activeForm === "candidates" ? 'lg:border-l-4 border-l-0 pl-0 lg:pl-4 border-b-2 lg:border-b-0 border-secondary' : 'lg:border-l-4 lg:border-transparent'} `}>Nominated Artisan Details</button>
-                </div>
-            </aside>
-            <aside className='card p-4 flex-1 flex flex-col gap-4'>
-                {
-                    activeForm === "info" && (
-                        <figure className='flex flex-col gap-4 py-4'>
-                            <h2 className="text-2xl font-bold text-sky-700">Program Description</h2>
-                            <p style={{ lineHeight: 1.8 }} className="text-sm md:text-base text-text text-justify leading-loose">The I-LEAP PROGRAM is an industry-driven initiative designed to upskill and certify artisans in key construction trades. Sponsored by AUDA-NEPAD and implemented by C-STEMP, the program provides a 6-month blended learning experience, starting with an intensive one-week workshop on modern construction practices, health and safety, quality workmanship, teamwork, and digital skills. Participants will then continue their learning through the E-LIMI e-learning platform, with on-the-job assessments leading to NSQ certification and the CORBON Artisan License.</p>
-                            <div className="flex flex-col gap-2">
-                                <h4 className="text-2xl font-bold text-sky-700 py-3">Instruction</h4>
-                                <p className="flex gap-4 text-sm md:text-base text-text"><span>•</span>	This form should be completed by the Developer/Contractor nominating artisans for participation in the I-LEAP Project.</p>
-                                <p className="flex gap-4 text-sm md:text-base text-text"><span>•</span>	Ensure all required fields are filled out accurately.</p>
-                                <p className="flex gap-4 text-sm md:text-base text-text"><span>•</span>	Submit the completed form to the designated I-LEAP Project office or email.</p>
-                            </div>
-                        </figure>)
-                }
-                {
-                    activeForm === "security" && (
-                        <figure className='flex flex-col gap-4 py-4 w-full'>
-                            <h2 className="text-2xl font-bold text-sky-700 pb-3 border-b border-slate-200">Basic Information</h2>
-                            <form action="" className="flex flex-col gap-4 py-4 px-2 md:px-4">
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Organization Name:</h4>
-                                    <div className="flex-1 flex flex-col md:flex-row gap-2">
-                                        <input type='text' placeholder={`Organization Name e.g. C-STEMP Limited`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Contact Person:</h4>
-                                    <input type='text' placeholder={`Contact Person e.g. Joana Bishop`} pattern='[A-Z][a-z]\s[A-Z][a-z]+' required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3 capitalize' />
-                                </div>
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Type of Construction Work:</h4>
-                                    <input type='text' placeholder={`Construction Type e.g. Plumbing`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
-                                </div>
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Designation:</h4>
-                                    <input type='text' placeholder={`Designation`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
-                                </div>
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Phone Number:</h4>
-                                    <div className="flex-1 flex gap-2 relative">
-                                        <div className="bg-slate-200 text-slate-500 text-base grid place-items-center px-4">+234</div>
-                                        <input type='text' placeholder={`e.g. 7089237612`} pattern='[0-9]${10}' required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Email:</h4>
-                                    <input type='email' placeholder={`someone@email.com`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
-                                </div>
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Business Address:</h4>
-                                    <input type='text' placeholder={`Address`} required className='flex-1 border border-slate-300 bg-white rounded-sm text-base p-3' />
-                                </div>
-                                <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-                                    <h4 className="w-[10rem] lg:w-full text-base text-text font-semibold">Type of Construction Work:</h4>
-                                    <div className="flex-1 grid grid-cols-2 flex-wrap gap-2 relative">
-                                        <label htmlFor="residential" className='cursor-pointer flex items-center gap-3 border border-slate-300 bg-white rounded-sm text-base p-3'>
-                                            <input type="radio" name="construction-type" id="residential" /> Residential
-                                        </label>
-                                        <label htmlFor="commercial" className='cursor-pointer flex items-center gap-3 border border-slate-300 bg-white rounded-sm text-base p-3'>
-                                            <input type="radio" name="construction-type" id="commercial" /> Commercial
-                                        </label>
-                                        <label htmlFor="infrastructure" className='cursor-pointer flex items-center gap-3 border border-slate-300 bg-white rounded-sm text-base p-3'>
-                                            <input type="radio" name="construction-type" id="infrastructure" /> Infrastructure
-                                        </label>
-                                        <label htmlFor="others" className='cursor-pointer flex items-center md:gap-3 flex-wrap border border-slate-300 bg-white rounded-sm text-base p-3'>
-                                            Others: <input type="text" name="construction-type" id="others" className='flex-1 border-b border-b-slate-300' />
-                                        </label>
-                                    </div>
-                                </div>
-                                <div className="flex justify-end gap-4">
-                                    <button className="button bg-secondary font-semibold">Save & Next</button>
-                                </div>
-                            </form>
-                        </figure>)
-                }
-                {
-                    activeForm === "candidates" && (
-                        <figure className='flex flex-col gap-4 py-4 w-full'>
-                            <h2 className="text-2xl font-bold text-sky-700 pb-3 border-b border-slate-200">Enter Candidates Information</h2>
-                            <form action="" className="flex flex-col gap-4 py-4 px-2 md:px-4 min-w-[30rem] max-w-[60rem] overflow-x-scroll">
-                                <table className='w-full'>
-                                    <thead className='border border-slate-300 bg-slate-200'>
-                                        <tr>
-                                            <th className='p-1 px-4 text-nowrap'>S/N</th>
-                                            <th className='p-1 px-4 text-nowrap'>Name of Artisan</th>
-                                            <th className='p-1 px-4'><div className="flex flex-col items-center">Trade/Skill <span className='text-xs font-light text-nowrap'>(e.g. Masonry, Plumbing)</span></div></th>
-                                            <th className='p-1 px-4'><div className="flex flex-col items-center">Sex <span className='text-xs font-light text-nowrap'>(M/F)</span></div></th>
-                                            <th className='p-1 px-4'>Age</th>
-                                            <th className='p-1 px-4'>Years of <br /> Experience</th>
-                                            <th className='p-1 px-4 text-nowrap'>Phone Number</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className='divide-y divide-slate-200 text-center'>
-                                        <tr>
-                                            <td>1</td>
-                                            <td><input required type="text" id='fullname1' placeholder="e.g. Sunday Someone" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input required type="text" id='trade1' placeholder="e.g. Plumbing" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input required type="text" id='sex1' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input required type="text" id='age1' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input required type="text" id='experience1' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input required type="text" id='phone1' className="flex-1 p-2 border border-slate-200" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td><input type="text" id='fullname2' placeholder="e.g. David Someone" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='trade2' placeholder="e.g. Masonry" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='sex2' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='age2' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='experience2' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='phone2' className="flex-1 p-2 border border-slate-200" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td><input type="text" id='fullname3' placeholder="e.g. Angela Someone" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='trade3' placeholder="e.g. Masonry" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='sex3' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='age3' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='experience3' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='phone3' className="flex-1 p-2 border border-slate-200" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td><input type="text" id='fullname4' placeholder="e.g. Rita Someone" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='trade4' placeholder="e.g. Plumbing" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='sex4' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='age4' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='experience4' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='phone4' className="flex-1 p-2 border border-slate-200" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td><input type="text" id='fullname5' placeholder="e.g. Felicia Someone" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='trade5' placeholder="e.g. Tiling" className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='sex5' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='age5' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='experience5' className="flex-1 p-2 border border-slate-200" /></td>
-                                            <td><input type="text" id='phone5' className="flex-1 p-2 border border-slate-200" /></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div className="flex justify-end gap-4">
-                                    <button className="button bg-secondary font-semibold">Save & Preview</button>
-                                </div>
-                            </form>
-                        </figure>)
-                }
-            </aside>
-        </div>
-    </section>
-</main>
-    */

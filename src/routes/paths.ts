@@ -37,6 +37,9 @@ export const publicRoutes = {
     contact: "/contact",
     donation: "/donation",
     search: "/search",
+    error: "/error",
+    privacyPolicy: "/privacy-policy",
+    termsAndConditions: "/terms-and-conditions",
 }
 /**
  * App Route Paths

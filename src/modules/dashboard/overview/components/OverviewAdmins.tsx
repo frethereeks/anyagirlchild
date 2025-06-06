@@ -1,14 +1,13 @@
-"use client"
+// "use client"
 import { Table } from 'antd'
 import React from 'react'
 import { ADMIN_COLUMN } from '../../admins/columns'
 import Link from 'next/link'
 import { appRoutePaths } from '@/routes/paths'
 import { IoChevronForward } from 'react-icons/io5'
-import { adminData } from '@/data'
+import { TAdminProps } from '@/types'
 
-export default function OverviewDonations() {
-
+export default function OverviewDonations({ adminData }: { adminData: TAdminProps[] }) {
   return (
     <aside className="card p-4 flex flex-col gap-4 text-text min-w-52 overflow-x-scroll">
       <Table

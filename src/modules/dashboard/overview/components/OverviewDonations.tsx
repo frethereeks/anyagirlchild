@@ -1,15 +1,14 @@
-"use client"
-
+// "use client"
 import { Table } from 'antd'
 import React from 'react'
 import Link from 'next/link'
 import { appRoutePaths } from '@/routes/paths'
 import { IoChevronForward } from 'react-icons/io5'
 import { DONATION_COLUMN } from '../../donations/columns'
-import { donationData } from '@/data'
+import { TDonationProps } from '@/types'
 
-export default function OverviewDonations() {
-
+export default function OverviewDonations({ donationData }: { donationData: TDonationProps[] }) {
+    console.log({donationData})
     return (
         <aside className="card p-4 flex flex-col gap-4 text-text min-w-52">
             <Table

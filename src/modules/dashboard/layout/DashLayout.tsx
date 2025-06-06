@@ -1,8 +1,8 @@
 "use client"
 import React, { useState } from 'react'
-import { Flex, Layout } from 'antd'
+import { Flex, Layout, notification } from 'antd'
 import Link from 'next/link'
-import { LuMenu, LuText } from 'react-icons/lu'
+import { LuMenu } from 'react-icons/lu'
 import { GrLogout } from "react-icons/gr";
 import Footer from './Footer'
 import { sideBarLinks } from '@/data/sideBarLinks'
@@ -15,6 +15,7 @@ const { Content, Header, Sider } = Layout
 export default function DashLayout({ children, image }: { children: React.ReactNode, image: React.ReactNode }) {
     const [openSideBar, setOpenSidebar] = useState<boolean>(true)
     const pathname = usePathname()
+    const [loading, setLoading]= useState<boolean>(false)
 
     const siderStyle: React.CSSProperties = {
         overflow: 'auto',
@@ -27,10 +28,20 @@ export default function DashLayout({ children, image }: { children: React.ReactN
         scrollbarGutter: 'stable',
     };
 
-    const handleLogout = (e: React.MouseEvent) => {
+    const handleLogout = async (e: React.MouseEvent) => {
         e.preventDefault()
-        signOut({ callbackUrl: appRoutePaths.signin })
-        redirect(appRoutePaths.home)
+        setLoading(true)
+        try{
+            notification.info({message: 'Trying to log you out...', key: "123"})
+            await signOut({ callbackUrl: appRoutePaths.signin })
+            redirect(appRoutePaths.home)
+        }
+        catch (error) {
+            notification.error({message: 'Unable to perform the logout operation. Please, check your network and try again', key: "123"})
+        }
+        finally {
+            setLoading(false)
+        }
     }
 
     return (
@@ -50,10 +61,10 @@ export default function DashLayout({ children, image }: { children: React.ReactN
                 >
                     <div className="bg-white flex justify-between items-center gap-8 w-full pl-3 lg:pl-4 py-4">
                         <div className="flex lg:justify-center items-center flex-shrink-0 relative -mt-2">
-                            <Link href={appRoutePaths.home} className='text-danger text-lg md:text-xl -tracking-[.15rem] font-black font-mulish leading-none uppercase'>Anyagirlchild <span className='bg-secondary text-white grid place-items-center text-xs w-max text-center tracking-[.22rem] lg:tracking-[.3rem] uppercase -my-1 lg:-my-1 pl-1.5 md:pl-2.5'>FOUNDATION</span></Link>
+                            <Link href={appRoutePaths.home} className='text-danger hover:text-danger text-lg md:text-xl -tracking-[.15rem] font-black font-mulish leading-none uppercase'>Anyagirlchild <span className='bg-secondary text-white grid place-items-center text-xs w-max text-center tracking-[.22rem] lg:tracking-[.3rem] uppercase -my-1 lg:-my-1 pl-1.5 md:pl-2.5'>FOUNDATION</span></Link>
                         </div>
                         <div className="flex items-center gap-2">
-                            {image}
+                            <Link href={appRoutePaths.adminsettings}>{image}</Link>
                             <button onClick={() => setOpenSidebar(prev => !prev)} className={`group py-2 px-2 bg-secondary hover:bg-secondary/80 text-white text-lg rounded-md ml-auto mx-4`}>
                                 <LuMenu className={`${openSideBar ? 'scale-100' : '-scale-100'}`} />
                             </button>

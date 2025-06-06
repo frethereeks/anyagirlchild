@@ -1,18 +1,45 @@
 "use client"
 import React, { useState } from 'react'
-import Link from 'next/link'
-import { appRoutePaths } from '@/routes/paths'
 import { FaList } from "react-icons/fa6";
 import { FiGrid } from "react-icons/fi";
-import { BlogGrid, BlogList } from './components'
+import { AddBlogForm, BlogGrid, BlogList } from './components'
 import { GrArticle } from 'react-icons/gr'
+import { Modal } from 'antd';
+import { useAppDispatch, useAppSelector } from '@/lib/features/hooks';
+import { triggerModal } from '@/lib/features/reducers/siteSlice';
+import { $Enums } from '@prisma/client';
+import { TBlogItemProp } from '@/types';
 
+type TPageProps = {
+  data: TBlogItemProp[] | undefined
+  role: $Enums.Role
+}
 
-export default function BlogContainer() {
+export default function BlogContainer({ data, role }: TPageProps) {
   const [viewType, setViewType] = useState<"grid" | "list">("grid")
+  const [open, setOpen] = useState<boolean>(false)
+  const [selectedData, setSelectedData] = useState<TBlogItemProp | undefined>(undefined)
+  const site = useAppSelector(state => state.site)
+  const dispatch = useAppDispatch()
+
+  React.useEffect(() => {
+    if (site.selectedId) {
+      setSelectedData(data?.find(el => el.id === site.selectedId))
+    }
+    // eslint-disable-next-line
+  }, [site.selectedId, dispatch])
 
   return (
     <>
+      <Modal
+        open={site.openModal}
+        footer={<></>}
+        onCancel={() => dispatch(triggerModal({ id: undefined, open: false }))}
+        afterClose={() => setSelectedData(undefined)}
+        className='min-w-48 md:min-w-96'
+      >
+        <AddBlogForm data={selectedData} />
+      </Modal>
       <section className="flex flex-col gap-4">
         <aside className="card">
           <div className='flex justify-between items-center gap-4 text-text'>
@@ -27,14 +54,14 @@ export default function BlogContainer() {
                 </figure>
               </div>
             </div>
-            <Link href={appRoutePaths.adminblogs} className='py-1.5 px-4 rounded-md bg-danger hover:bg-danger text-white text-xs flex items-center gap-2'><GrArticle /> New Post</Link>
+            <button onClick={() => dispatch(triggerModal({ id: undefined, open: true }))} className='py-1.5 px-4 rounded-md bg-danger hover:bg-danger text-white text-xs flex items-center gap-2'><GrArticle /> New Post</button>
           </div>
         </aside>
         {
           viewType === "grid" ?
-            <BlogGrid />
+            <BlogGrid data={data} role={role} />
             :
-            <BlogList />
+            <BlogList data={data} role={role} />
         }
       </section>
     </>

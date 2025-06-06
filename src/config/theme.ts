@@ -44,7 +44,10 @@ export const appThemeConfig: ThemeConfig = {
             rowSelectedHoverBg: THEME_COLOR["background"],
             fontFamily: "arial",
             fontSize: 14,
-            cellPaddingInline: 4,
+            cellPaddingInline: 15,
+            cellPaddingBlock: 0,
+            paddingContentHorizontal: 10,
+            padding: 0
         },
         Button: {
             primaryColor: THEME_COLOR.background,

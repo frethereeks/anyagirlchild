@@ -1,9 +1,12 @@
+import { handleTokenVerification } from '@/app/action'
 import { ASSET_URL } from '@/assets'
 import { PBVerifyContainer } from '@/modules/public/pbauth'
 import { appRoutePaths } from '@/routes/paths'
+import { notification } from 'antd'
 import { Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { IoCaretBack } from 'react-icons/io5'
 
@@ -19,22 +22,32 @@ type PageProps = {
     }
 }
 
-const fetchUserViaToken = (email?: string, token?: string) => {
+const fetchUserViaToken = async (email?: string, token?: string) => {
+    const router = useRouter()
     if (!email || !token) return undefined;
-    if (email === "angelamonroe@gmail.com" && token === "John123$") {
-        return { id: "8xx406234adsr234", fullname: "Angela Monroe", email: "angelamonroe@gmail.com",  };
+    notification.info({ message: 'Please wait while we send a reset link to your email', key: "123" })
+    try {
+        // const email = resetEmailRef?.current?.value as string
+        const res = await handleTokenVerification(email, token)
+        if (res?.error) notification.error({ message: res.message, key: "123" })
+        else {
+            notification.success({ message: res.message, key: "123" })
+            router.replace(appRoutePaths.signin)
+        }
+    } catch (error) {
+        notification.error({ message: 'Unable to complete request, please, check your network and try again', key: "123" })
     }
-    else return undefined;
 }
 
 export default async function PBVerifyPage({ searchParams: { email, token } }: PageProps) {
     const data = await fetchUserViaToken(email, token);
+
     if (!data) {
         return (
             <main className='flex flex-col md:flex-row gap-4 lg:gap-8 md:h-full'>
-                  <section className="container mx-auto flex flex-col lg:flex-row gap-4 md:h-full">
+                <section className="container mx-auto flex flex-col lg:flex-row gap-4 md:h-full">
                     <aside className="p-4 flex-1 hidden lg:flex flex-col gap-8 w-full lg:max-w-[40rem] py-40 relative bg-primary">
-                      <Image src={ASSET_URL["alms_donation"]} alt='alms_donation' className='object-cover object-top opacity-85' fill />
+                        <Image src={ASSET_URL["alms_donation"]} alt='alms_donation' className='object-cover object-top opacity-85' fill />
                     </aside>
                     <aside className='flex-1 md:px-20 flex flex-col gap-8 py-10 md:py-40'>
                         <div
@@ -42,7 +55,7 @@ export default async function PBVerifyPage({ searchParams: { email, token } }: P
                         >
                             <div className="flex flex-col gap-1 py-4">
                                 <h4 className="text-text text-xl md:text-3xl font-bold text-nowrap">Invalid Token or Email Detected!</h4>
-                                <p style={{lineHeight: 1.8}} className="text-sm md:text-base text-text leading-loose">
+                                <p style={{ lineHeight: 1.8 }} className="text-sm md:text-base text-text leading-loose">
                                     Oh no! It looks like your email and token are no longer valid. <Link href={`${appRoutePaths.signin}?view=reset`} className='inline px-2 text-secondary text-nowrap font-medium border-b-[1.5px] border-dotted border-slate-400'>Click here</Link> to request a new password reset.
                                 </p>
                             </div>
@@ -56,14 +69,16 @@ export default async function PBVerifyPage({ searchParams: { email, token } }: P
             </main>
         )
     }
+    // else {
     return (
         <main className='flex flex-col md:flex-row gap-4 lg:gap-8 md:h-full'>
-              <section className="container mx-auto flex flex-col lg:flex-row gap-4 md:h-full">
+            <section className="container mx-auto flex flex-col lg:flex-row gap-4 md:h-full">
                 <aside className="p-4 flex-1 hidden lg:flex flex-col gap-8 w-full lg:max-w-[40rem] py-40 relative bg-primary">
-                  <Image src={ASSET_URL["alms_donation"]} alt='alms_donation' className='object-cover object-top opacity-85' fill />
+                    <Image src={ASSET_URL["alms_donation"]} alt='alms_donation' className='object-cover object-top opacity-85' fill />
                 </aside>
                 <PBVerifyContainer data={data} />
             </section>
         </main>
     )
+    // }
 }

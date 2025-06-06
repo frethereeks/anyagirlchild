@@ -1,29 +1,113 @@
 "use client"
-import { Form, Input, InputNumber } from 'antd'
+import { createDonation } from '@/app/action'
+import { ASSET_URL } from '@/assets'
+import { config } from '@/config'
+import { TDonationProps } from '@/types'
+import { Form, Input, InputNumber, notification } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import TextArea from 'antd/es/input/TextArea'
-import React, { useState } from 'react'
-import toast from 'react-hot-toast'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+import React, { useRef, useState } from 'react'
+import { usePaystackPayment } from 'react-paystack';
+import { PaystackProps } from 'react-paystack/dist/types'
+
+type TDonationData = Pick<TDonationProps, "id" | "fullname" |  "email" |  "amount" | "currency" | "message"> & {
+  reference: string;
+}
 
 export default function PBDonationContainer() {
-  const [form] = useForm<TDonationProps>()
+  const [form] = useForm<TDonationData>()
   const [loading, setLoading] = useState<boolean>(false)
+  const currencyRef = useRef<HTMLSelectElement | null>(null)
+  const router = useRouter()
+  const [inputs, setInputs] = useState<TDonationData>({ id: "", fullname: "", email: "", amount: 0, currency: "", message: "", reference: "" })
 
-  const handleSubmit = async (data: TDonationProps) => {
-    const { fullname, amount, purpose } = data
-    setLoading(true)
-    toast.loading(`Processing your request. Please wait...`, {id: "123"})
-    try {
-      console.log('data', { fullname, amount, purpose })
-      toast.success(`Your donation of $${amount} was successful`, {id: "123"})
-      form.resetFields()
-    } catch (error) {
-
+  const configData: PaystackProps = {
+    reference: 'AGCF' + (new Date()).getTime().toString(),
+    email: inputs?.email || "",
+    currency: "USD",
+    amount: +(inputs?.amount || 0) * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
+    publicKey: config.NEXT_PUBLIC_PAYSTACK_KEY,
+    label: `A donation from ${inputs?.fullname || ""} worth ${inputs?.currency || ""}${inputs?.amount || 0}`,
+    metadata: {
+      custom_fields: [
+        { display_name: "Anyagirlchild Foundation", value: 0, variable_name: "AnyaGirlChild NGO" }
+      ]
     }
-    finally {
+  };
+
+  const onSuccess = async (reference: string) => {
+    // Implementation for whatever you want to do with reference and after success call.
+    // setInputs(prev => ({ ...prev, reference }))
+    const updatedInputs = {...inputs, reference} as unknown as TDonationData
+    setInputs(updatedInputs)
+    
+    const formData = new FormData()
+    Object.entries(inputs!).map(([key, value]) => {
+      formData.append(key, value as string)
+    })
+
+    try {
+      const res = await createDonation(formData)
+      console.log({ message: res.message })
+      if (res?.error) notification.error({ message: res?.message, key: "123" })
+      else {
+        notification.success({ message: res?.message, key: "123" })
+        router.refresh()
+        form.resetFields()
+      }
+    } catch (error) {
+      notification.error({ message: `Something went wrong. Please check your internet connection and try again.`, key: "123" })
+    } finally {
+      setLoading(false)
+      }
+    console.log(reference);
+  };
+
+  const onClose = () => {
+    // implementation for  whatever you want to do when the Paystack dialog closed.
+    notification.error({message: "Payment has been cancelled", key: "123"})
+    setLoading(false)
+  }
+
+  const initializePayment = usePaystackPayment(configData);
+
+  const handleSubmit = async (values: TDonationData) => {
+    notification.info({ message: `Please wait while your request is being processed...`, key: "123" })
+    setLoading(true)
+    try {
+      const formData = new FormData()
+      const updatedInputs: Record<string, string> = {}
+      Object.entries(values).map(([key, value]) => {
+        if (key === "currency") return false;
+        formData.append(key, value as string)
+        updatedInputs[key] = value as string;
+      })
+      formData.append("currency", currencyRef?.current?.value as string)
+      updatedInputs.currency = currencyRef?.current?.value as string;
+      const newInputs = {...updatedInputs} as unknown as TDonationData
+      setInputs(newInputs)
+
+      console.log({newInputs, inputs, configData})
+      initializePayment({
+        onSuccess, onClose, config: {
+          ...newInputs,
+          channels: ["card", "qr", "bank_transfer"],
+          currency: newInputs.currency,
+          amount: newInputs.amount * 100,
+          firstname: values.fullname.split(" ")[0],
+          lastname: values.fullname.split(" ")[1],
+          phone: "08166075406",
+          // label: "Anyagirlchild Foundation",
+          label: `A donation from ${newInputs?.fullname || ""} worth ${newInputs?.currency || ""}${newInputs?.amount || 0}`,
+      }})
+    } catch (error) {
+      console.log({ error })
+      notification.error({ message: `Something went wrong. Please check your internet connection and try again.`, key: "123" })
+    } finally {
       setLoading(false)
     }
-    return false;
   }
 
 
@@ -35,31 +119,66 @@ export default function PBDonationContainer() {
         className='flex flex-col gap-0'
       >
         <div className="flex flex-col gap-1 py-4">
-          <h4 className="text-text text-xl md:text-3xl font-semibold">Any giver is a <span className="font-extrabold text-secondary">Saver!</span></h4>
+          <h4 className="text-text text-3xl md:text-3xl font-semibold">Any giver is a <span className="font-extrabold text-secondary">Saver!</span></h4>
           <p className="text-sm md:text-base text-text">Thank you for this act of kindness and generosity.</p>
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="fullname" className="w-full text-sm md:text-base text-text/70 font-medium">Fullname:</label>
-          <Form.Item<TDonationProps> name="fullname" id="fullname">
+          <Form.Item<TDonationData> name="fullname" id="fullname">
             <Input type='text' className='text-text/70 capitalize' placeholder='Jonathan Daniel' required style={{ background: "transparent" }} />
           </Form.Item>
         </div>
         <div className="flex flex-col gap-1 -mt-3">
-          <label htmlFor="amount" className="w-full text-sm md:text-base text-text/70 font-medium">Amount:</label>
-          <Form.Item<TDonationProps> name="amount" id="amount">
-            <InputNumber type='number' className='text-text/70 w-full' placeholder='Starting from 1000' min={1000} required style={{ background: "transparent", width: "100%" }} />
+          <label htmlFor="email" className="w-full text-sm md:text-base text-text/70 font-medium">Email:</label>
+          <Form.Item<TDonationData> name="email" id="email">
+            <Input type='email' className='text-text/70 w-full' placeholder='Emails (send successful notification to the sender)' min={1000} required style={{ background: "transparent", width: "100%" }} />
           </Form.Item>
+        </div>
+        <div className="flex flex-col gap-1 -mt-3">
+          <label htmlFor="amount" className="w-full text-sm md:text-base text-text/70 font-medium">Amount:</label>
+          <div className="flex gap-1">
+            <Form.Item<TDonationData> name="currency" id="currency">
+              <select ref={currencyRef} name="status" id="status" className="border border-text/50 rounded-md text-xs text-text w-max py-2 px-4 bg-white">
+                {
+                  [
+                    { id: "x023498zse420", name: "NGN",  code: "&#8358;", symbol: "₦" },
+                    // { id: "x023498zse421", name: "GBP",  code: "&#163;", symbol: "£" },
+                    // { id: "x023498zse422", name: "EUR", code: "&#8364;", symbol: "€" },
+                    { id: "x023498zse423", name: "USD",  code: "&#36;", symbol: "$" },
+                  ].map(({ id, name, symbol }) => (
+                    <option key={id} value={name} className="text-sm md:text-lg text-text font-semibold bg-white px-4">{symbol}</option>
+                  ))
+                }
+              </select>
+            </Form.Item>
+            <Form.Item<TDonationData> name="amount" id="amount" className='flex-1'>
+              <InputNumber type='number' className='text-text/70 w-full' placeholder='Starting from 1000' min={100} required style={{ background: "transparent", width: "100%" }} />
+            </Form.Item>
+          </div>
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="message" className="w-full text-sm md:text-base text-text/70 font-medium">Purpose (Optional):</label>
-          <Form.Item<TDonationProps> name="purpose" id="purpose" noStyle>
+          <Form.Item<TDonationData> name="message" id="message" noStyle>
             <TextArea className='' rows={5} placeholder='Not mandatory but if you have a specific purpose you prefer the donation channeled into. Feel free to state it. Thanks.' required style={{ background: "transparent" }} />
           </Form.Item>
         </div>
         <div className="flex flex-col gap-4 pt-4">
           <button disabled={loading} type='submit' className='button bg-secondary'>{loading ? 'Processing...' : 'Donate'}</button>
         </div>
-        {/* <p className="text-xs md:text-sm text-text text-center pb-4">We&apos;ll get back to you in 1-2 business days</p> */}
+        <div className="flex flex-col gap-1 p-2 pt-4">
+        <p className="text-xs md:text-sm text-text text-center">Secure with</p>
+          <div className="flex items-center justify-center gap-2">
+            <div className="relative h-6 w-[40px]">
+              <Image src={ASSET_URL['payment_key'].src} alt="payment_key" className="w-full" fill/>
+            </div>
+            <div className="relative h-6 w-[40px]">
+              <Image src={ASSET_URL['payment_master_card'].src} alt="payment_master_card" className="w-full" fill/>
+            </div>
+            <div className="relative h-6 w-[50px]">
+              <Image src={ASSET_URL['payment_secure'].src} alt="payment_secure" className="w-full" fill/>
+            </div>
+          </div>
+        </div>
       </Form>
     </aside>
   )

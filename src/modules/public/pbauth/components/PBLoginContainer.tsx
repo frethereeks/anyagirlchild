@@ -1,46 +1,70 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { appRoutePaths } from '@/routes/paths'
-import { Form, Input } from 'antd'
+import { Form, Input, notification } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import Link from 'next/link'
-import { IoArrowBackOutline, IoCaretBack } from 'react-icons/io5'
-import { FaArrowLeft } from 'react-icons/fa6'
-import { LuArrowLeft } from 'react-icons/lu'
+import { IoCaretBack } from 'react-icons/io5'
+import { TAuthProps } from '@/types'
+import { useRouter } from 'next/navigation'
+import { signIn, useSession } from 'next-auth/react'
+import { handleReset } from '@/app/action'
 
-export default function PBLoginContainer({ viewReset }: { viewReset: boolean}) {
+export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) {
     const [form] = useForm<TAuthProps>()
     const [resetForm] = useForm<TAuthProps>()
     const [showResetForm, setShowResetForm] = useState<boolean>(false)
-
     const [loading, setLoading] = useState<boolean>(false)
+    const router = useRouter()
+    const { status } = useSession()
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            router.refresh()
+            router.push(appRoutePaths.admindashboard, { scroll: false })
+        }
+        //eslint-disable-next-line
+    }, [status])
 
     const handleSubmit = async (data: TAuthProps) => {
         setLoading(true)
+        notification.info({ message: `Please wait while we attempt to log you in`, key: "123" })
         try {
-            console.log('data', data)
-
+            const res = await signIn('credentials', { email: data.email, password: data.password, redirect: false, callbackUrl: appRoutePaths.admindashboard})
+            // const res = await signIn('credentials', { email: data.email, password: data.password, redirect: false, callbackUrl: appRoutePaths.admindashboard })
+            if (res?.ok) {
+                notification.success({ message: `Welcome Back Esteem User.\nYou will be redirected in a few seconds`, key: "123" })
+                router.refresh()
+            }
+            else {
+                if (res?.error === "CredentialsSignin") notification.error({ message: "Invalid credentials supplied, please, try again", key: "123" })
+                else notification.error({ message: res?.error || "Invalid credentials supplied, please, try again", key: "123" })
+            }
         } catch (error) {
-
-        }
-        finally {
+            notification.error({ message: `Something went wrong. Due to ${error}`, key: "123" })
+        } finally {
             setLoading(false)
         }
-        return false;
     }
-   
+
+
     const handleResetSubmit = async (data: TAuthProps) => {
+        notification.info({ message: 'Please wait while we send a reset link to your email', key: "123" })
         setLoading(true)
         try {
-            console.log('data', data)
-
+            // const email = resetEmailRef?.current?.value as string
+            const res = await handleReset(data.email)
+            if (res?.error) notification.error({ message: res.message, key: "123" })
+            else {
+                notification.success({ message: res.message, key: "123" })
+                router.refresh()
+            }
         } catch (error) {
-
+            notification.error({ message: 'Unable to complete request, please, check your network and try again', key: "123" })
         }
         finally {
             setLoading(false)
         }
-        return false;
     }
 
     return (

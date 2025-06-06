@@ -1,10 +1,13 @@
 "use client"
 import React, { useState } from 'react'
 import { appRoutePaths } from '@/routes/paths'
-import { Form, Input } from 'antd'
+import { Form, Input, notification } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import Link from 'next/link'
 import { FaArrowLeft } from 'react-icons/fa6'
+import { TAuthProps } from '@/types'
+import { useRouter } from 'next/navigation'
+import { handlePasswordReset } from '@/app/action'
 
 type TPageProps = {
   data: {
@@ -16,16 +19,23 @@ type TPageProps = {
 
 export default function PBVerifyContainer({ data }: TPageProps) {
   const [form] = useForm<TAuthProps>()
-
   const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter()
+
 
   const handleSubmit = async (data: TAuthProps) => {
+    notification.info({ message: 'Please wait while we send a reset link to your email', key: "123" })
     setLoading(true)
     try {
-      console.log('data', data)
-
+      // const email = resetEmailRef?.current?.value as string
+      const res = await handlePasswordReset({ email: data.email, password: data.password })
+      if (res?.error) notification.error({ message: res.message, key: "123" })
+      else {
+        notification.success({ message: res.message, key: "123" })
+        router.refresh()
+      }
     } catch (error) {
-
+      notification.error({ message: 'Unable to complete request, please, check your network and try again', key: "123" })
     }
     finally {
       setLoading(false)
@@ -58,7 +68,7 @@ export default function PBVerifyContainer({ data }: TPageProps) {
           </div>
           <div className="flex flex-col sm:flex-row justify-between gap-4">
             <Link href={appRoutePaths.signin} className='flex items-center  gap-1 text-text text-xs sm:text-sm font-medium'>Think you are here by error? <span className="font-bold text-secondary">Login</span></Link>
-            <button disabled={loading} type='submit' className='button bg-secondary'>{loading ? 'Processing...' : 'Save'}</button>
+            <button disabled={loading} type='submit' className='button py-1.5 px-4 bg-secondary'>{loading ? 'Processing...' : 'Save'}</button>
           </div>
         </Form>
       </aside>

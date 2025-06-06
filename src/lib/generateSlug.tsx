@@ -2,7 +2,7 @@
 export const generateSlug = (name: string): string => {
   // const string = name.toLowerCase().replace("/[^a-z0-9]+/g", "-")
   // return string.toLowerCase().replaceAll(" ", "-")
-  let slug = name.toLowerCase();
+  let slug = name.trim().toLowerCase();
 
   // Remove special characters (keeping letters, numbers, and spaces)
   slug = slug.replace(/[^a-z0-9\s-]/g, '');

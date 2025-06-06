@@ -41,9 +41,9 @@ export default function PBHeader() {
     <header ref={headerRef} className={`${fixed ? "fixed backdrop-blur-sm" : "sticky"} flex flex-col py-2 px-4 w-full top-0 left-0 z-[990] ${fixed || navShow ? 'bg-white shadow-md shadow-primary/10' : 'bg-transparent'}`}>
       <div className="container w-full mx-auto flex flex-row gap-2 sm:gap-3 items-center sm:justify-between">
         <Link href="/" className="flex items-center py-2 gap-2">
-          <div className="h-10 w-10 flex justify-center items-center rounded-md overflow-hidden relative bg-primary flex-shrink-0">
+          <div className="h-7 w-7 flex justify-center items-center rounded-md overflow-hidden relative bg-backdrop flex-shrink-0">
             {/* <IoFileTrayStackedSharp key={82346} className="text-sm text-white" /> */}
-            <Image src={ASSET_URL["wallet"]} alt='AnyaGirlchild Logo' fill={true} className='object-cover flex-shrink-0' />
+            <Image src={ASSET_URL["anya_girlchild_logo"]} alt='AnyaGirlchild Logo' fill={true} className='object-cover flex-shrink-0' />
           </div>
           <div className="flex">
             <h1 className={`${fixed ? 'text-primary' : 'text-primary'} text-xl sm:text-2xl w-max font-extrabold uppercase tracking-tight flex items-center`}>Anya<p className={`tracking-normal text-danger`}>GirlChild</p></h1>

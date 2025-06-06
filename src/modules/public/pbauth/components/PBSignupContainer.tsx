@@ -1,33 +1,46 @@
 "use client"
+import { createUser } from '@/app/action'
 import { appRoutePaths } from '@/routes/paths'
-import { Form, Input } from 'antd'
+import { TAuthProps } from '@/types'
+import { Form, Input, notification } from 'antd'
 import { Rule } from 'antd/es/form'
 import { useForm } from 'antd/es/form/Form'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import toast from 'react-hot-toast'
 
 export default function PBSignupContainer() {
     const [form] = useForm<TAuthProps>()
     const [loading, setLoading] = useState<boolean>(false)
+    const router = useRouter()
 
     const handleSubmit = async (data: TAuthProps) => {
-        const { fullname, email, password, confPassword } = data
+        const { password, confPassword } = data
         if (password !== confPassword) {
-            toast.error(`Passwords do NOT match`)
+            notification.error({ message: `Passwords do NOT match`, key: "123" })
             return false;
         }
         setLoading(true)
         try {
-            console.log('data', data)
-            
+            const formData = new FormData()
+            Object.entries(data).map(([key, value]) => {
+                formData.append(key, value)
+            })
+            const res = await createUser(formData)
+            if (res?.error) {
+                notification.error({ message: res?.message, key: "123" })
+            }
+            else {
+                notification.success({ message: res?.message, key: "123" })
+                router.replace(appRoutePaths.signin)
+            }
         } catch (error) {
-            
+            console.log('error')
+            notification.error({message: "Something went wrong. Please, check your internet connection and try again", key: "123"})
         }
         finally {
             setLoading(false)
         }
-        return false;
     }
 
     const validatePass = (): Rule => ({
@@ -55,9 +68,15 @@ export default function PBSignupContainer() {
                     <p className="text-sm md:text-base text-text">Fill out the form to get started.</p>
                 </div>
                 <div className="flex flex-col gap-1">
-                    <label htmlFor="fullname" className="w-full text-sm md:text-base text-text/70 font-medium">Fullname:</label>
-                    <Form.Item<TAuthProps> name="fullname" id="fullname">
-                        <Input type='text' className='text-text/70 capitalize' placeholder='Uche Daniel' required style={{ background: "transparent" }} />
+                    <label htmlFor="firstname" className="w-full text-sm md:text-base text-text/70 font-medium">First Name:</label>
+                    <Form.Item<TAuthProps> name="firstname" id="firstname">
+                        <Input type='text' className='text-text/70 capitalize' placeholder='Uche' required style={{ background: "transparent" }} />
+                    </Form.Item>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label htmlFor="lastname" className="w-full text-sm md:text-base text-text/70 font-medium">Last Name:</label>
+                    <Form.Item<TAuthProps> name="lastname" id="lastname">
+                        <Input type='text' className='text-text/70 capitalize' placeholder='Daniel' required style={{ background: "transparent" }} />
                     </Form.Item>
                 </div>
                 <div className="flex flex-col gap-1 -mt-3">

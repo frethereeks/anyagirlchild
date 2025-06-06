@@ -1,12 +1,37 @@
 import { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-// import { User } from '@prisma/client';
+import { $Enums, User as MainUser } from '@prisma/client';
 import jwt from "jsonwebtoken"
-// import { authenticateByRole } from './authByRole';
-// import { fetchUser } from '@/actions';
 import { appRoutePaths } from '@/routes/paths';
 import prisma from '@/lib/prisma';
 import bcryptjs from "bcryptjs"
+import { TAuthUser } from '@/types';
+import { DefaultSession, User } from "next-auth"
+// import { JWT } from "next-auth/jwt"
+
+export type ExtendedUser = User & {
+    role: $Enums.Role
+    id: string
+} & DefaultSession['user'];
+
+declare module "next-auth/jwt" {
+    interface JWT {
+        role: $Enums.Role
+        id: string
+    }
+}
+
+declare module "next-auth" {
+    interface Session {
+        user: ExtendedUser
+    }
+}
+
+// declare module "next-auth" {
+//     interface Session {
+//         user: ExtendedUser & DefaultSession["user"]
+//     }
+// }
 
 export const authOptions: NextAuthOptions = {
     debug: true,
@@ -28,6 +53,7 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials) {
                 if (!credentials) return null;
                 const { email, password } = credentials;
+                console.log({email, password})
                 const user = await prisma.user.findFirst({ where: { email: email.toLowerCase() } })
                 if (!user) return null
                 const matchPassword = await bcryptjs.compare(password, user.password)
@@ -38,16 +64,17 @@ export const authOptions: NextAuthOptions = {
                 else if (user.status === "SUSPENDED") {
                     throw new Error("Oh No! Your account has been suspended. If you believe this is an error, contact the admin")
                 }
-                return user
+                return user as User
             },
         })
     ],
     pages: {
         signIn: appRoutePaths.signin,
-        error: appRoutePaths.home,
+        error: appRoutePaths.signin,
         signOut: appRoutePaths.logout,
     },
     secret: process.env.JWT,
+    useSecureCookies: process.env.NODE_ENV === "production",
     jwt: {
         async encode({ secret, token }) {
             if (!token) throw new Error("No token to encode")
@@ -73,30 +100,28 @@ export const authOptions: NextAuthOptions = {
                 ...session,
                 user: {
                     ...session.user,
-                    id: token.id
+                    role: token.role,
+                    id: token.id,
                 }
             };
         },
-        jwt({ token, user }) {
+        jwt({ token, user, trigger, session }) {
             if (user) {
-                const currentUser = user as unknown as {
-                    id: string
-                    email: string
-                    image: string
-                    firstname: string
-                    lastname: string
-                    role: string
-                }
+                const currentUser = user as TAuthUser
                 return {
                     ...token,
-                    id: currentUser?.id,
-                    email: currentUser?.email,
-                    image: currentUser?.image,
-                    name: `${currentUser?.firstname} ${currentUser?.lastname}`,
-                    role: currentUser?.role
+                    id: currentUser.id,
+                    email: currentUser.email,
+                    image: currentUser.image,
+                    name: `${currentUser.firstname} ${currentUser.lastname}`,
+                    role: currentUser.role
                 }
             }
-
+            // This check is necessary to update the server session in real-time
+            if (trigger === "update") {
+                return {...token, ...session.user}
+            }
+            
             return token;
         },
     }

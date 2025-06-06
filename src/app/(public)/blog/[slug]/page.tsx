@@ -1,6 +1,6 @@
-import { blogData } from '@/data';
+import { fetchBlogPosts, fetchSingleBlogPost } from '@/app/action';
 import PBBlogSingleContainer from '@/modules/public/pbblog/pbblogsingle/PBBlogSingleContainer';
-import React from 'react'
+import { TBlogItemProp } from '@/types';
 
 type TPageParams = {
   params: {
@@ -9,25 +9,27 @@ type TPageParams = {
 }
 
 export async function generateStaticParams() {
-  // const res = await getPageMenu();
-  // if (res?.data?.menu) {
-  //   return res.data.menu.map(el => ({ slug: el.slug }));
-  // }
-  return [];
+  const res = await fetchBlogPosts();
+  if (res?.data) {
+    return res.data.map(el => ({ slug: el.slug }));
+  }
+  else return [];
 }
 
 export async function generateMetadata({ params: { slug } }: TPageParams) {
-  // const res = await getSinglePageMenu({ slug })
-  // return {
-  //   title: `${res?.data?.menu?.name}'s Details`,
-  //   description: res?.data?.menu?.description,
-  // }
+  const res = await fetchSingleBlogPost({ slug })
+  const data = res?.data as TBlogItemProp
+  return {
+    title: `${data?.title}'s Details`,
+    description: data?.text,
+  }
 }
 
 export default async function SingleBlogPage({ params: { slug } }: TPageParams) {
-  console.log('slug', slug)
-  const data = await blogData.find(blog => blog.slug === slug)
+  const res = await fetchSingleBlogPost({slug})
+  const data = res?.data as TBlogItemProp
+
   return (
-    <PBBlogSingleContainer data={data} role="Root" />
+    <PBBlogSingleContainer data={data} />
   )
 }
