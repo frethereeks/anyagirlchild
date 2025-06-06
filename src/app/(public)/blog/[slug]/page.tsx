@@ -28,8 +28,9 @@ export async function generateMetadata({ params: { slug } }: TPageParams) {
 export default async function SingleBlogPage({ params: { slug } }: TPageParams) {
   const res = await fetchSingleBlogPost({slug})
   const data = res?.data as TBlogItemProp
-
+  const resBlogs = await fetchBlogPosts()
+  const dataBlogs = resBlogs?.data as TBlogItemProp[]
   return (
-    <PBBlogSingleContainer data={data} />
+    <PBBlogSingleContainer data={data} relatedPosts={dataBlogs} />
   )
 }

@@ -2,19 +2,20 @@
 
 import { ASSET_URL } from '@/assets';
 import { blogData } from '@/data/blogData';
-import { appRoutePaths } from '@/routes/paths';
 import moment from 'moment';
 import Image from 'next/image';
-import Link from 'next/link';
 import React from 'react'
 import BlogCard from '../components/BlogCard';
 import CommentSection from '../components/CommentSection';
 import { TBlogItemProp } from '@/types';
 import { RiCalendar2Line } from 'react-icons/ri';
 
-type TPageProps = { data: TBlogItemProp | undefined }
+type TPageProps = {
+  data: TBlogItemProp | undefined
+  relatedPosts: TBlogItemProp[]
+}
 
-export default function PBBlogSingleContainer({ data }: TPageProps) {
+export default function PBBlogSingleContainer({ data, relatedPosts }: TPageProps) {
   
   return (
     <main className='flex flex-col xl:flex-row gap-4 lg:gap-8 bg-white py-10'>
@@ -56,7 +57,7 @@ export default function PBBlogSingleContainer({ data }: TPageProps) {
       </section>
       <aside className='w-full xl:max-w-lg px-4 grid grid-cols-2 md:grid-cols-3 xl:flex xl:flex-col gap-4 h-max max-h-max sticky top-0 right-0'>
         {
-          blogData.filter(item => item.id !== data?.id).slice(0, 3).map(blog => (
+          relatedPosts.filter(item => item.id !== data?.id).slice(0, 3).map(blog => (
             <BlogCard key={blog.id} {...blog} />
           ))
         }

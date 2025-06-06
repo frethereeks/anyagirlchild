@@ -17,6 +17,7 @@ import nodeMailer from "nodemailer"
 import { randomUUID } from "crypto";
 import { config } from "@/config";
 import { adminData } from "@/data";
+import { TCommentProps } from "@/types";
 // import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 // import Email from "next-auth/providers/email";
 
@@ -416,7 +417,6 @@ export const updateBlogImage = async (id: string, image: File, oldImageName: str
     try {
         const res = await uploadImage(image, blogFolder, oldImageName)
         const file = res.secure_url
-
         await prisma.blog.update({
             where: { id },
             data: { image: file }
@@ -447,11 +447,10 @@ export const fetchComments = async ({blogId} : {blogId: string}) => {
 
 export const createComment = async (data: { blogId: string, fullname: string, email: string, text: string }) => {
     const { blogId, fullname, email, text } = (data)
-    console.log({ blogId, fullname, email, text })
     try {
         const data = await prisma.comment.create({
             data: { fullname, email, text, blogId }
-        })
+        }) as TCommentProps
         return { error: false, message: `Comment posted successfully.`, data }
     } catch (error) {
         return { error: true, message: `Unable to complete your request to post comment. Please, try again.` }
@@ -777,7 +776,14 @@ export const deleteEntity = async (id: string, table: IDENTIFIED_TABLES) => {
                 break;
             case "comment": {
                 await prisma.comment.deleteMany({
-                    where: { id: { in: [...entityIDs] } }
+                    where: {
+                        id: { in: [...entityIDs] },
+                        replies: {
+                            every: {
+                                commentId: { in: [...entityIDs] }
+                            }
+                        }
+                    }
                 })
             }
                 break;

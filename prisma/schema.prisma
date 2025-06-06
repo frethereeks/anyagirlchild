@@ -49,7 +49,7 @@ model Blog {
   image     String?    @db.VarChar(200)
   text      String     @db.LongText()
   status    ViewStatus @default(VISIBLE)
-  comments  Comment[]
+  comments  Comment[]  @relation("blogToComment")
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   user      User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -63,11 +63,11 @@ model Comment {
   fullname  String   @db.VarChar(50)
   email     String   @db.VarChar(100)
   text      String   @db.Text
-  replies   Reply[]
+  replies   Reply[]  @relation("commentToReply")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  blog      Blog?    @relation(fields: [blogId], references: [id], onDelete: Cascade)
-  blogId    String?
+  blog      Blog     @relation("blogToComment", fields: [blogId], references: [id], onDelete: Cascade)
+  blogId    String
 
   @@index([id])
 }
@@ -133,7 +133,7 @@ model Reply {
   text      String   @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  comment   Comment  @relation("commentToReply", fields: [commentId], references: [id], onDelete: Cascade)
   commentId String
 
   @@index([id])

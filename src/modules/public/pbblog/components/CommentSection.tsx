@@ -33,9 +33,11 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
     const { data } = useSession()
     const [form] = useForm<TCommentProps>()
     const [replyForm] = useForm<TReplyProps>()
+    const [showReply, setShowReply] = useState<string | null>(null)
     const [editableId, setEditableId] = useState<string | undefined>(undefined)
     const [deletingId, setDeletingId] = useState<React.Key[]>([])
     const [deleteModal, setDeleteModal] = useState<boolean>(false)
+    const inputRef = useRef<HTMLInputElement | null>(null)
 
 
     const fetchComment = useCallback(async () => {
@@ -71,7 +73,16 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
             }
             else {
                 notification.success({ message: res?.message, key: "123" })
-                data.id ? setEditableId(res?.data?.id) : setEditableId(undefined)
+                if (res.data) {
+                    console.log("We are here for the new comment...")
+                    setEditableId(res?.data?.id)
+                    setAllComments(prev => ([res.data!, ...prev]))
+                }
+                else {
+                    console.log("Nope! Not a new comment and therefore cannot be edited by normal users...")
+                    setEditableId(undefined)
+                    setSelectedData(undefined)
+                }
                 router.refresh()
                 form.resetFields()
                 setActiveTab("AllComments")
@@ -108,16 +119,15 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
         // let res;
         try {
             const { commentId, email, fullname, text } = data
-            // const commentId = selectedReply.id
-            // if (data.id !== "") {
-            // res = await updateReply({ id: data?.id!, text: data?.text, email: data?.email, fullname: data?.fullname })
-            // }
             const res = await createReply({ commentId: commentId!, text, email, fullname })
             if (res?.error) notification.error({ message: res?.message, key: "123" })
             else {
                 notification.success({ message: res?.message, key: "123" })
                 router.refresh()
+                const newReply = res?.data as TReplyProps
+                setAllComments(allComments.map((el, i) => el.id === commentId ? ({...el, replies: [newReply, ...el.replies] }) : el))
                 replyForm.resetFields()
+                setShowReply(null)
             }
         } catch (error) {
             notification.error({ message: 'Unable to process request. Please, check your internet connection and try again', key: "123" })
@@ -155,7 +165,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                                     // If the logged in user is the owner of the comment, give him the option to edit his comment
                                                     // TODO: Make this time-base (i.e. vailable only after x number of minutes)
                                                     // user && +(user?.id) === item.userId &&
-                                                    editableId || data?.user.role === "ROOT" ?
+                                                    editableId === item.id || data?.user.role === "ROOT" ?
                                                         <div className="z-10 absolute -top-4 -right-0 hidden group-hover:flex gap-2">
                                                             <span onClick={() => handleCommentDelete(item.id)} className="flex-shrink-0 cursor-pointer w-6 h-6 grid place-items-center bg-danger text-white text-lg rounded-full border border-danger">
                                                                 <MdOutlineDelete />
@@ -172,14 +182,23 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                             <div className="flex flex-col gap-1.5">
                                                 <div className="flex flex-wrap gap-2">
                                                     <div className="flex items-center gap-4 pl-2">
+                                                        {editableId === item.id || data?.user.role === "ROOT" ?
+                                                            <p onClick={() => handleToggleEditing(item.id)} className="text-xs text-text font-semibold cursor-pointer">Edit</p> : ""
+                                                        }
                                                         <span className="text-danger">•</span>
-                                                        <label onClick={() => setSelectedData(undefined)} htmlFor={`reply-${item.id}`} className="w-max text-xs text-text font-semibold cursor-pointer hover:underline">Reply</label>
+                                                        <button onClick={() => {
+                                                            if (showReply === item.id.toString()) {
+                                                                setShowReply(null)
+                                                            }
+                                                            else setShowReply(`${item.id.toString()}`)
+                                                            setSelectedData(undefined)
+                                                        }}
+                                                        className = "w-max text-xs text-text font-semibold cursor-pointer hover:underline" > Reply</button>
                                                     </div>
-                                                    {/* <p className="text-xs text-primary font-semibold cursor-pointer">Like</p> */}
                                                     {/* <p onClick={() => setOpenModal({ state: true, id: item.id, text: item.text })} className="w-max text-xs text-text font-semibold cursor-pointer hover:underline">Like</p> */}
                                                     {/* </div> */}
-                                                    <input type="checkbox" name={`reply`} id={`reply-${item.id}`} className={`peer hidden`} />
-                                                    <div className={`w-full relative overflow-hidden max-h-0 peer-checked:overflow-visible peer-checked:max-h-[1000%]`}>
+                                                    {/* <input type="checkbox" ref={inputRef} name={`reply`} id={`reply-${item.id}`} className={`peer hidden`} /> */}
+                                                    <div className={`w-full relative overflow-hidden ${showReply === item.id ? 'overflow-visible max-h-[1000%]' : 'max-h-0'} `}>
                                                         <ReplyForm key={item.id} commentId={item.id} data={selectedReply} handlePostReply={handlePostReply} />
                                                     </div>
                                                 </div>
