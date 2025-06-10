@@ -1,5 +1,4 @@
-import { fetchContact } from '@/app/action';
-import { contactData } from '@/data'
+import { fetchContact, verifyUser } from '@/app/action';
 import ContactContainer from '@/modules/dashboard/contact/ContactContainer'
 import { DashBreadCrumb } from '@/modules/dashboard/layout'
 import { Metadata } from 'next';
@@ -12,10 +11,11 @@ export const metadata: Metadata = {
 
 export default async function AdminContactPage() {
   const res = await fetchContact()
+  const user = await verifyUser()
   return (
     <>
       <DashBreadCrumb />
-      <ContactContainer data={res.data!} role='ROOT' />
+      <ContactContainer data={res.data || []} role={user.role} />
     </>
   )
 }

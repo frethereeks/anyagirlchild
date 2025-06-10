@@ -16,7 +16,6 @@ import { revalidatePath } from "next/cache";
 import nodeMailer from "nodemailer"
 import { randomUUID } from "crypto";
 import { config } from "@/config";
-import { adminData } from "@/data";
 import { TCommentProps } from "@/types";
 // import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 // import Email from "next-auth/providers/email";
@@ -72,7 +71,7 @@ export const fetchUserDetails = async () => {
     return data;
 }
 
-export const fetchUser = async () => {
+export const verifyUser = async () => {
     const session = await getServerSession(authOptions);
     const user = session?.user;
     if (!user) {
@@ -282,14 +281,25 @@ export const updateUserImage = async (data: FormData) => {
     }
 }
 
-export const deleteUser = async (id: string) => {
-    const user = await fetchUser()
+export const fetchAllUsers = async () => {
+    await verifyUser()
     try {
-        await prisma.user.updateMany({
-            where: { id },
-            data: { status: "SUSPENDED", }
+        const data = await prisma.user.findMany({
+            orderBy: { createdAt: "desc" }
         })
-        return { error: true, message: `Donation record successfully deleted.` }
+        return { error: true, message: `All users fetched successfully.`, data }
+    } catch (error) {
+        return { error: true, message: `Unable to complete your request to delete blog. Please, try again.` }
+    }
+}
+
+export const fetchSingleUsers = async (id: string) => {
+    await verifyUser()
+    try {
+        const data = await prisma.user.findFirst({
+            where: { id },
+        })
+        return { error: true, message: `User record found successfully.`, data }
     } catch (error) {
         return { error: true, message: `Unable to complete your request to delete blog. Please, try again.` }
     }
@@ -344,7 +354,7 @@ export const fetchSingleBlogPost = async ({ slug }: { slug: string }) => {
 }
 
 export const createBlog = async (data: FormData) => {
-    const user = await fetchUser()
+    const user = await verifyUser()
     const { image, title, text, status } = blogData(data)
     const slug = generateSlug(title)
     try {
@@ -366,7 +376,7 @@ export const createBlog = async (data: FormData) => {
 }
 
 export const deleteBlog = async (id: string) => {
-    const user = await fetchUser()
+    const user = await verifyUser()
     try {
         // Change the 
         await prisma.blog.delete({ where: { id } })
@@ -379,7 +389,7 @@ export const deleteBlog = async (id: string) => {
 }
 
 export const updateBlog = async (data: FormData) => {
-    const user = await fetchUser()
+    const user = await verifyUser()
     const { image, title, text, status } = blogData(data)
     const id = data.get("id")?.valueOf() as string
     const oldImage = data?.get("oldImage")?.valueOf() as string
@@ -589,7 +599,7 @@ export const createDonation = async (data: FormData) => {
 }
 
 export const fetchDonations = async () => {
-    const user = await fetchUser()
+    const user = await verifyUser()
     try {
         const data = await prisma.donation.findMany({
             orderBy: { createdAt: "desc" }
@@ -614,7 +624,7 @@ export const fetchGalleryImages = async () => {
 }
 
 export const createGalleryImage = async (data: FormData) => {
-    const user = await fetchUser()
+    await verifyUser()
     const title = data?.get("title")?.valueOf() as string
     const status = data?.get("status")?.valueOf() as $Enums.ViewStatus
     const image = data?.get("image")?.valueOf() as File
@@ -659,7 +669,7 @@ export const updateGalleryImage = async (data: FormData) => {
 
 // DELETE IMAGES
 export const deleteGalleryImage = async (id: string) => {
-    const user = await fetchUser()
+    const user = await verifyUser()
     try {
         await prisma.donation.updateMany({
             where: { id },
@@ -906,7 +916,7 @@ const publicScreenLog = async (user: { id: string, fullname: string, email: stri
 }
 
 const backendScreenLog = async (subject: string, user: { id: string, fullname: string, email: string }, action: "created" | "edited" | "deleted" | "initiated" | "viewed", page: IDENTIFIED_TABLES, sendmail: boolean, description: string, reply?: string, copy?: { email: string, fullname?: string }) => {
-    const data = await fetchUser()
+    const data = await verifyUser()
     try {
         const message = `<a href="${config.APP_PRIMARY_API_BASE_URL}/${appRoutePaths.adminadmin}?id=${user.id}">${user.fullname}</a> with email ${user.email} ${action} a ${page} record. ${description}`;
         await prisma.logger.create({

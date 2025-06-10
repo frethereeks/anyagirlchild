@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Mulish } from 'next/font/google'
 import "../globals.css";
+import {Analytics} from '@vercel/analytics/next';
 // import { AosProvider, Footer, Header } from '@/components'
 
 import { AntdRegistry } from '@ant-design/nextjs-registry'
@@ -33,6 +34,7 @@ export default function RootLayout({
             <AosProvider>
               <PBHeader />
               <div className="font-inter min-h-[80vh]"> {children} </div>
+              <Analytics />
               <PBFooter />
             </AosProvider>
            </ThemeProvider>

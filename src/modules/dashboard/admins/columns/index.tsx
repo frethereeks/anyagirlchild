@@ -4,10 +4,8 @@ import { TableColumnsType } from "antd"
 import Image from "next/image"
 import { ASSET_URL } from "@/assets"
 import { TAdminProps } from "@/types"
-import { triggerModal } from "@/lib/features/reducers/siteSlice"
-// import { AiOutlineMore } from "react-icons/ai"
 import { useAppDispatch } from "@/lib/features/hooks"
-// import { Peer } from "@/modules/shared"
+import { triggerModal } from "@/lib/features/reducers/siteSlice"
 
 export const ADMIN_COLUMN = (): TableColumnsType<TAdminProps> => {
     const dispatch = useAppDispatch()

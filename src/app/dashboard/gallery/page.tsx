@@ -1,4 +1,4 @@
-import { fetchGalleryImages, fetchUser } from '@/app/action';
+import { fetchGalleryImages, verifyUser } from '@/app/action';
 import GalleryContainer from '@/modules/dashboard/gallery/GalleryContainer'
 import { DashBreadCrumb } from '@/modules/dashboard/layout'
 import { Metadata } from 'next';
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminGalleryPage() {
-    const user = await fetchUser()
+    const user = await verifyUser()
     const res = await fetchGalleryImages()
     return (
         <>

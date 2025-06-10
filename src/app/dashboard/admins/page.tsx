@@ -1,6 +1,7 @@
-import { adminData } from '@/data'
+import { fetchAllUsers, verifyUser } from '@/app/action';
 import AdminContainer from '@/modules/dashboard/admins/AdminContainer'
 import { DashBreadCrumb } from '@/modules/dashboard/layout'
+import { TAdminProps } from '@/types';
 import { Metadata } from 'next';
 import React from 'react'
 
@@ -10,10 +11,13 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminPage() {
+  const res = await fetchAllUsers()
+  const data = res.data as TAdminProps[]
+  const user = await verifyUser()
   return (
     <>
       <DashBreadCrumb />
-      <AdminContainer data={adminData} role='ROOT' />
+      <AdminContainer data={data} role={user.role} />
     </>
   )
 }

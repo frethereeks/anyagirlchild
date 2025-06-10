@@ -1,4 +1,5 @@
 import { appRoutePaths } from '@/routes/paths'
+import { THeaderLinks } from '@/types'
 
 export const headerLinks: THeaderLinks[] = [
     {

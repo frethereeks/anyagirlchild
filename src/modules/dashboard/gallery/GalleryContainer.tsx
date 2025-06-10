@@ -1,7 +1,6 @@
 "use client"
 import React, { useState } from 'react'
 import { Modal } from 'antd';
-import { blogData } from '@/data/blogData'
 import { DEFAULT_PAGE_SIZE } from '@/constants'
 import AddGallery from './components/AddGallery';
 import { TGalleryProps } from '@/types';
@@ -109,8 +108,8 @@ export default function GalleryContainer({ data, role }: TPageProps) {
                     </div>
                     <div className='flex justify-end gap-2'>
                         {
-                            blogData.length > DEFAULT_PAGE_SIZE &&
-                            Array.from({ length: Math.ceil((blogData.length || 0) / DEFAULT_PAGE_SIZE) }).map((_, val) => (
+                            data && data?.length > DEFAULT_PAGE_SIZE &&
+                            Array.from({ length: Math.ceil((data?.length || 0) / DEFAULT_PAGE_SIZE) }).map((_, val) => (
                                 <button onClick={() => handleClick(val)} key={val} className={`w-6 h-6 md:w-8 md:h-8 flex justify-center items-center border border-grey text-xs sm:text-sm rounded-md cursor-pointer ${val === currentPage ? 'hover:bg-gray bg-dark hover:text-dark/60 text-backdrop' : 'bg-gray hover:bg-dark text-dark/60 hover:text-backdrop'}`}>{
                                     val}</button>
                             ))

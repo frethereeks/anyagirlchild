@@ -1,6 +1,6 @@
 import { appRoutePaths } from "@/routes/paths"
 import { GrArticle, GrSettingsOption, GrUserAdmin, GrGallery } from "react-icons/gr"
-import { LuGalleryVertical, LuLayoutDashboard, LuMessageSquareText, LuTickets } from "react-icons/lu";
+import { LuLayoutDashboard, LuMessageSquareText, LuTickets } from "react-icons/lu";
 
 type SidebarProps = {
     id: string

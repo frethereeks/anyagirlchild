@@ -1,5 +1,4 @@
-import { fetchDonations, fetchUser } from '@/app/action';
-import { donationData } from '@/data'
+import { fetchDonations, verifyUser } from '@/app/action';
 import DonationsContainer from '@/modules/dashboard/donations/DonationsContainer'
 import { DashBreadCrumb } from '@/modules/dashboard/layout'
 import { Metadata } from 'next';
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminDonationsPage() {
-  const user = await fetchUser()
+  const user = await verifyUser()
   const res = await fetchDonations()
 
   return (

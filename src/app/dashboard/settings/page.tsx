@@ -8,7 +8,7 @@ import React from 'react'
 export default async function AdminSettingsPage() {
   const data = await fetchUserDetails() as unknown as TAdminProps
   data.image = data.image === null ? ASSET_URL["little_child"].src : data.image
-  console.log({data})
+  // console.log({data})
   return (
     <>
       <DashBreadCrumb />
