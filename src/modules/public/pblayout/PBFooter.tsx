@@ -49,6 +49,7 @@ export default function PBFooter() {
             {/* <Link href={appRoutePaths.contact} className="leading-loose">Contact</Link> */}
             <Link href={appRoutePaths.privacyPolicy} className="leading-loose">Privacy Policy</Link>
             <Link href={appRoutePaths.termsAndConditions} className="leading-loose">Terms &amp; Conditions</Link>
+            <Link href={appRoutePaths.sitemap} className="leading-loose">Sitemap</Link>
           </div>
         </aside>
       </div>

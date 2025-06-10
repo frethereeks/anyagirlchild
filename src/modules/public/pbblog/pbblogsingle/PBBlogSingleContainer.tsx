@@ -1,7 +1,6 @@
 "use client"
 
 import { ASSET_URL } from '@/assets';
-import { blogData } from '@/data/blogData';
 import moment from 'moment';
 import Image from 'next/image';
 import React from 'react'

@@ -38,6 +38,7 @@ export const publicRoutes = {
     donation: "/donation",
     search: "/search",
     error: "/error",
+    sitemap: "/sitemap.xml",
     privacyPolicy: "/privacy-policy",
     termsAndConditions: "/terms-and-conditions",
 }

@@ -46,7 +46,6 @@ export default function BlogList({ data, role }: { data: TBlogItemProp[] | undef
           rowSelection={{ ...rowSelection }}
           scroll={{ x: "max-content" }}
           dataSource={data?.map(el => ({ ...el, key: el.id }))}
-          // dataSource={role === "USER" ? blogData : blogData?.map(el => ({ ...el, key: el.id }))}
           columns={BLOG_COLUMN()}
         />
       </aside>

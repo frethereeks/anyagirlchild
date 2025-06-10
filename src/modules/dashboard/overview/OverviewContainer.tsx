@@ -36,7 +36,6 @@ export default async function OverviewContainer() {
         </div>
         <section className="flex flex-col gap-4">
           <OverviewGallery galleryData={res?.data?.galleryData || []} />
-          {/* <OverviewBlogs blogData={res?.data?.blogData || []} /> */}
         </section>
       </aside>
     </main>

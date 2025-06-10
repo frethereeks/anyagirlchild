@@ -16,23 +16,25 @@ export default function PBHeader() {
   const headerRef = useRef(null);
 
   useEffect(() => {
-    window.onscroll = () => {
-      if (window.scrollY > 60) {
-        setFixed(true)
-      }
-      else {
-        setFixed(false)
+    if (window) {
+      window.onscroll = () => {
+        if (window.scrollY > 60) {
+          setFixed(true)
+        }
+        else {
+          setFixed(false)
+        }
       }
     }
     return () => {
       setFixed(false);
-      window.scrollTo(0, 0)
+      window && window.scrollTo(0, 0)
       setNavShow(false);
     }
   }, [])
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window && window.scrollTo(0, 0);
     setNavShow(false)
     //eslint-ignore-next-line
   }, [location])
