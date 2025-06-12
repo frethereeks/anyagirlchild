@@ -66,7 +66,7 @@ export const fetchUserDetails = async () => {
         where: { id: user?.id },
         select: { id: true, firstname: true, lastname: true, image: true, email: true, password: true, role: true, status: true }
     })
-    console.log({user, data})
+    console.log({ user, data })
     if (!data) {
         signOut()
         redirect(appRoutePaths.signin)
@@ -168,14 +168,14 @@ export const handleTokenVerification = async (email: string, token: string) => {
 export const fetchDashboarData = async () => {
     try {
         const [adminData, donationData, galleryData, blogData] = await prisma.$transaction([
-            prisma.user.findMany({ orderBy: {createdAt: "desc"}, take: 5}),
-            prisma.donation.findMany({ orderBy: {createdAt: "desc"}, take: 5}),
-            prisma.gallery.findMany({ orderBy: {createdAt: "desc"}, take: 5}),
-            prisma.blog.findMany({ orderBy: {createdAt: "desc"}, take: 5}),
+            prisma.user.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
+            prisma.donation.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
+            prisma.gallery.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
+            prisma.blog.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
         ])
         return { error: false, message: 'Dashboard data fetched successfully', data: { adminData, donationData, galleryData, blogData } }
     } catch (error) {
-        console.log({dashboardError: error})
+        console.log({ dashboardError: error })
         return { error: true, message: 'Unable to fetch dashboard data. Please, try again', data: { adminData: [], donationData: [], galleryData: [], blogData: [] } }
     }
 }
@@ -207,10 +207,10 @@ export const updateUser = async (data: FormData, type: "info" | "security") => {
     const user = await fetchUserDetails()
     const newImage = data.get("newImage")?.valueOf() as unknown as string;
     let file = data.get("oldImage")?.valueOf() as string;
-    console.log({data})
+    console.log({ data })
     try {
         if (type === "info") {
-            const { email, firstname, lastname, image} = userData(data)
+            const { email, firstname, lastname, image } = userData(data)
             if (newImage === "true" && (typeof (image) !== "string" && image?.size !== 0)) {
                 // If it gets here, it means, they supplied a new image and we'd upload that to cloudinary
                 const res = await uploadImage(image, profileFolder, file!)
@@ -320,7 +320,7 @@ export const fetchBlogPosts = async () => {
                         replies: true
                     }
                 },
-                user: { 
+                user: {
                     select: { id: true, firstname: true, lastname: true, image: true }
                 }
             },
@@ -417,7 +417,7 @@ export const updateBlog = async (data: FormData) => {
             }
             await prisma.blog.update({
                 data: { image: file, slug, title, text, userId: user.id, status },
-                where: {id}
+                where: { id }
             })
         }
         return { error: false, message: `Your blog post has been updated successfully.` }
@@ -441,7 +441,7 @@ export const updateBlogImage = async (id: string, image: File, oldImageName: str
 }
 
 // Comments
-export const fetchComments = async ({blogId} : {blogId: string}) => {
+export const fetchComments = async ({ blogId }: { blogId: string }) => {
     try {
         const data = await prisma.comment.findMany({
             where: { blogId },
@@ -568,7 +568,7 @@ export const createContact = async (data: FormData) => {
         await prisma.contact.create({
             data: { fullname, email, message }
         })
-        await publicScreenLog( {id: "", fullname, email}, "created", "contact", true, "Anyagirlchild: New Contact Message", `A visiter named ${fullname} sent you a message`, email)
+        await publicScreenLog({ id: "", fullname, email }, "created", "contact", true, "Anyagirlchild: New Contact Message", `A visiter named ${fullname} sent you a message`, email)
         return { error: false, message: `Thanks for contacting us ${fullname}. We will get back to you as soon as possible.` }
     } catch (error) {
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
@@ -634,28 +634,25 @@ export const createGalleryImage = async (data: FormData) => {
     // const images = data?.get("image")?.valueOf() as File[]
     const images = data.getAll("image") as File[]
 
-    console.log({title, status, images})
-    return;
-    
     try {
-        const imagesToUpload = images.map(image => {
-            return limit(async () => {
-                // await uploadImage(image, galleryFolder)
-                const res = await uploadImage(image, galleryFolder)
-                return res?.secure_url
-            })
-        })
-        
-        const allFiles = await Promise.all(imagesToUpload)
-        console.log({ allFiles })
+        const uploads = images.map((image) =>
+            limit(() => uploadImage(image, galleryFolder))
+        );
+        const allUploadedFiles = await Promise.all(uploads);
+        // Extract secure_urls from results
+        const allFiles = allUploadedFiles
+            .map((res) => res?.secure_url)
+            .filter(Boolean);
 
-        allFiles.map(async (file) => {
-            await prisma.gallery.create({
-                data: { title, image: file, status }
-            })
-            console.log({ title, image: file, status })
-        })
-        // const file = "https://res.cloudinary.com/dnl81n8vu/image/upload/v1748360372/anyagirlchild/gallery/file_roeuzx.jpg"
+        console.log({ allUploadedFiles, allFiles })
+        // Insert into DB concurrently
+        await Promise.all(
+            allFiles.map((file) =>
+                prisma.gallery.create({
+                    data: { title, image: file, status },
+                })
+            )
+      );
         // await backendActionLog(`New image upload.`, {fullname: user.name!, email: user.email!}, "created", `Admin with userId ${user.id} created a new image`, false)
         return { error: false, message: `New gallery image(s) uploaded successfully.` }
     } catch (error) {
@@ -919,9 +916,9 @@ export const updateEntity = async (id: string, status: string, table: IDENTIFIED
 // Logger
 const publicScreenLog = async (user: { id: string, fullname: string, email: string }, action: "created" | "edited" | "deleted" | "initiated" | "viewed", page: IDENTIFIED_TABLES, sendmail: boolean, subject: string, description: string, reply?: string, copy?: { email: string, fullname?: string }) => {
     const session = await getServerSession(authOptions)
-    
+
     try {
-        const message = `${ user.fullname !== "" ? user.fullname : "visitor"} with email ${user?.email} ${action} ${description}`;
+        const message = `${user.fullname !== "" ? user.fullname : "visitor"} with email ${user?.email} ${action} ${description}`;
         await prisma.logger.create({
             data: { userId: session?.user ? session.user?.id : "null", message, }
         })
