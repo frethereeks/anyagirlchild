@@ -58,7 +58,6 @@ CREATE TABLE `Donation` (
     `updatedAt` DATETIME(3) NOT NULL,
     `updatedBy` VARCHAR(50) NOT NULL DEFAULT 'null',
 
-    UNIQUE INDEX `Donation_email_key`(`email`),
     INDEX `Donation_id_idx`(`id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

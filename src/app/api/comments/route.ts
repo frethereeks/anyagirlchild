@@ -4,8 +4,8 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const blogId = searchParams.get("blogId")
-    console.log("comment requested for: ", {blogId})
-    if (!blogId) return NextResponse.json({ error: true, message: "Blog Id Required" }, { status: 400 })
+
+    if (!blogId) return NextResponse.json({ error: true, message: "Blog Id Required", data: [] }, { status: 400 })
     
     const comments = await prisma.comment.findMany({
         where: { blogId },
