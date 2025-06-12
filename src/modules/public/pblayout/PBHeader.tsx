@@ -16,7 +16,7 @@ export default function PBHeader() {
   const headerRef = useRef(null);
 
   useEffect(() => {
-    if (window) {
+    if (typeof window !== "undefined") {
       window.onscroll = () => {
         if (window.scrollY > 60) {
           setFixed(true)

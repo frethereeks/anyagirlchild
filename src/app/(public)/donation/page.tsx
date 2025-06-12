@@ -1,8 +1,12 @@
 import React from 'react'
-import { ASSET_URL } from '@/assets'
 import { Metadata } from 'next';
+import { ASSET_URL } from '@/assets'
 import Image from 'next/image';
-import PBDonationContainer from '@/modules/public/pbdonation/PBDonationContainer';
+import dynamic from "next/dynamic";
+
+const PBDonationContainer = dynamic(() => import("@/modules/public/pbdonation/PBDonationContainer"), {
+    ssr: false,
+});
 
 
 export const metadata: Metadata = {
@@ -11,15 +15,17 @@ export const metadata: Metadata = {
 };
 
 
-export default function DonationPage() {
+export default async function DonationPage() {
     return (
+        <>
         <main className='flex flex-col md:flex-row gap-4 lg:gap-8 md:h-full'>
             <section className="container mx-auto flex flex-col lg:flex-row gap-4 md:h-full">
                 <aside className="p-4 flex-1 hidden lg:flex flex-col gap-8 w-full lg:max-w-[40rem] py-40 relative bg-primary">
                     <Image src={ASSET_URL["group_donation"]} alt='group_donation' className='object-cover object-top opacity-45' fill />
                 </aside>
-                <PBDonationContainer />
+                    <PBDonationContainer />
             </section>
         </main>
+        </>
     )
 }

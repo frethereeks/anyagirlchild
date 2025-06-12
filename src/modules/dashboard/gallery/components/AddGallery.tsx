@@ -69,7 +69,13 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
             formData.append("title", form.getFieldValue("title") ?? "Anyagirlchild Project Image")
             formData.append("status", statusRef.current?.value as string)
             formData.append("newImage", newImage as unknown as string)
-            formData.append("image", imageRef.current?.files![0] as Blob)
+            const files = imageRef.current?.files;
+
+            if (files && files.length > 0) {
+                Array.from(files).forEach((file: File) => {
+                    formData.append("image", file);
+                });
+            }
             if (data?.id || values.id) {
                 formData.append("oldImage", data?.image as string)
                 formData.append("id", data?.id as string)
@@ -106,7 +112,7 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
                     <h4 className="w-full text-base pt-4 text-text font-semibold flex items-center gap-2">Picture: <span className="text-xs">({image.name})</span></h4>
                     <Form.Item<TGalleryProps> name="image" noStyle>
                         <label htmlFor='image' className="relative flex-1 flex flex-col md:flex-row md:items-center gap-4 cursor-pointer min-h-32">
-                            <input ref={imageRef} type="file" onChange={handleFileUpload} name="image" id="image" accept='image/jpeg, image/png' className="absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer z-20" />
+                            <input ref={imageRef} type="file" multiple={data?.id ? false : true} onChange={handleFileUpload} name="image" id="image" accept='image/jpeg, image/png' className="absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer z-20" />
                             <div className="flex-1 relative border-2 h-40 md:h-44 w-full rounded-md overflow-hidden bg-text flex-shrink-0 grid place-items-center text-3xl md:text-4xl text-white">
                                 {
                                     image.value ?

@@ -8,6 +8,8 @@ import BlogCard from '../components/BlogCard';
 import CommentSection from '../components/CommentSection';
 import { TBlogItemProp } from '@/types';
 import { RiCalendar2Line } from 'react-icons/ri';
+import parser from 'html-react-parser';
+import DOMPurify from 'dompurify';
 
 type TPageProps = {
   data: TBlogItemProp | undefined
@@ -49,7 +51,8 @@ export default function PBBlogSingleContainer({ data, relatedPosts }: TPageProps
         </aside>
         <aside className="container mx-auto flex flex-col justify-end items-center p-4 relative">
           <article className="flex flex-col gap-4 py-10">
-            <div className="text-small text-text leading-loose flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: `<div>${data?.text!}</div>` }}></div>
+            {/* <div className="text-small text-text leading-loose flex flex-col gap-4" dangerouslySetInnerHTML={{ __html: `<div>${data?.text!}</div>` }}></div> */}
+            <div className="text-small text-text leading-loose flex flex-col gap-4">{parser(DOMPurify.sanitize((data?.text as unknown as string)))}</div>
           </article>
         </aside>
         <CommentSection key={"802346912"} blog={data} />

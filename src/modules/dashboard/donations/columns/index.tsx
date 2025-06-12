@@ -15,7 +15,7 @@ export const DONATION_COLUMN = (): TableColumnsType<TDonationProps> => {
             title: "Full Name",
             render: (_, val) => (
                 <div className="flex items-center gap-2 py-2">
-                    <div className={`h-8 w-8 rounded-md ${val.status === "SUCCESSFUL" ? 'bg-green-grad' : val.status === "FAILED" ? "bg-red-grad" : "bg-dark-grad"}  text-white text-xl grid place-items-center flex-shrink-0`}>
+                    <div className={`h-8 w-8 rounded-md ${val.status === "success" ? 'bg-green-grad' : val.status === "declined" ? "bg-red-grad" : "bg-dark-grad"}  text-white text-xl grid place-items-center flex-shrink-0`}>
                         <LuTickets />
                     </div>
                     <h4 className="flex-1 text-sm text-text font-semibold">{val.fullname}</h4>
@@ -30,10 +30,17 @@ export const DONATION_COLUMN = (): TableColumnsType<TDonationProps> => {
             ),
         },
         {
+            key: "Transaction ID",
+            title: "Transaction ID",
+            render: (_, val) => (
+                <p className={`text-sm capitalize text-text font-medium`}>{val.reference}</p>
+            ),
+        },
+        {
             key: "Status",
             title: "Status",
             render: (_, val) => (
-                <p className={`text-sm capitalize ${val.status === "SUCCESSFUL" ? 'text-secondary' : val.status === "FAILED" ? 'text-danger line-through' : 'text-text'} font-medium`}>{val.status}</p>
+                <p className={`text-sm capitalize ${val.status === "success" ? 'text-secondary' : val.status === "declined" ? 'text-danger line-through' : 'text-text'} font-medium`}>{val.status}</p>
             ),
         },
         {

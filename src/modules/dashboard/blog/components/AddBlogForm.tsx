@@ -194,6 +194,9 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
                                             'removeformat | help',
                                         content_style: 'body { font-family: Helvetica,Arial,sans-serif; font-size: 14px }'
                                     }}
+                                    onGetContent={e => {
+                                        e.content = e.content.replace(/<p>\s*(<div.*?>.*?<\/div>)\s*<\/p>/g, '$1');
+                                    }}
                                 />
                                 {/* <button type="button" className="button bg-secondary py-2 w-max" onClick={log}>Log editor content</button> */}
                             </div>

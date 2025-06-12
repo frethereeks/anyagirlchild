@@ -55,7 +55,7 @@ export default function DonationsContainer({ data, role }: { data: TDonationProp
       >
         {selectedData && (
           <div className="flex flex-col gap-2">
-            <div className={`flex-shrink-0 w-14 h-14 md:w-16 md:h-16 grid place-items-center mx-auto rounded-md ${selectedData.status === "SUCCESSFUL" ? 'bg-green-grad' : selectedData.status! === "FAILED" ? "bg-red-grad" : "bg-dark-grad"}  text-white text-2xl md:text-4xl`}><LuTickets /></div>
+            <div className={`flex-shrink-0 w-14 h-14 md:w-16 md:h-16 grid place-items-center mx-auto rounded-md ${selectedData.status === "success" ? 'bg-green-grad' : selectedData.status! === "declined" ? "bg-red-grad" : "bg-dark-grad"}  text-white text-2xl md:text-4xl`}><LuTickets /></div>
             <div className="flex flex-col justify-center">
               <h3 className="heading-three text-primary/70 text-center pt-4">{selectedData.fullname}</h3>
               <span className='w-full text-center text-text font-normal'>{selectedData.message}</span>
@@ -64,7 +64,7 @@ export default function DonationsContainer({ data, role }: { data: TDonationProp
               {/* <div className="flex justify-between p-2 text-sm">Currency: <span className={`text-right font-semibold ${selectedData.currency === "N" ? "line-through" : ""}`}>{selectedData.currency}</span></div> */}
               <div className="flex justify-between p-2 text-sm">Amount: <p className="text-right font-semibold"><span className={`text-right font-semibold ${selectedData.currency === "N" ? "line-through" : ""}`}>{selectedData.currency}</span>{selectedData.amount.toLocaleString()}</p></div>
               <div className="flex justify-between p-2 text-sm">Email: <span className="text-right font-semibold">{selectedData.email}</span></div>
-              <div className={`flex justify-between items-center px-2 text-sm ${selectedData.status === "SUCCESSFUL" ? 'text-secondary' : selectedData.status === "FAILED" ? 'text-danger' : 'text-text'}`}>Status: <span className={`text-right text-xs font-semibold px-4 py-1 my-1 w-max rounded-md ${selectedData.status === "SUCCESSFUL" ? 'bg-secondary/10' : selectedData.status === "FAILED" ? 'bg-danger/10' : 'bg-text/10'}`}>{selectedData.status}</span></div>
+              <div className={`flex justify-between items-center px-2 text-sm ${selectedData.status === "success" ? 'text-secondary' : selectedData.status === "declined" ? 'text-danger' : 'text-text'}`}>Status: <span className={`text-right text-xs font-semibold px-4 py-1 my-1 w-max rounded-md ${selectedData.status === "success" ? 'bg-secondary/10' : selectedData.status === "declined" ? 'bg-danger/10' : 'bg-text/10'}`}>{selectedData.status}</span></div>
               <div className="flex justify-between p-2 text-sm">Date: <span className="text-right font-semibold">{moment(selectedData.createdAt).format("DD-MM-YYYY")}</span></div>
               {/* <div className="flex gap-2 p-2 text-sm">Purpose: <span className='text-justify font-semibold'>{selectedData.message}</span></div> */}
             </div>

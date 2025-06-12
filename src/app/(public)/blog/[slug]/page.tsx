@@ -1,12 +1,14 @@
 import { fetchBlogPosts, fetchSingleBlogPost } from '@/app/action';
-import PBBlogSingleContainer from '@/modules/public/pbblog/pbblogsingle/PBBlogSingleContainer';
-import { TBlogItemProp } from '@/types';
+import { TBlogItemProp, TCommentProps } from '@/types';
+import dynamic from "next/dynamic"
 
 type TPageParams = {
   params: {
     slug: string
   }
 }
+
+const PBBlogSingleContainer  = dynamic(() => import('@/modules/public/pbblog/pbblogsingle/PBBlogSingleContainer'), { ssr: false });
 
 export async function generateStaticParams() {
   const res = await fetchBlogPosts();
@@ -26,10 +28,14 @@ export async function generateMetadata({ params: { slug } }: TPageParams) {
 }
 
 export default async function SingleBlogPage({ params: { slug } }: TPageParams) {
-  const res = await fetchSingleBlogPost({slug})
+  const res = await fetchSingleBlogPost({ slug })
   const data = res?.data as TBlogItemProp
+
+  // fetch Other Blog Posts
   const resBlogs = await fetchBlogPosts()
   const dataBlogs = resBlogs?.data as TBlogItemProp[]
+
+
   return (
     <PBBlogSingleContainer data={data} relatedPosts={dataBlogs} />
   )

@@ -1,6 +1,7 @@
 "use client"
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import Parser from "html-react-parser"
+import parse from 'html-react-parser';
+import DOMPurify from 'dompurify';
 import { notification } from 'antd'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -12,19 +13,12 @@ import { createComment, createReply, fetchComments, updateComment } from '@/app/
 import { useForm } from 'antd/es/form/Form'
 import ReplyForm from './ReplyForm'
 import { DeleteModal } from '@/modules/shared'
-
-const fetchBlogComments = async (blogId: string) => {
-    const res = await fetchComments({ blogId })
-    const data = await res?.data as TCommentProps[]
-    return { data }
-}
-
-let timeManager: NodeJS.Timeout | undefined = undefined
-let commentManager: NodeJS.Timeout | undefined = undefined
+import useSWR from "swr"
+import { fetcher } from '@/lib'
+import { IoRefreshCircleOutline } from 'react-icons/io5'
 
 export default function CommentSection({ blog }: { blog: TBlogItemProp | undefined }) {
     const [loading, setLoading] = useState<boolean>(false)
-    const [allComments, setAllComments] = useState<TCommentProps[]>(blog?.comments || [])
     const [selectedData, setSelectedData] = useState<TCommentProps>()
     const [selectedReply, setSelectedReply] = useState<TReplyProps>()
     const commentContainerRef = useRef<HTMLDivElement | null>(null)
@@ -34,32 +28,42 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
     const [form] = useForm<TCommentProps>()
     const [replyForm] = useForm<TReplyProps>()
     const [showReply, setShowReply] = useState<string | null>(null)
+    // const [editableId, setEditableId] = useState<{id: string | undefined, type: "comment" | "reply"}>({id: undefined, type: "comment"})
     const [editableId, setEditableId] = useState<string | undefined>(undefined)
     const [deletingId, setDeletingId] = useState<React.Key[]>([])
     const [deleteModal, setDeleteModal] = useState<boolean>(false)
-    const inputRef = useRef<HTMLInputElement | null>(null)
 
-
-    const fetchComment = useCallback(async () => {
-        const res = await fetchBlogComments(blog?.id!)
-        setAllComments(res.data || [])
-    }, [blog?.id])
+    const { data: blogComments, isLoading, mutate } = useSWR<TCommentProps[]>(`/api/comments?blogId=${blog?.id}`, fetcher, {
+        revalidateOnFocus: true,
+        refreshInterval: 1000
+    })
 
     useEffect(() => {
-        setSelectedData(allComments.find(el => el.id === selectedData?.id!))
+        setSelectedData(blogComments?.find(el => el.id === selectedData?.id!))
     }, [selectedData])
+    
+    // const fetchComment = async (blogId: string) => {
+    //     try {
+    //         const request = await fetch(`${config.APP_PRIMARY_API_BASE_URL}/api/comments?blogId=${blogId}`, {
+    //             next: { revalidate: 10 }
+    //         })
+    //         const res = await request.json() as unknown as { error: boolean, message: string, data: TCommentProps | undefined }
+    //         if (res.error) {
+    //             notification.error({ message: res?.message, key: "123" })
+    //         }
+    //         else {
+    //             const data = res?.data as TCommentProps[] | undefined
+    //             console.log("comments (re)fetched...")
+    //             setAllComments(data || [])
+    //         }
+    //     } catch (error) {
+    //         console.log({ error })
+    //     }
+    // }
 
-    useEffect(() => {
-        clearInterval(commentManager)
-        // refetch comment after every 15seconds
-        commentManager = setInterval(() => {
-            fetchComment()
-        }, 15000)
-
-        return () => {
-            clearInterval(commentManager)
-        };
-    }, [fetchComment]);
+    // useEffect(() => {
+    //     if(blog?.id) fetchComment(blog.id)
+    // }, []);
 
     const handlePostComment = async (data: TCommentProps) => {
         setLoading(true)
@@ -76,7 +80,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                 if (res.data) {
                     console.log("We are here for the new comment...")
                     setEditableId(res?.data?.id)
-                    setAllComments(prev => ([res.data!, ...prev]))
+                    mutate()
                 }
                 else {
                     console.log("Nope! Not a new comment and therefore cannot be edited by normal users...")
@@ -93,17 +97,18 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
         finally {
             setLoading(false)
             router.refresh()
+            mutate()
         }
     }
 
     const handleToggleEditing = (commentId: string) => {
-        const comment = allComments.find(el => el.id === commentId)
+        const comment = blogComments?.find(el => el.id === commentId)
         setSelectedData(comment)
         setActiveTab("Comment")
     }
 
     const handleToggleEditReply = (commentId: string) => {
-        const comment = allComments.find(el => el.id === commentId)
+        const comment = blogComments?.find(el => el.id === commentId)
         setSelectedData(comment)
         setActiveTab("Comment")
     }
@@ -116,7 +121,6 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
     const handlePostReply = async (data: TReplyProps) => {
         setLoading(true)
         notification.info({ message: 'Posting reply...', key: "123" })
-        // let res;
         try {
             const { commentId, email, fullname, text } = data
             const res = await createReply({ commentId: commentId!, text, email, fullname })
@@ -124,8 +128,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
             else {
                 notification.success({ message: res?.message, key: "123" })
                 router.refresh()
-                const newReply = res?.data as TReplyProps
-                setAllComments(allComments.map((el, i) => el.id === commentId ? ({...el, replies: [newReply, ...el.replies] }) : el))
+                mutate()
                 replyForm.resetFields()
                 setShowReply(null)
             }
@@ -146,12 +149,18 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
             <aside className="container mx-auto flex flex-col p-4 pt-0 relative">
                 <div className="flex py-2 pb-4">
                     <p onClick={() => setActiveTab("Comment")} className={`w-max flex items-center gap-2 p-2 px-4 text-sm text-text font-semibold cursor-pointer relative border-b-2 ${activeTab === "Comment" ? 'border-b-danger' : 'border-b-transparent'}`}>Write a Comment </p>
-                    <p onClick={() => setActiveTab("AllComments")} className={`w-max flex items-center gap-2 p-2 px-4 text-sm text-text font-semibold cursor-pointer relative border-b-2 ${activeTab === "Comment" ? 'border-b-transparent' : 'border-b-danger'}`}>All Comments <span className="-mt-1 text-xxsmall text-white bg-danger h-5 w-5 rounded-full grid place-items-center">{allComments.length ?? 0}</span></p>
+                    <p onClick={() => { setActiveTab("AllComments")}} className={`w-max flex items-center gap-2 p-2 px-4 text-sm text-text font-semibold cursor-pointer relative border-b-2 ${activeTab === "Comment" ? 'border-b-transparent' : 'border-b-danger'}`}>All Comments <span className="-mt-1 text-xxsmall text-white bg-danger h-5 w-5 rounded-full grid place-items-center">{blogComments?.length ?? 0}</span></p>
                 </div>
                 <div className={`flex-col gap-2 ${activeTab === "AllComments" ? 'flex' : 'hidden'}`}>
                     <div className="flex flex-col gap-3 min-h-0 overflow-y-hidden peer-checked:min-h-full peer-checked:overflow-y-visible">
                         {
-                            allComments?.map(item => (
+                            isLoading ? 
+                                <div className='flex gap-1'>
+                                    <p className="text-sm text-text">Fetching Comments...</p>
+                                    <button className='w-max text-xs text-text font-semibold cursor-pointer hover:underline'><IoRefreshCircleOutline /></button>
+                                </div>
+                                :
+                            Array.isArray(blogComments) && blogComments?.map((item) => (
                                 <figure key={item.id} className="flex gap-2">
                                     <div className="relative h-6 w-6 md:h-8 md:w-8 rounded-full bg-primary overflow-hidden flex-shrink-0"></div>
                                     <div className="flex-1 flex flex-col gap-4">
@@ -193,7 +202,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                                             else setShowReply(`${item.id.toString()}`)
                                                             setSelectedData(undefined)
                                                         }}
-                                                        className = "w-max text-xs text-text font-semibold cursor-pointer hover:underline" > Reply</button>
+                                                            className="w-max text-xs text-text font-semibold cursor-pointer hover:underline" > Reply</button>
                                                     </div>
                                                     {/* <p onClick={() => setOpenModal({ state: true, id: item.id, text: item.text })} className="w-max text-xs text-text font-semibold cursor-pointer hover:underline">Like</p> */}
                                                     {/* </div> */}
@@ -227,7 +236,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                     </div>
                 </div>
                 <div ref={commentContainerRef} className={`flex-col gap-2 ${activeTab === "Comment" ? 'flex' : 'hidden'}`}>
-                    <CommentForm handlePostComment={handlePostComment} data={selectedData} loading={loading}  />
+                    <CommentForm handlePostComment={handlePostComment} data={selectedData} loading={loading} />
                 </div>
             </aside>
         </>

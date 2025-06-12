@@ -11,7 +11,7 @@ export type TComment = Pick<Comment, "id" | "fullname" | "email" | "text" | "blo
 export type TReplyProps = Pick<Reply, "id" | "fullname" | "email" | "text" | "commentId" | "createdAt" | "updatedAt">
 export type TAdminProps = Pick<User, "id" | "firstname" | "lastname" | "email" | "image" | "password" | "role" | "status" | "token" | "createdAt" | "updatedAt">
 export type TContactProps = Pick<Contact, "id" | "fullname" | "email" | "message" | "status" | "createdAt" | "updatedAt">
-export type TDonationProps = Pick<Donation, "id" | "fullname" | "email" | "amount" | "currency" | "message" | "status" | "visiblity" | "createdAt" | "updatedAt">
+export type TDonationProps = Pick<Donation, "id" | "fullname" | "email" | "amount" | "currency" | "message" | "status" | "reference" | "visiblity" | "createdAt" | "updatedAt">
 export type TGalleryProps = Pick<Gallery, "id" | "title" | "image" | "status" | "createdAt" | "updatedAt">
 export type TLoggerProps = Pick<Logger, "id" | "message" | "userId" | "status" | "createdAt" | "updatedAt">
 

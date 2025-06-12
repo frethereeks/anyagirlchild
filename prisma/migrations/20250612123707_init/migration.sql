@@ -3,14 +3,14 @@ CREATE TABLE `Blog` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(150) NOT NULL,
     `slug` VARCHAR(300) NOT NULL,
-    `image` VARCHAR(100) NULL,
+    `image` VARCHAR(200) NULL,
     `text` LONGTEXT NOT NULL,
     `status` ENUM('VISIBLE', 'HIDDEN') NOT NULL DEFAULT 'VISIBLE',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` VARCHAR(191) NULL,
 
-    INDEX `Blog_id_idx`(`id`),
+    INDEX `fk_userId`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -22,9 +22,9 @@ CREATE TABLE `Comment` (
     `text` TEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `blogId` VARCHAR(191) NULL,
+    `blogId` VARCHAR(191) NOT NULL,
 
-    INDEX `Comment_id_idx`(`id`),
+    INDEX `fk_blogId`(`blogId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -51,7 +51,8 @@ CREATE TABLE `Donation` (
     `currency` VARCHAR(5) NOT NULL,
     `amount` INTEGER NOT NULL DEFAULT 0,
     `message` VARCHAR(160) NOT NULL,
-    `status` ENUM('PENDING', 'SUCCESSFUL', 'FAILED') NOT NULL DEFAULT 'PENDING',
+    `reference` VARCHAR(160) NOT NULL,
+    `status` ENUM('pending', 'success', 'declined') NOT NULL DEFAULT 'pending',
     `visiblity` ENUM('READ', 'UNREAD', 'DELETED') NOT NULL DEFAULT 'UNREAD',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -65,7 +66,7 @@ CREATE TABLE `Donation` (
 -- CreateTable
 CREATE TABLE `Gallery` (
     `id` VARCHAR(50) NOT NULL,
-    `image` VARCHAR(100) NOT NULL,
+    `image` VARCHAR(200) NOT NULL,
     `title` VARCHAR(100) NOT NULL,
     `status` ENUM('VISIBLE', 'HIDDEN') NOT NULL DEFAULT 'VISIBLE',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -98,9 +99,9 @@ CREATE TABLE `Reply` (
     `text` TEXT NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `commentId` VARCHAR(191) NULL,
+    `commentId` VARCHAR(191) NOT NULL,
 
-    INDEX `Reply_id_idx`(`id`),
+    INDEX `fk_commentId`(`commentId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -109,7 +110,7 @@ CREATE TABLE `User` (
     `id` VARCHAR(191) NOT NULL,
     `firstname` VARCHAR(50) NOT NULL,
     `lastname` VARCHAR(50) NOT NULL,
-    `image` VARCHAR(100) NULL,
+    `image` VARCHAR(200) NULL,
     `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
     `status` ENUM('PENDING', 'ACTIVE', 'SUSPENDED') NOT NULL DEFAULT 'PENDING',
@@ -124,13 +125,13 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
-ALTER TABLE `Blog` ADD CONSTRAINT `Blog_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Blog` ADD CONSTRAINT `fk_userId` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `Comment` ADD CONSTRAINT `Comment_blogId_fkey` FOREIGN KEY (`blogId`) REFERENCES `Blog`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Comment` ADD CONSTRAINT `fk_blogId` FOREIGN KEY (`blogId`) REFERENCES `Blog`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE `Gallery` ADD CONSTRAINT `Gallery_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Reply` ADD CONSTRAINT `Reply_commentId_fkey` FOREIGN KEY (`commentId`) REFERENCES `Comment`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Reply` ADD CONSTRAINT `fk_commentId` FOREIGN KEY (`commentId`) REFERENCES `Comment`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;

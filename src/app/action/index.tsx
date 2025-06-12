@@ -1,6 +1,6 @@
 "use server"
 import { authOptions } from "@/lib/authOptions";
-// import { authOptions } from "@/lib/authOptions";
+import plimit from "p-limit"
 import { deleteImage, uploadImage } from "@/lib/cloudinary";
 import { prisma } from "@/lib";
 import { appRoutePaths } from "@/routes/paths";
@@ -20,6 +20,8 @@ import { TCommentProps } from "@/types";
 // import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 // import Email from "next-auth/providers/email";
 
+const limit = plimit(10)
+
 // common form data
 const userData = (data: FormData) => ({
     firstname: data?.get("firstname")?.valueOf() as string,
@@ -37,6 +39,7 @@ const donationData = (data: FormData) => ({
     currency: data?.get("currency")?.valueOf() as string,
     amount: data?.get("amount")?.valueOf() as unknown as number,
     message: data?.get("message")?.valueOf() as string,
+    reference: data?.get("reference")?.valueOf() as string,
     status: data?.get("status")?.valueOf() as $Enums.DoneStatus,
 })
 
@@ -586,10 +589,11 @@ export const updateContactStatus = async (id: string) => {
 
 // Donation
 export const createDonation = async (data: FormData) => {
-    const { amount, currency, fullname, email, message, status } = donationData(data)
+    const { amount, currency, fullname, email, message, status, reference } = donationData(data)
+    console.log({ amount, currency, fullname, email, message, status, reference })
     try {
         await prisma.donation.create({
-            data: { amount: +amount, currency, fullname, email, message, status }
+            data: { amount: +amount, currency, fullname, email, message, status, reference }
         })
         // await publicScreenLog("Anyagirlchild: New Donation Received!", {fullname, email}, "initiated", `We happy and most grateful to tell you a donation of the sum of ${currency}${+amount} to Anyagirlchild Foundation was received from ${fullname} for ${message}`, true, email, {email, fullname})
         return { error: false, message: `Thanks for your donation of ${currency}${amount} to our foundation.` }
@@ -627,17 +631,33 @@ export const createGalleryImage = async (data: FormData) => {
     await verifyUser()
     const title = data?.get("title")?.valueOf() as string
     const status = data?.get("status")?.valueOf() as $Enums.ViewStatus
-    const image = data?.get("image")?.valueOf() as File
+    // const images = data?.get("image")?.valueOf() as File[]
+    const images = data.getAll("image") as File[]
+
+    console.log({title, status, images})
+    return;
+    
     try {
-        const res = await uploadImage(image, galleryFolder)
-        const file = res?.secure_url
-        console.log({ title, image: file, status })
-        // const file = "https://res.cloudinary.com/dnl81n8vu/image/upload/v1748360372/anyagirlchild/gallery/file_roeuzx.jpg"
-        await prisma.gallery.create({
-            data: { title, image: file, status }
+        const imagesToUpload = images.map(image => {
+            return limit(async () => {
+                // await uploadImage(image, galleryFolder)
+                const res = await uploadImage(image, galleryFolder)
+                return res?.secure_url
+            })
         })
+        
+        const allFiles = await Promise.all(imagesToUpload)
+        console.log({ allFiles })
+
+        allFiles.map(async (file) => {
+            await prisma.gallery.create({
+                data: { title, image: file, status }
+            })
+            console.log({ title, image: file, status })
+        })
+        // const file = "https://res.cloudinary.com/dnl81n8vu/image/upload/v1748360372/anyagirlchild/gallery/file_roeuzx.jpg"
         // await backendActionLog(`New image upload.`, {fullname: user.name!, email: user.email!}, "created", `Admin with userId ${user.id} created a new image`, false)
-        return { error: false, message: `New gallery image uploaded successfully.` }
+        return { error: false, message: `New gallery image(s) uploaded successfully.` }
     } catch (error) {
         return { error: true, message: `Unable to complete your request to upload image. Please, try again.` }
     }
@@ -648,12 +668,12 @@ export const updateGalleryImage = async (data: FormData) => {
     const title = data?.get("title")?.valueOf() as string
     const newImage = data?.get("newImage")?.valueOf() as string
     const oldImage = data?.get("oldImage")?.valueOf() as string
-    const image = data?.get("image")?.valueOf() as File
+    const image = data?.get("image")?.valueOf() as File[]
     const status = data?.get("status")?.valueOf() as $Enums.ViewStatus
     let file = oldImage;
     console.log({ id, title, newImage, oldImage, status, file })
     if (newImage === "true") {
-        const res = await uploadImage(image, galleryFolder, oldImage)
+        const res = await uploadImage(image[0], galleryFolder, oldImage)
         file = res?.secure_url
     }
     try {

@@ -1,5 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
+// import {Image} from "antd"
 import { ASSET_URL } from '@/assets'
 import { $Enums } from '@prisma/client'
 import { TGalleryProps } from '@/types'
@@ -9,7 +10,7 @@ type TPageProps = {
   role: $Enums.Role | undefined
 }
 
-export default function PBGalleryContainer({ data, role }: TPageProps) {
+export default function PBGalleryContainer({ data }: TPageProps) {
 
   return (
     <section className='flex flex-col gap-4'>
@@ -25,11 +26,11 @@ export default function PBGalleryContainer({ data, role }: TPageProps) {
             {
               data?.map((gallery, i) =>
                 i % 4 === 0 ? <div key={gallery.id} className="relative before:absolute before:w-full before:h-full before:left-0 before:top-0 before:bg-gradient-to-t before:from-slate-600 before:via-transparent to-transparent flex-1 min-h-40 overflow-hidden rounded-sm md:row-span-1">
-                  <Image src={gallery.image} alt={gallery.title || "anyagirlchild gallery photo"} className="object-cover object-left h-full w-full relative" fill />
+                  <Image src={gallery.image} alt={gallery.title || "anyagirlchild gallery photo"} className="object-cover object-left h-full w-full absolute top-0 left-0" fill priority />
                 </div>
                   :
                   <div key={gallery.id} className="relative before:absolute before:w-full before:h-full before:left-0 before:top-0 before:bg-gradient-to-t before:from-slate-600 before:via-transparent to-transparent flex-1 min-h-40 overflow-hidden rounded-sm">
-                    <Image src={gallery.image} alt={gallery.title || "anyagirlchild gallery photo"} className="object-cover object-center h-full w-full relative" fill />
+                    <Image src={gallery.image} alt={gallery.title || "anyagirlchild gallery photo"} className="object-cover object-center h-full w-full absolute top-0 left-0" fill priority />
                   </div>
               )
             }

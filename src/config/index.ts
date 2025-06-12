@@ -13,13 +13,12 @@ export const config = {
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
     APP_SESSION_MAX_AGE: 30 * 24 * 60 * 60,
     TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY || "Uwz0^axz!12i9a%yaxp0w",
-    NEXT_PUBLIC_PAYSTACK_KEY: process.env.NEXT_PUBLIC_PAYSTACK_KEY || "iNVAIWO2439Q2346",
+    NEXT_PUBLIC_PAYSTACK_PKEY: process.env.NEXT_PUBLIC_PAYSTACK_PKEY || "PUBL1CKEY=W#NTW0RK",
+    NEXT_PAYSTACK_SKEY: process.env.NEXT_PAYSTACK_SKEY || "SECR3T=W#NTW0RK",
     CLOUDINARY: {
-        API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || "674181944781841", //look into not exposing this values wither via api endpoint or next ....
-        UPLOAD_PRESET: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "egfpi8od",
-        CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "dnl81n8vu",
-        API_SECRET: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET || "sssshhhhh"
+        API_KEY: process.env.NEXT_CLOUDINARY_API_KEY || "674181944781841", //look into not exposing this values whether via api endpoint or next ....
+        UPLOAD_PRESET: process.env.NEXT_CLOUDINARY_UPLOAD_PRESET || "TH#5I5wR0NG",
+        CLOUD_NAME: process.env.NEXT_CLOUDINARY_CLOUD_NAME || "MU5TB3wR0NG",
+        API_SECRET: process.env.NEXT_CLOUDINARY_API_SECRET || "D0nT3xP053"
     },
 }
-
-// https://res.cloudinary.com/dnl81n8vu/image/upload/v1748023354/
