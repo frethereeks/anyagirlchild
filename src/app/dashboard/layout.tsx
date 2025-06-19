@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { Mulish, Inter } from "next/font/google"
+import { Space_Grotesk, Poppins } from "next/font/google"
 import "../globals.css";
 import DashThemeProvider from "@/provider/ThemeProvider";
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { DashLayout, DashImage } from "@/modules/dashboard/layout";
 import StoreProvider from "@/provider/ReduxProvider";
 
-const inter = Inter({ subsets: ["latin"], variable: "--inter", weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], fallback: ["cursive"] });
-const mulish = Mulish({ weight: ["200", "300", "400", "500", "600", "700", "800", "900"], subsets: ["latin"], variable: "--mulish", fallback: ["Helvetica", "Arial", "sans-serif"] });
+const poppins = Poppins({ subsets: ["latin"], variable: "--poppins", weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], fallback: ["cursive"] });
+const grotesk = Space_Grotesk({ weight: ["300", "400", "500", "600", "700"], subsets: ["latin"], variable: "--grotesk", fallback: ["Helvetica", "Arial", "sans-serif"] });
 
 export const metadata: Metadata = {
     title: "Anya Girlchild :: Overview",
@@ -22,12 +22,12 @@ export default function RootLayout({
 
     return (
         <html lang="en">
-            <body className={`${mulish.variable} ${inter.variable} antialiased font-mulish relative`}>
+            <body className={`${grotesk.variable} ${poppins.variable} antialiased font-grotesk relative`}>
                 <AntdRegistry>
                     <DashThemeProvider>
                         <StoreProvider>
                             <DashLayout image={<DashImage />}>
-                                <div className="font-mulish min-h-[80vh]"> {children} </div>
+                                <div className="font-grotesk min-h-[80vh]"> {children} </div>
                             </DashLayout>
                         </StoreProvider>
                     </DashThemeProvider>

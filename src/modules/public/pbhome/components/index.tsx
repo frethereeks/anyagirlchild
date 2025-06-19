@@ -3,6 +3,7 @@ import HomeBlogSection from "./HomeBlogSection"
 import HomeGallerySection from "./HomeGallerySection"
 import HomeHeroSection from "./HomeHeroSection"
 import HomeQuoteSection from "./HomeQuoteSection"
+import HomeThematicSection from "./HomeThematicSection"
 
 export {
     HomeAboutSection,
@@ -10,4 +11,5 @@ export {
     HomeGallerySection,
     HomeHeroSection,
     HomeQuoteSection,
+    HomeThematicSection,
 }

@@ -38,7 +38,7 @@ export default function DeleteModal({ closeModal, data, openModal, table, resetS
                 open={openModal}
                 footer={<></>}
                 onCancel={() => {
-                    closeModal(prev => !prev)
+                    closeModal(false)
                     resetSelected()
                 }}
                 okButtonProps={{ disabled: loading }} className="py-6"
@@ -47,7 +47,7 @@ export default function DeleteModal({ closeModal, data, openModal, table, resetS
                 <div className="flex flex-col gap-2">
                     <div className="flex-shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-full grid place-items-center mx-auto bg-danger/20 border border-danger/20 text-danger text-2xl md:text-4xl"><FaTrashCan /></div>
                     <h3 className="heading-three text-primary/70 text-center pt-4">Confirm delete of {data?.length} {table} records</h3>
-                    <p className="text-xsmall text-text text-center font-mulish font-medium pb-4">Are you sure you want to proceed with this? This action is not reversible</p>
+                    <p className="text-xsmall text-text text-center font-grotesk font-medium pb-4">Are you sure you want to proceed with this? This action is not reversible</p>
                     <div className="w-full flex justify-center gap-4 md:gap-10">
                         <button onClick={() => closeModal(prev => !prev)} className="button px-6 md:px-8 bg-background/90 hover:bg-background border border-text/20 text-primary">Cancel</button>
                         <button onClick={handleDelete} disabled={loading} className="button disabled:cursor-not-allowed px-6 md:px-8 bg-danger/90 hover:bg-danger text-white flex items-center gap-2">

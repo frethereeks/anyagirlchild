@@ -31,12 +31,8 @@ export default async function SingleBlogPage({ params: { slug } }: TPageParams) 
   const res = await fetchSingleBlogPost({ slug })
   const data = res?.data as TBlogItemProp
 
-  // fetch Other Blog Posts
-  const resBlogs = await fetchBlogPosts()
-  const dataBlogs = resBlogs?.data as TBlogItemProp[]
-
-
+  
   return (
-    <PBBlogSingleContainer data={data} relatedPosts={dataBlogs} />
+    <PBBlogSingleContainer data={data} related={{previous: res?.previous, next: res?.next}} />
   )
 }

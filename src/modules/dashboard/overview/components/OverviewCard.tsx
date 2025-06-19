@@ -14,7 +14,7 @@ export default function OverviewCard({ icon, title, value, prefix } : TOverviewC
               <div className="grid place-items-center text-2xl text-white bg-secondary h-10 w-10 rounded-md flex-shrink-0" >{icon}</div>
               <h4 className="text-small font-bold">{title}</h4>
           </div>
-          <h4 className="font-mulish text-sm md:text-lg text-text font-bold md:font-black">{prefix}{value.toLocaleString()}</h4>
+          <h4 className="font-grotesk text-sm md:text-lg text-text font-bold md:font-black">{prefix}{value.toLocaleString()}</h4>
       </aside>
   )
 }

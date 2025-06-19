@@ -16,7 +16,7 @@ export default function PBBreadCrumb({ image, extra }: TPageCrumb) {
         <section className="relative py-20 px-4 bg-primary">
             <Image src={image} alt={image.toString()} className='object-cover opacity-70 overlay' fill />
             <div className="container mx-auto relative flex flex-col justify-center items-center gap-4 py-10 text-white bg-background/10 backdrop-blur-sm">
-                <h1 style={{ textShadow: "0 0 10px #0005" }} className="text-4xl lg:text-6xl text-center text-white font-extrabold  uppercase max-w-3xl">{location.slice(1)}</h1>
+                <h2 style={{ textShadow: "0 0 10px #0005" }} className="text-4xl lg:text-6xl text-center text-white font-bold font-grotesk uppercase max-w-3xl">{location.slice(1)}</h2>
                 <div className="flex items-center gap-4">
                     <Link href={appRoutePaths.home} className='text-sm text-background font-bold p-2'>Home</Link>
                     •

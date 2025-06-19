@@ -10,16 +10,24 @@ import { TBlogItemProp } from '@/types';
 import { RiCalendar2Line } from 'react-icons/ri';
 import parser from 'html-react-parser';
 import DOMPurify from 'dompurify';
+import { FaCaretLeft } from 'react-icons/fa6';
+import Link from 'next/link';
+import { appRoutePaths } from '@/routes/paths';
+
+type relatedBlogProps = Pick<TBlogItemProp, "id" | "title" | "slug" | "image"> | null
 
 type TPageProps = {
   data: TBlogItemProp | undefined
-  relatedPosts: TBlogItemProp[]
+  related: {
+    previous?: relatedBlogProps
+    next?: relatedBlogProps
+  }
 }
 
-export default function PBBlogSingleContainer({ data, relatedPosts }: TPageProps) {
-  
+export default function PBBlogSingleContainer({ data, related }: TPageProps) {
+
   return (
-    <main className='flex flex-col xl:flex-row gap-4 lg:gap-8 bg-white py-10'>
+    <main className='flex flex-col gap-4 lg:gap-8 bg-white py-10'>
       <section className="relative flex-1">
         <aside className="container mx-auto flex flex-col justify-end items-center px-4 pt-64 relative">
           <div className="h-4/5 w-full absolute top-0 left-0">
@@ -57,13 +65,36 @@ export default function PBBlogSingleContainer({ data, relatedPosts }: TPageProps
         </aside>
         <CommentSection key={"802346912"} blog={data} />
       </section>
-      <aside className='w-full xl:max-w-lg px-4 grid grid-cols-2 md:grid-cols-3 xl:flex xl:flex-col gap-4 h-max max-h-max sticky top-0 right-0'>
-        {
-          relatedPosts.filter(item => item.id !== data?.id).slice(0, 3).map(blog => (
-            <BlogCard key={blog.id} {...blog} />
-          ))
-        }
-      </aside>
+      <section className='w-full xl:max-w-lg px-4 grid grid-cols-2'>
+        <aside className="border border-text rounded-md rounded-r-0 flex gap-2">
+          {
+            related.previous &&
+              <Link href={`${appRoutePaths.blog}/${related?.previous?.slug}`} className='flex gap-2 bg-white hover:bg-backdrop rounded-md rounded-r-0 '>
+                <FaCaretLeft className='text-text text-base md:text-lg flex-shrink-0' />
+                <div className="flex gap-2">
+                  <figure className="relative grid h-12 w-12 md:h-16 md:w-16 rounded-md overflow-hidden flex-shrink-0">
+                    <Image src={related?.previous?.image!} alt={related?.previous?.title} className='object-cover' fill />
+                  </figure>
+                  <h4 className="text-small md:text-lg text-text leading-loose">{related?.previous?.title}</h4>
+                </div>
+              </Link>
+          }
+        </aside>
+        <aside className="border border-text rounded-md rounded-l-0 flex gap-2">
+          {
+            related.next &&
+              <Link href={`${appRoutePaths.blog}/${related?.next?.slug}`} className='flex gap-2 bg-white hover:bg-backdrop rounded-md rounded-r-0 '>
+                <FaCaretLeft className='text-text text-base md:text-lg flex-shrink-0' />
+                <div className="flex gap-2">
+                  <figure className="relative grid h-12 w-12 md:h-16 md:w-16 rounded-md overflow-hidden flex-shrink-0">
+                    <Image src={related?.next?.image!} alt={related?.next?.title} className='object-cover' fill />
+                  </figure>
+                  <h4 className="text-small md:text-lg text-text leading-loose">{related?.next?.title}</h4>
+                </div>
+              </Link>
+          }
+        </aside>
+      </section>
     </main>
   )
 }

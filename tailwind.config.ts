@@ -23,11 +23,12 @@ export default {
         success: "#09dba0",
         danger: "#f34f7c",
         text: "#64748b",
-        "dark-text": "#584455",
+        // "dark-text": "#584455",
+        "dark-text": "#333333",
       },
       fontFamily: {
-        mulish: "var(--mulish)",
-        inter: "var(--inter)",
+        poppins: "var(--poppins)",
+        grotesk: "var(--grotesk)",
       }
     },
   },

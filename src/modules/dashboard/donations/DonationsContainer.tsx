@@ -68,7 +68,7 @@ export default function DonationsContainer({ data, role }: { data: TDonationProp
               <div className="flex justify-between p-2 text-sm">Date: <span className="text-right font-semibold">{moment(selectedData.createdAt).format("DD-MM-YYYY")}</span></div>
               {/* <div className="flex gap-2 p-2 text-sm">Purpose: <span className='text-justify font-semibold'>{selectedData.message}</span></div> */}
             </div>
-            {/* <p className="text-xsmall text-text text-center font-mulish font-medium pb-4">Are you sure you want to proceed with this? This action is not reversible</p>
+            {/* <p className="text-xsmall text-text text-center font-grotesk font-medium pb-4">Are you sure you want to proceed with this? This action is not reversible</p>
             <div className="w-full flex justify-center gap-4 md:gap-10">
               <button onClick={() => dispatch(triggerModal({ id: undefined, open: false }))} className="button px-6 md:px-8 bg-background/90 hover:bg-background border border-text/20 text-primary">Close</button>
             </div> */}

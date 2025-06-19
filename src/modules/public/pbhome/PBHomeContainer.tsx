@@ -1,5 +1,5 @@
 import React from 'react'
-import { HomeAboutSection, HomeBlogSection, HomeGallerySection, HomeHeroSection, HomeQuoteSection } from './components'
+import { HomeAboutSection, HomeBlogSection, HomeGallerySection, HomeHeroSection, HomeQuoteSection, HomeThematicSection } from './components'
 
 export default function PBHomeContainer() {
   return (
@@ -7,6 +7,7 @@ export default function PBHomeContainer() {
       <HomeHeroSection />
       <HomeAboutSection />
       <HomeQuoteSection />
+      <HomeThematicSection />
       <HomeGallerySection />
       <HomeBlogSection />
     </main>

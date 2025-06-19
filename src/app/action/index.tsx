@@ -310,10 +310,12 @@ export const fetchSingleUsers = async (id: string) => {
 
 
 // Blog
-export const fetchBlogPosts = async () => {
+export const fetchBlogPosts = async (start?: number, end?: number) => {
     try {
         const data = await prisma.blog.findMany({
             orderBy: { createdAt: "desc" },
+            take: end ? end : undefined,
+            skip: start ? start : undefined,
             include: {
                 comments: {
                     include: {
@@ -350,7 +352,19 @@ export const fetchSingleBlogPost = async ({ slug }: { slug: string }) => {
                 }
             }
         })
-        return { error: false, message: `Blog post successfully fetched.`, data }
+        const [previous, next] = await Promise.all([
+            prisma.blog.findFirst({
+                where: { createdAt: { lt: data?.createdAt } },
+                select: { id: true, title: true, slug: true, image: true, },
+                orderBy: { createdAt: "desc" }
+            }),
+            prisma.blog.findFirst({
+                where: { createdAt: { gt: data?.createdAt } },
+                select: { id: true, title: true, slug: true, image: true, },
+                orderBy: { createdAt: "asc" }
+            }),
+        ])
+        return { error: false, message: `Blog post successfully fetched.`, data, next, previous }
     } catch (error) {
         return { error: true, message: `Unable to fetch blog. Please, try again later or check your network connection.` }
     }
@@ -616,10 +630,12 @@ export const fetchDonations = async () => {
 }
 
 // Gallery
-export const fetchGalleryImages = async () => {
+export const fetchGalleryImages = async (start?:number, end?: number) => {
     try {
         const data = await prisma.gallery.findMany({
-            orderBy: { createdAt: "desc" }
+            orderBy: { createdAt: "desc" },
+            take: end ? end : undefined,
+            skip: start ? start : undefined,
         })
         return { error: false, message: `Gallery images fetched successfully`, data }
     } catch (error) {

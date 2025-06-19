@@ -8,7 +8,7 @@ import { useForm } from 'antd/es/form/Form'
 import TextArea from 'antd/es/input/TextArea'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { usePaystackPayment } from 'react-paystack';
 import { PaystackProps } from 'react-paystack/dist/types'
 
@@ -128,8 +128,18 @@ export default function PBDonationContainer() {
           className='flex flex-col gap-0'
         >
           <div className="flex flex-col gap-1 py-4">
-            <h4 className="text-text text-3xl md:text-3xl font-semibold">Any giver is a <span className="font-extrabold text-secondary">Saver!</span></h4>
-            <p className="text-sm md:text-base text-text">Thank you for this act of kindness and generosity.</p>
+             
+
+            
+
+            {/* 🔒 Safe & Secure: Your information is safe with us. We will never share your details with third parties without your consent. See our [Privacy Policy] for more information.
+            💯 Transparency Guaranteed: 100% of your donation goes directly to supporting our programs and projects for the welfare of the girl child.
+            📌 Note: Donations made are voluntary and non-refundable.
+            Thank you for standing with us to give the girl child a better shot at life.
+            For any questions about donations, please contact: */}
+
+            <h4 className="text-text text-3xl md:text-3xl font-semibold font-grotesk">Donate to empower a <span className="font-bold text-secondary">Girl’s Future</span></h4>
+            <p className="text-sm md:text-base text-text">Your support helps us provide education, health support, and life-changing opportunities for girls in vulnerable communities. Every donation—no matter the size—makes a difference.</p>
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="fullname" className="w-full text-sm md:text-base text-text/70 font-medium">Fullname:</label>

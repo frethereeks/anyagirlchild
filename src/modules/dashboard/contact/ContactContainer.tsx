@@ -62,11 +62,11 @@ export default function ContactContainer({ data, role }: { data: TContactProps[]
                       <p className="text-3xl font-black -tracking-[0.25rem]">{selectedData?.fullname.split(" ")[0][0]} {selectedData?.fullname.split(" ")[1][0]}</p>
                     </div>
                     <div className="flex-1 flex flex-col pb-1">
-                      <h5 className="leading-none text-text text-sm md:text-base font-semibold font-mulish select-none">{selectedData.fullname}</h5>
+                      <h5 className="leading-none text-text text-sm md:text-base font-semibold font-grotesk select-none">{selectedData.fullname}</h5>
                       <a href={`mailto:${selectedData.email}`} className='w-full underline leading-none text-text text-xs font-normal'>{selectedData.email}</a>
                     </div>
                   </div>
-                  <p className="text-text/60 text-xs font-medium font-mulish select-none">{moment(selectedData.createdAt).fromNow()}</p>
+                  <p className="text-text/60 text-xs font-medium font-grotesk select-none">{moment(selectedData.createdAt).fromNow()}</p>
                 </div>
                 <p className="relative bg-white rounded-md py-2 text-text/80 text-sm text-justify">
                   {selectedData.message}

@@ -166,8 +166,8 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                     <div className="flex-1 flex flex-col gap-4">
                                         <div className="flex-1 flex flex-col gap-1.5">
                                             <div className="flex justify-between gap-4 translate-y-1 pb-2">
-                                                <h5 className="text-text text-sm md:text-base font-semibold font-mulish select-none">{item.fullname}</h5>
-                                                <p className="text-text/60 text-xs font-mulish select-none">{moment(item.createdAt).fromNow()}</p>
+                                                <h5 className="text-text text-sm md:text-base font-semibold font-grotesk select-none">{item.fullname}</h5>
+                                                <p className="text-text/60 text-xs font-grotesk select-none">{moment(item.createdAt).fromNow()}</p>
                                             </div>
                                             <p className="group relative after:absolute after:-top-[2px] after:-left-[6px] after:border-[6px] after:border-transparent after:border-t-[#5bbeb4] after:skew-x-[40deg] after:rotate-[40deg] bg-[#5bbeb4] rounded-md p-2 text-white text-sm text-justify flex gap-2">
                                                 {
@@ -219,8 +219,8 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                                     <div className="relative h-6 w-6 md:h-8 md:w-8 rounded-full bg-primary overflow-hidden flex-shrink-0"></div>
                                                     <div className="flex-1 flex flex-col gap-4">
                                                         <div className="flex justify-between gap-4 translate-y-1">
-                                                            <h5 className="text-text text-sm md:text-base font-semibold font-mulish select-none">{reply.fullname}</h5>
-                                                            <p className="text-text/60 text-xs font-medium font-mulish select-none">{moment(reply.createdAt).fromNow()}</p>
+                                                            <h5 className="text-text text-sm md:text-base font-semibold font-grotesk select-none">{reply.fullname}</h5>
+                                                            <p className="text-text/60 text-xs font-medium font-grotesk select-none">{moment(reply.createdAt).fromNow()}</p>
                                                         </div>
                                                         <p className="relative after:absolute after:-top-[2px] after:-left-[6px] after:border-[6px] after:border-transparent after:border-t-backdrop after:skew-x-[40deg] after:rotate-[40deg] border-text/20 bg-backdrop rounded-lg rounded-tl-none p-2 text-text/80 text-sm text-justify">
                                                             {reply.text}

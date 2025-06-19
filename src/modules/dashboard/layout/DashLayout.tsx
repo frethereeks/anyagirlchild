@@ -61,7 +61,7 @@ export default function DashLayout({ children, image }: { children: React.ReactN
                 >
                     <div className="bg-white flex justify-between items-center gap-8 w-full pl-3 lg:pl-4 py-4">
                         <div className="flex lg:justify-center items-center flex-shrink-0 relative -mt-2">
-                            <Link href={appRoutePaths.home} className='text-danger hover:text-danger text-lg md:text-xl -tracking-[.15rem] font-black font-mulish leading-none uppercase'>Anyagirlchild <span className='bg-secondary text-white grid place-items-center text-xs w-max text-center tracking-[.22rem] lg:tracking-[.3rem] uppercase -my-1 lg:-my-1 pl-1.5 md:pl-2.5'>FOUNDATION</span></Link>
+                            <Link href={appRoutePaths.home} className='text-danger hover:text-danger text-lg md:text-xl -tracking-[.15rem] font-black font-grotesk leading-none uppercase'>Anyagirlchild <span className='bg-secondary text-white grid place-items-center text-xs w-max text-center tracking-[.22rem] lg:tracking-[.3rem] uppercase -my-1 lg:-my-1 pl-1.5 md:pl-2.5'>FOUNDATION</span></Link>
                         </div>
                         <div className="flex items-center gap-2">
                             <Link href={appRoutePaths.adminsettings}>{image}</Link>

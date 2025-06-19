@@ -24,7 +24,7 @@ export default function PBFooter() {
               <p className="text-lg text-text text-center font-semibold tracking-[.5rem] leading-none uppercase w-full py-0.5 px-3 whitespace-pre-wrap bg-white">Foundation</p>
             </div>
           </Link>
-          <p className="text-sm lg:text-base text-white font-medium py-1.5">Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.</p>
+          <p className="text-sm lg:text-base text-white font-medium py-1.5">Empowering underprivileged girls through education, mentorship, and holistic development.</p>
         </aside>
         <aside className="flex flex-col sm:justify-center gap-4">
           <h4 className='heading-three'>Contact</h4>
