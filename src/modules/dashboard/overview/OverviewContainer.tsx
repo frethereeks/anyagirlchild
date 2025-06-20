@@ -30,9 +30,9 @@ export default async function OverviewContainer() {
             totalBlog={res?.data?.blogData.length || 0} 
             totalGallery={res?.data?.galleryData.length || 0} 
           />
-          {/* <OverviewGraph /> */}
-          {/* <OverviewAdmins adminData={res?.data?.adminData || []}/> */}
-          {/* <OverviewDonations donationData={res?.data?.donationData || []} /> */}
+          <OverviewGraph />
+          <OverviewAdmins adminData={res?.data?.adminData || []}/>
+          <OverviewDonations donationData={res?.data?.donationData || []} />
         </div>
         <section className="flex flex-col gap-4">
           <OverviewGallery galleryData={res?.data?.galleryData || []} />

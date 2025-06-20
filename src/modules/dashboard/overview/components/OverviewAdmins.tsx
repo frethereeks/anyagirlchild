@@ -1,7 +1,7 @@
-// "use client"
+"use client"
 import { Table } from 'antd'
 import React from 'react'
-import { ADMIN_COLUMN } from '../../admins/columns'
+import { ADMIN_COLUMN } from '@/modules/dashboard/admins/columns'
 import Link from 'next/link'
 import { appRoutePaths } from '@/routes/paths'
 import { IoChevronForward } from 'react-icons/io5'

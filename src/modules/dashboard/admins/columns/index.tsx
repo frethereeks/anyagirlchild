@@ -33,7 +33,7 @@ export const ADMIN_COLUMN = (): TableColumnsType<TAdminProps> => {
             key: "Role",
             title: "Role",
             render: (_, val) => (
-                <p className={`text-left text-sm ${val.role === "ROOT" ? 'bg-secondary/20 text-secondary' : 'bg-transparent text-text'} py-1 rounded-sm font-medium capitalize`}>{val.role === "ROOT" ? "Owner" : val.role}</p>
+                <p className={`text-left text-sm ${val.role === "ROOT" ? 'text-secondary font-bold' : 'bg-transparent text-text'} py-1 rounded-sm font-medium capitalize`}>{val.role === "ROOT" ? "Owner" : val.role}</p>
             ),
         },
         {

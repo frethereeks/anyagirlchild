@@ -146,12 +146,12 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
     return (
         <>
             <DeleteModal key={"802348789234"} openModal={deleteModal} closeModal={setDeleteModal} data={deletingId} table='comment' resetSelected={() => setDeletingId([])} />
-            <aside className="container mx-auto flex flex-col p-4 pt-0 relative">
+            <aside className="max-w-screen-lg mx-auto flex flex-col p-4 pt-0 relative">
                 <div className="flex py-2 pb-4">
                     <p onClick={() => setActiveTab("Comment")} className={`w-max flex items-center gap-2 p-2 px-4 text-sm text-text font-semibold cursor-pointer relative border-b-2 ${activeTab === "Comment" ? 'border-b-danger' : 'border-b-transparent'}`}>Write a Comment </p>
                     <p onClick={() => { setActiveTab("AllComments")}} className={`w-max flex items-center gap-2 p-2 px-4 text-sm text-text font-semibold cursor-pointer relative border-b-2 ${activeTab === "Comment" ? 'border-b-transparent' : 'border-b-danger'}`}>All Comments <span className="-mt-1 text-xxsmall text-white bg-danger h-5 w-5 rounded-full grid place-items-center">{blogComments?.length ?? 0}</span></p>
                 </div>
-                <div className={`flex-col gap-2 ${activeTab === "AllComments" ? 'flex' : 'hidden'}`}>
+                <div className={`max-w-screen-md mr-auto flex-col gap-2 ${activeTab === "AllComments" ? 'flex' : 'hidden'}`}>
                     <div className="flex flex-col gap-3 min-h-0 overflow-y-hidden peer-checked:min-h-full peer-checked:overflow-y-visible">
                         {
                             isLoading ? 
@@ -235,7 +235,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                         }
                     </div>
                 </div>
-                <div ref={commentContainerRef} className={`flex-col gap-2 ${activeTab === "Comment" ? 'flex' : 'hidden'}`}>
+                <div ref={commentContainerRef} className={`max-w-screen-md flex-col gap-2 ${activeTab === "Comment" ? 'flex' : 'hidden'}`}>
                     <CommentForm handlePostComment={handlePostComment} data={selectedData} loading={loading} />
                 </div>
             </aside>

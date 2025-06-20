@@ -165,6 +165,7 @@ export const handleTokenVerification = async (email: string, token: string) => {
     }
 }
 
+// Analytics Data
 export const fetchDashboarData = async () => {
     try {
         const [adminData, donationData, galleryData, blogData] = await prisma.$transaction([
@@ -179,6 +180,44 @@ export const fetchDashboarData = async () => {
         return { error: true, message: 'Unable to fetch dashboard data. Please, try again', data: { adminData: [], donationData: [], galleryData: [], blogData: [] } }
     }
 }
+
+export const fetchDonationStats = async ({
+    year,
+    month,
+}: {
+    year: number;
+    month?: number | 'all';
+}) => {
+    const start = new Date(year, 0, 1);
+    const end = new Date(year + 1, 0, 1);
+
+    const where: any = {
+        createdAt: { gte: start, lt: end },
+    };
+
+    if (month && month !== 'all') {
+        where.createdAt = {
+            gte: new Date(year, month - 1, 1),
+            lt: new Date(year, month, 1),
+        };
+    }
+    console.log({where})
+    // const results = await prisma.$queryRaw<
+    //     Array<{ month: number; total: number }>
+    // >`SELECT 
+    //   EXTRACT(MONTH FROM createdAt) AS month,
+    //   SUM(amount) AS total
+    // FROM Donation
+    // WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt}
+    // GROUP BY month
+    // // ORDER BY month ASC;`;
+    const results = await prisma.$queryRaw`SELECT EXTRACT(MONTH FROM createdAt) AS month, currency, SUM(amount) AS total FROM donation WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month, currency ORDER BY month, currency ASC;`;
+    console.log({ results })
+
+    // return { result: JSON.stringify(results) }; // [{ month: 1, total: 5000 }, ...]
+    return { result: [{ month: 1, total: 5000 }, { month: 2, total: 3500 }] }; // [{ month: 1, total: 5000 }, ...]
+};
+
 
 // User
 export const createUser = async (data: FormData) => {
@@ -630,7 +669,7 @@ export const fetchDonations = async () => {
 }
 
 // Gallery
-export const fetchGalleryImages = async (start?:number, end?: number) => {
+export const fetchGalleryImages = async (start?: number, end?: number) => {
     try {
         const data = await prisma.gallery.findMany({
             orderBy: { createdAt: "desc" },
@@ -668,7 +707,7 @@ export const createGalleryImage = async (data: FormData) => {
                     data: { title, image: file, status },
                 })
             )
-      );
+        );
         // await backendActionLog(`New image upload.`, {fullname: user.name!, email: user.email!}, "created", `Admin with userId ${user.id} created a new image`, false)
         return { error: false, message: `New gallery image(s) uploaded successfully.` }
     } catch (error) {

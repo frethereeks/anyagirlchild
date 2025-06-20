@@ -8,6 +8,14 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
     title: "Anya Girlchild :: About",
     description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+    icons: ASSET_URL["anya_girlchild_logo"].src,
+    openGraph: {
+        type: "website",
+        title: "Anya Girlchild :: About",
+        images: ASSET_URL["donation_personnel"].src,
+        siteName: "Anya Girlchild Foundation",
+        description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+    }
 };
 
 

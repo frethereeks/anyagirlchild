@@ -11,8 +11,8 @@ export default function BlogCard({ image, slug, title }: TBlogItemProp) {
             <figure className="relative rounded-lg overflow-hidden h-36 sm:h-40 md:h-40 bg-primary">
                 {
                     image ? 
-                    <Image src={image} alt={title} className="absolute left-0 top-0 w-full h-full object-cover group-hover:-rotate-2 group-hover:scale-110 group-hover:grayscale-[50%]" fill /> :
-                    <Image src={ASSET_URL["alms_donation"]} alt={title} className="absolute left-0 top-0 w-full h-full object-cover group-hover:-rotate-2 group-hover:scale-110 group-hover:grayscale-[50%]" fill />
+                    <Image src={image} alt={title} className="absolute left-0 top-0 w-full h-full object-cover group-hover:scale-110 group-hover:grayscale-[50%]" fill /> :
+                    <Image src={ASSET_URL["alms_donation"]} alt={title} className="absolute left-0 top-0 w-full h-full object-cover group-hover:scale-110 group-hover:grayscale-[50%]" fill />
                 }
             </figure>
             <div className="flex-1 flex flex-col gap-2 px-2">

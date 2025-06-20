@@ -41,7 +41,7 @@ export default function OverviewGallery({ galleryData }: { galleryData: TGallery
                             // 1042: { slidesPerView: 3, spaceBetween: 30 },
                         }}
                         items={galleryData.map(el => (
-                            <figure className='relative py-20'>
+                            <figure key={el.id} className='relative py-20'>
                                 <Image src={el.image} alt={el.title} className='overlay object-cover' fill />
                             </figure>
                         )) || []}

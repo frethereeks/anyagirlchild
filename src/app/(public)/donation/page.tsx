@@ -12,6 +12,14 @@ const PBDonationContainer = dynamic(() => import("@/modules/public/pbdonation/PB
 export const metadata: Metadata = {
     title: "Anya Girlchild :: Donation",
     description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+    icons: ASSET_URL["anya_girlchild_logo"].src,
+    openGraph: {
+        type: "website",
+        title: "Anya Girlchild :: Donation",
+        images: ASSET_URL["group_donation"].src,
+        siteName: "Anya Girlchild Foundation",
+        description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+    }
 };
 
 

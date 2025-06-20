@@ -1,8 +1,21 @@
 import { ASSET_URL } from '@/assets'
 import PBBreadCrumb from '@/modules/public/pblayout/PBBreadCrumb'
 import { appRoutePaths } from '@/routes/paths'
+import { Metadata } from 'next';
 import Link from 'next/link'
-import React from 'react'
+
+export const metadata: Metadata = {
+    title: "Anya Girlchild :: Privacy Policy",
+    description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+    icons: ASSET_URL["anya_girlchild_logo"].src,
+    openGraph: {
+        type: "website",
+        title: "Anya Girlchild :: Privacy Policy",
+        images: ASSET_URL["anyagirlchild_douvet_gift"].src,
+        siteName: "Anya Girlchild Foundation",
+        description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+    }
+};
 
 export default function PBPrivacyPolicy() {
     return (

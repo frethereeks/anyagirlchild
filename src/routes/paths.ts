@@ -36,6 +36,7 @@ export const publicRoutes = {
     gallery: "/gallery",
     contact: "/contact",
     donation: "/donation",
+    partner: "/partner",
     search: "/search",
     error: "/error",
     sitemap: "/sitemap.xml",

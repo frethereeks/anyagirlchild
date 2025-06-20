@@ -17,31 +17,31 @@ body {
 
 @layer components {
   .overlay {
-    @apply top-0 left-0 absolute w-full h-full;
+    @apply font-grotesk top-0 left-0 absolute w-full h-full;
   }
 
   .after-overlay {
-    @apply after:top-0 after:left-0 after:absolute after:w-full after:h-full;
+    @apply font-grotesk after:top-0 after:left-0 after:absolute after:w-full after:h-full;
   }
 
   .before-overlay {
-    @apply before:top-0 before:left-0 before:absolute before:w-full before:h-full;
+    @apply font-grotesk before:top-0 before:left-0 before:absolute before:w-full before:h-full;
   }
 
   .bg-orange-grad {
-    @apply bg-gradient-to-br from-orange-600 to-orange-400;
+    @apply font-grotesk bg-gradient-to-br from-orange-600 to-orange-400;
   }
 
   .bg-primary-grad {
-    @apply bg-gradient-to-br from-primary to-blue-700;
+    @apply font-grotesk bg-gradient-to-br from-primary to-blue-700;
   }
 
   .bg-purple-grad {
-    @apply bg-gradient-to-br from-indigo-600 to-indigo-400;
+    @apply font-grotesk bg-gradient-to-br from-indigo-600 to-indigo-400;
   }
 
   .bg-red-grad {
-    @apply bg-gradient-to-br from-danger to-rose-600;
+    @apply font-grotesk bg-gradient-to-br from-danger to-rose-600;
   }
 
   .bg-green-grad {
@@ -53,47 +53,47 @@ body {
   }
 
   .heading-one {
-    @apply font-bold text-3xl md:text-4xl;
+    @apply font-grotesk font-bold text-3xl md:text-4xl;
   }
 
   .heading-two {
-    @apply font-bold text-2xl md:text-3xl;
+    @apply font-grotesk font-bold text-2xl md:text-3xl;
   }
 
   .heading-three {
-    @apply font-semibold text-xl md:text-2xl;
+    @apply font-grotesk font-semibold text-xl md:text-2xl;
   }
 
   .heading-four {
-    @apply font-semibold text-lg md:text-xl;
+    @apply font-grotesk font-semibold text-lg md:text-xl;
   }
 
   .heading-five {
-    @apply font-semibold text-base md:text-lg;
+    @apply font-grotesk font-semibold text-base md:text-lg;
   }
 
   .text-default {
-    @apply font-medium text-sm md:text-lg;
+    @apply font-grotesk font-medium text-sm md:text-lg;
   }
 
   .text-small {
-    @apply font-normal text-xs md:text-sm;
+    @apply font-grotesk font-normal text-xs md:text-sm;
   }
 
   .text-xsmall {
-    @apply font-normal text-[.65rem] md:text-xs;
+    @apply font-grotesk font-normal text-[.65rem] md:text-xs;
   }
 
   .text-xxsmall {
-    @apply font-normal text-[.5rem] md:text-[.65rem];
+    @apply font-grotesk font-normal text-[.5rem] md:text-[.65rem];
   }
 
   .card {
-    @apply bg-white p-2 md:p-4 rounded-md text-text shadow-lg shadow-background;
+    @apply font-grotesk bg-white p-2 md:p-4 rounded-md text-text shadow-lg shadow-background;
   }
 
   .button {
-    @apply py-1 px-4 md:px-6 rounded-sm text-white text-xs md:text-sm font-medium cursor-pointer whitespace-nowrap;
+    @apply font-grotesk py-1 px-4 md:px-6 rounded-sm text-white text-xs md:text-sm font-medium cursor-pointer whitespace-nowrap;
   }
 }
 
