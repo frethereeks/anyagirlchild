@@ -6,7 +6,6 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/modules/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    // './node_modules/antd/dist/reset.css',
   ],
   // darkMode: ["class", "selector"],
   darkMode: "class",

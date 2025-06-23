@@ -46,7 +46,7 @@ export default function PBContactForm() {
       className='flex flex-col gap-4'
     >
       <div className="flex flex-col gap-1 py-4">
-        <h4 className="text-secondary text-xl md:text-3xl text-center font-bold">Tell us about yourself</h4>
+        <h4 className="text-secondary text-xl md:text-3xl text-center font-bold font-grotesk">Tell us about yourself</h4>
         <p className="text-sm md:text-base text-text text-center">Whether you have questions or you would just like to say hello, contact us.</p>
       </div>
       <div className="flex flex-col gap-1">

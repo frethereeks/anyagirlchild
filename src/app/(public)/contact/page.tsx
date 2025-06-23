@@ -11,9 +11,13 @@ export const metadata: Metadata = {
     openGraph: {
         type: "website",
         title: "Anya Girlchild :: Contact",
-        images: ASSET_URL["donation_vanunload"].src,
+        images: [
+            { url: ASSET_URL["donation_vanunload"].src, width: 800, height: 600 },
+            { url: ASSET_URL["donation_vanunload"].src, width: 1800, height: 1600 },
+        ],
         siteName: "Anya Girlchild Foundation",
         description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+        locale: 'en_US',
     }
 };
 

@@ -9,6 +9,7 @@ import { TAuthProps } from '@/types'
 import { useRouter } from 'next/navigation'
 import { signIn, useSession } from 'next-auth/react'
 import { handleReset } from '@/app/action'
+import { GrUserAdmin } from 'react-icons/gr'
 
 export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) {
     const [form] = useForm<TAuthProps>()
@@ -60,7 +61,13 @@ export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) 
                 router.refresh()
             }
         } catch (error) {
-            notification.error({ message: 'Unable to complete request, please, check your network and try again', key: "123" })
+            if (error instanceof Error) {
+                console.log('error', error)
+                notification.error({ message: 'Something went wrong. '+ error.message, key: "123" })
+            }
+            else {
+                notification.error({ message: 'Unable to complete request, please, check your network and try again', key: "123" })
+            }
         }
         finally {
             setLoading(false)
@@ -78,8 +85,8 @@ export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) 
                             className='flex flex-col gap-4 p-4'
                         >
                             <div className="flex flex-col gap-1 py-4">
-                                <h4 className="text-text text-xl md:text-3xl font-semibold text-nowrap">Forgot your <span className="font-extrabold text-secondary">password</span>?</h4>
-                                <p className="text-sm md:text-base text-text">Enter your email and we'll get you back on track.</p>
+                                <h4 className="text-text text-xl md:text-3xl font-semibold font-grotesk text-nowrap">Forgot your <span className="font-extrabold text-secondary">password</span>?</h4>
+                                <p className="text-sm md:text-base text-text">Enter your email and we&apos;ll get you back on track.</p>
                             </div>
                             <div className="flex flex-col gap-1 pt-5">
                                 <label htmlFor="reset-email" className="w-full text-sm md:text-base text-text/70 font-medium">Email address:</label>
@@ -102,8 +109,8 @@ export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) 
                             className='flex flex-col gap-4 p-4'
                         >
                             <div className="flex flex-col gap-1 py-4">
-                                <h4 className="text-text text-xl md:text-3xl font-semibold text-nowrap">Welcome back</h4>
-                                <p className="text-sm md:text-base text-text">Login to manage your account.</p>
+                                <h4 className="text-text text-xl md:text-3xl font-semibold font-grotesk text-nowrap">Welcome back</h4>
+                                <p className="text-sm md:text-base text-text font-grotesk">Login to manage your account.</p>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="email" className="w-full text-sm md:text-base text-text/70 font-medium">Email address:</label>
@@ -120,9 +127,12 @@ export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) 
                                     <Input type='password' className='border border-background rounded-md' placeholder='********' minLength={8} required style={{ background: "transparent" }} />
                                 </Form.Item>
                             </div>
-                            <div className="flex flex-col sm:flex-row justify-between gap-4">
-                                <Link href={appRoutePaths.signup} className='flex items-center gap-1.5 text-text text-xs sm:text-sm font-medium'>Don't have an account? <span className="font-bold text-secondary">Signup</span></Link>
-                                <button disabled={loading} type='submit' className='button bg-secondary'>{loading ? 'Processing...' : 'Get Started'}</button>
+                            <div className="flex flex-col-reverse sm:flex-row justify-between gap-4">
+                                <Link href={appRoutePaths.signup} className='flex items-center gap-1.5 text-text text-xs font-medium'>Don&apos;t have an account? <span className="font-bold text-secondary">Signup</span></Link>
+                                <button disabled={loading} type='submit' className='button w-max bg-secondary'>
+                                    {loading ? <span className='animate-spin border-2 border-white border-r-transparent rounded-full h-5 w-5 grid place-items-center'></span> : <GrUserAdmin />}
+                                    {loading ? 'Processing...' : 'Get Started'}
+                                </button>
                             </div>
                             {/* <p className="text-xs md:text-sm text-text text-center pb-4">We&apos;ll get back to you in 1-2 business days</p> */}
                         </Form>

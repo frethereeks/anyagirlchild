@@ -22,18 +22,18 @@ export default function HomeAboutSection() {
                     </div>
                 </aside>
             </div>
-            <div className="max-w-screen-lg mx-auto relative flex flex-col md: gap-4 md:gap-8 justify-center items-center py-10 rounded-md">
+            <div className="max-w-screen-lg mx-auto relative flex flex-col md: gap-4 md:gap-8 justify-center items-center pb-10 rounded-md">
                 {
                     missionVisionData.map((el, i) => (
-                        <div key={el.id} className="flex flex-col md:flex-row gap-8 md:gap-12">
-                            <div className="flex-shrink-0 w-20 md:w-36 grid place-items-center bg-backdrop/60 rounded-sm border">
+                        <div key={el.id} className="flex flex-col md:flex-row gap-8 md:gap-12 mt-10">
+                            <div className="flex-shrink-0 py-4 md:py-0 w-24 md:w-36 grid place-items-center bg-backdrop/60 rounded-sm border">
                                 <div className={`h-16 w-16 md:h-24 md:w-24 bg-gradient-to-tr ${i === 0 ? 'from-secondary to-secondary/90 -rotate-12 rounded-full' : 'from-danger to-danger/90 rotate-0 rounded-full'} grid place-items-center drop-shadow-2xl shadow-primary`}>
                                     {el.icon}
                                 </div>
                             </div>
                             <div className="flex-1 flex flex-col gap-4">
                                 <h4 className={`text-xl md:text-2xl ${i === 0 ? 'text-secondary' : 'text-danger'} font-bold font-grotesk`}>{el.title}</h4>
-                                <p className="text-base md:text-lg text-justify leading-loose font-poppins text-text">{el.description}.</p>
+                                <p className="text-base md:text-lg text-justify leading-loose font-poppins text-text">{el.description}</p>
                             </div>
                         </div>
                     ))

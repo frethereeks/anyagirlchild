@@ -1,13 +1,9 @@
 import AboutMainSection from "./AboutMainSection"
-import HomeBlogSection from "./HomeBlogSection"
+import AboutCoreSection from "./AboutCoreSection"
 import AboutGallerySection from "./AboutGallerySection"
-import HomeHeroSection from "./HomeHeroSection"
-import AboutQuoteSection from "./AboutQuoteSection"
 
 export {
     AboutMainSection,
-    HomeBlogSection,
+    AboutCoreSection,
     AboutGallerySection,
-    HomeHeroSection,
-    AboutQuoteSection,
 }

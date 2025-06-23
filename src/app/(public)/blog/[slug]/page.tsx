@@ -1,6 +1,7 @@
 import { fetchBlogPosts, fetchSingleBlogPost } from '@/app/action';
 import { ASSET_URL } from '@/assets';
-import { TBlogItemProp, TCommentProps } from '@/types';
+import { TBlogItemProp } from '@/types';
+import { Metadata } from 'next';
 import dynamic from "next/dynamic"
 
 type TPageParams = {
@@ -19,7 +20,7 @@ export async function generateStaticParams() {
   else return [];
 }
 
-export async function generateMetadata({ params: { slug } }: TPageParams) {
+export async function generateMetadata({ params: { slug } }: TPageParams): Promise<Metadata> {
   const res = await fetchSingleBlogPost({ slug })
   const data = res?.data as TBlogItemProp
   return {
@@ -29,9 +30,13 @@ export async function generateMetadata({ params: { slug } }: TPageParams) {
     openGraph: {
       type: "website",
       title: "Anya Girlchild :: Contact",
-      images: data?.image ?? ASSET_URL["alms_donation"].src,
+      images: [
+        { url: data?.image ?? ASSET_URL["alms_donation"].src, width: 800, height: 600 },
+        { url: data?.image ?? ASSET_URL["alms_donation"].src, width: 1800, height: 1600 },
+      ],
       siteName: "Anya Girlchild Foundation",
       description: data?.text,
+      locale: 'en_US',
     }
   }
 }

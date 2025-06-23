@@ -3,7 +3,7 @@ import { createDonation } from '@/app/action'
 import { ASSET_URL } from '@/assets'
 import { config } from '@/config'
 import { TDonationProps } from '@/types'
-import { Form, Input, InputNumber, notification } from 'antd'
+import { Form, Input, InputNumber, App, Select } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import TextArea from 'antd/es/input/TextArea'
 import Image from 'next/image'
@@ -25,6 +25,7 @@ type TReferenceProps = {
 }
 
 export default function PBDonationContainer() {
+  const { notification } = App.useApp();
   const [form] = useForm<TDonationData>()
   const [loading, setLoading] = useState<boolean>(false)
   const currencyRef = useRef<HTMLSelectElement | null>(null)
@@ -73,6 +74,9 @@ export default function PBDonationContainer() {
         form.resetFields()
       }
     } catch (error) {
+      if (error instanceof Error) {
+        notification.error({ message: `We encountered an error. ${error?.message}. Please try again.`, key: "123" })
+      }
       notification.error({ message: `Something went wrong. Please check your internet connection and try again.`, key: "123" })
     } finally {
       setLoading(false)
@@ -127,10 +131,10 @@ export default function PBDonationContainer() {
           onFinish={handleSubmit}
           className='flex flex-col gap-0'
         >
-          <div className="flex flex-col gap-1 py-4">
-             
+          <div className="flex flex-col gap-1 py-4 pb-8">
 
-            
+
+
 
             {/* 🔒 Safe & Secure: Your information is safe with us. We will never share your details with third parties without your consent. See our [Privacy Policy] for more information.
             💯 Transparency Guaranteed: 100% of your donation goes directly to supporting our programs and projects for the welfare of the girl child.
@@ -138,47 +142,64 @@ export default function PBDonationContainer() {
             Thank you for standing with us to give the girl child a better shot at life.
             For any questions about donations, please contact: */}
 
-            <h4 className="text-text text-3xl md:text-3xl font-semibold font-grotesk">Donate to empower a <span className="font-bold text-secondary">Girl’s Future</span></h4>
+            <h4 className="text-text text-3xl md:text-3xl font-semibold font-grotesk">Donate to empower a &#8358; <span className="font-bold text-secondary">Girl’s Future</span></h4>
             <p className="text-sm md:text-base text-text">Your support helps us provide education, health support, and life-changing opportunities for girls in vulnerable communities. Every donation—no matter the size—makes a difference.</p>
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="fullname" className="w-full text-sm md:text-base text-text/70 font-medium">Fullname:</label>
+            <label htmlFor="fullname" className="w-full text-sm md:text-base text-text/70 font-medium font-grotesk">Fullname:</label>
             <Form.Item<TDonationData> name="fullname" id="fullname">
               <Input type='text' className='text-text/70 capitalize' placeholder='Jonathan Daniel' required style={{ background: "transparent" }} />
             </Form.Item>
           </div>
           <div className="flex flex-col gap-1 -mt-3">
-            <label htmlFor="email" className="w-full text-sm md:text-base text-text/70 font-medium">Email:</label>
+            <label htmlFor="email" className="w-full text-sm md:text-base text-text/70 font-medium font-grotesk">Email:</label>
             <Form.Item<TDonationData> name="email" id="email">
               <Input type='email' className='text-text/70 w-full' placeholder='Emails (send success notification to the sender)' min={1000} required style={{ background: "transparent", width: "100%" }} />
             </Form.Item>
           </div>
           <div className="flex flex-col gap-1 -mt-3">
-            <label htmlFor="amount" className="w-full text-sm md:text-base text-text/70 font-medium">Amount:</label>
+            <label htmlFor="amount" className="w-full text-sm md:text-base text-text/70 font-medium font-grotesk">Amount:</label>
             <div className="flex gap-1">
-              <Form.Item<TDonationData> name="currency" id="currency">
-                <select ref={currencyRef} name="status" id="status" className="border border-text/50 rounded-md text-xs text-text w-max py-2 px-4 bg-white">
+              <Form.Item<TDonationData> name="currency" id="currency" initialValue={"₦"}>
+                <Select
+                  id="currency"
+                  options={
+                    [
+                      { id: "x023498zse420", name: "NGN", code: "&#8358;", symbol: "₦" },
+                      // { id: "x023498zse421", name: "GBP",  code: "&#163;", symbol: "£" },
+                      // { id: "x023498zse422", name: "EUR", code: "&#8364;", symbol: "€" },
+                      // { id: "x023498zse423", name: "USD", code: "&#36;", symbol: "$" },
+                    ].map(({ id, symbol }) => ({
+                      label: symbol,
+                      value: symbol,
+                      key: id
+                    }))
+                  }
+                  className='bg-white'
+                  getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+                />
+                {/* <select ref={currencyRef} name="status" id="status" className="border border-text/50 rounded-md text-xs text-text w-max py-2 px-4 bg-white">
                   {
                     [
                       { id: "x023498zse420", name: "NGN", code: "&#8358;", symbol: "₦" },
                       // { id: "x023498zse421", name: "GBP",  code: "&#163;", symbol: "£" },
                       // { id: "x023498zse422", name: "EUR", code: "&#8364;", symbol: "€" },
-                      { id: "x023498zse423", name: "USD", code: "&#36;", symbol: "$" },
+                      // { id: "x023498zse423", name: "USD", code: "&#36;", symbol: "$" },
                     ].map(({ id, name, symbol }) => (
                       <option key={id} value={name} className="text-sm md:text-lg text-text font-semibold bg-white px-4">{symbol}</option>
                     ))
                   }
-                </select>
+                </select> */}
               </Form.Item>
               <Form.Item<TDonationData> name="amount" id="amount" className='flex-1'>
-                <InputNumber type='number' className='text-text/70 w-full' placeholder='Starting from 1000' min={100} required style={{ background: "transparent", width: "100%" }} />
+                <InputNumber type='number' className='text-text/70 w-full' placeholder='Starting from 1000' min={1000} required style={{ background: "transparent", width: "100%" }} />
               </Form.Item>
             </div>
           </div>
           <div className="flex flex-col gap-1">
-            <label htmlFor="message" className="w-full text-sm md:text-base text-text/70 font-medium">Purpose (Optional):</label>
+            <label htmlFor="message" className="w-full text-sm md:text-base text-text/70 font-medium font-grotesk">Purpose (Optional but recommended):</label>
             <Form.Item<TDonationData> name="message" id="message" noStyle>
-              <TextArea className='' rows={5} placeholder='Not mandatory but if you have a specific purpose you prefer the donation channeled into. Feel free to state it. Thanks.' required style={{ background: "transparent" }} />
+              <TextArea className='' rows={5} placeholder='Not mandatory but if you have a specific purpose you prefer the donation channeled into. Feel free to state it. Thanks.' style={{ background: "transparent" }} />
             </Form.Item>
           </div>
           <div className="flex flex-col gap-4 pt-4">

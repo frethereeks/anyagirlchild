@@ -9,15 +9,16 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
 import { GrArticle } from 'react-icons/gr'
-import { Editor } from '@tinymce/tinymce-react';
-import { Editor as TinyMCEEditor } from 'tinymce';
+// import { Editor } from '@tinymce/tinymce-react';
+// import { Editor as TinyMCEEditor } from 'tinymce';
+import RichTextEditor from 'rich-text-editor'
 
 
 export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined }) {
     const [form] = Form.useForm<TBlogItemProp>()
     const [loading, setLoading] = useState<boolean>(false)
     const [newImage, setNewImage] = useState<boolean>(false)
-    const editorRef = useRef<TinyMCEEditor | null>(null);
+    // const editorRef = useRef<TinyMCEEditor | null>(null);
     const imageRef = useRef<HTMLInputElement | null>(null)
     const statusRef = useRef<HTMLSelectElement | null>(null)
     const [image, setImage] = useState<{ name: string, value: string }>({
@@ -82,7 +83,7 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
             formData.append("id", data?.id as string)
             formData.append("status", statusRef?.current?.value as string)
             formData.append("newImage", newImage as unknown as string)
-            formData.append("text", editorRef?.current?.getContent() as unknown as string)
+            // formData.append("text", editorRef?.current?.getContent() as unknown as string)
 
             if (data?.id || values.id) {
                 res = await updateBlog(formData)
@@ -175,7 +176,15 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
                     <div className="flex-1 flex flex-col md:flex-row gap-2 relative h-[400px] border border-background">
                         <Form.Item<TBlogItemProp> name="text" noStyle className='flex-1 relative h-[400px]'>
                             <div className="flex flex-col">
-                                <Editor
+                                <RichTextEditor 
+                                    key={"qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc"}
+                                    lang='EN'
+                                    allowedFileTypes={["image/jpg", "image/jpeg", "image/png"]}
+                                    initialValue={data?.text ?? ""}
+                                    onValueChange={richText => console.log({ richText })}
+                                    className='w-full h-full'
+                                />
+                                {/* <Editor
                                     apiKey='qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc'
                                     onInit={(_evt: any, editor: TinyMCEEditor | null) => editorRef.current = editor}
                                     initialValue={data?.text ?? ""}
@@ -197,7 +206,7 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
                                     onGetContent={e => {
                                         e.content = e.content.replace(/<p>\s*(<div.*?>.*?<\/div>)\s*<\/p>/g, '$1');
                                     }}
-                                />
+                                /> */}
                                 {/* <button type="button" className="button bg-secondary py-2 w-max" onClick={log}>Log editor content</button> */}
                             </div>
                         </Form.Item>

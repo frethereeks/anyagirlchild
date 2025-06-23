@@ -3,6 +3,7 @@ import { AiOutlineMore } from 'react-icons/ai'
 
 export default function Peer({ id = Date.now().toString(), children }: { id: string | number, children: React.ReactNode | React.ReactNode[] }) {
     const [active, setActive] = React.useState<boolean>(false)
+    console.log('id', id)
     return (
         <>
             <div onClick={() => setActive(!active)} className={`${active ? "fixed" : "hidden" } top-0 left-0 w-full h-full z-40 bg-slate-50 opacity-5`}></div>

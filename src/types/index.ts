@@ -1,9 +1,17 @@
 import type { Blog, Comment, Reply, Donation, Gallery, Contact, User, Logger } from "@prisma/client"
+import { JSX } from "react";
 
 export type THeaderLinks = {
     id: number;
     title: string;
     link: string;
+}
+
+export type TThematicProps = {
+    id: string
+    title: string
+    description: string
+    activities: string[]
 }
 
 export type TBlog = Omit<Blog, "updatedAt">

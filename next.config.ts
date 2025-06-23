@@ -1,7 +1,10 @@
-/** @type {import('next').NextConfig} */
-// import withPWAInit from "@ducanh2912/next-pwa";
+import type { NextConfig } from "next";
 
-const nextConfig = {
+const nextConfig: NextConfig = {
+  /* config options here */
+  allowedDevOrigins: [
+    "192.168.183.233",
+  ],
   images: {
     // Define the maximum file size for images to be optimized and cached
     deviceSizes: [320, 420, 768, 1024, 1200, 1800, 1920],
@@ -26,20 +29,6 @@ const nextConfig = {
       },
     ]
   },
-
 };
 
-// const withPWA = withPWAInit({
-//     dest: "public",
-//     register: true
-// });
-
-// const config = withPWA({
-//     ...nextConfig
-// });
-
 export default nextConfig;
-
-
-
-

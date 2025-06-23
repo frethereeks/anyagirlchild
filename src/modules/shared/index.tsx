@@ -2,6 +2,7 @@ import AosProvider from "./AosProvider"
 import AppSlider from "./AppSlider"
 import DeleteModal from "./DeleteModal"
 import Peer from "./Peer"
+import QuoteSection from "./QuoteSection"
 import UpdateStatus from "./UpdateStatus"
 
 export {
@@ -9,5 +10,6 @@ export {
     AppSlider,
     DeleteModal,
     Peer,
+    QuoteSection,
     UpdateStatus,
 }

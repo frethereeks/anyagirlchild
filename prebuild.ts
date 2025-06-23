@@ -1,6 +1,6 @@
 console.log("********* PREBUILDING");
-const path = require("node:path");
-const fs = require("fs");
+import path from "node:path";
+import fs from "fs";
 const baseDir = process.cwd();
 
 const prebuildScripts = async () => {

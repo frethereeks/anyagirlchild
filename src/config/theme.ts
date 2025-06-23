@@ -68,8 +68,12 @@ export const appThemeConfig: ThemeConfig = {
             colorBgContainer: THEME_COLOR.background,
         },
         Select: {
-            colorBgContainer: THEME_COLOR.background,
+            colorBgContainer: '#fff',
+            colorBgTextHover: '#fff',
+            colorText: THEME_COLOR.text,
             zIndexPopup: 810,
+            optionSelectedBg: "#fff",
+            optionSelectedColor: THEME_COLOR.text
         },
         Tooltip: {
             zIndexPopupBase: 850,

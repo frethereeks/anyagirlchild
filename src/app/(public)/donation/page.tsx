@@ -2,11 +2,7 @@ import React from 'react'
 import { Metadata } from 'next';
 import { ASSET_URL } from '@/assets'
 import Image from 'next/image';
-import dynamic from "next/dynamic";
-
-const PBDonationContainer = dynamic(() => import("@/modules/public/pbdonation/PBDonationContainer"), {
-    ssr: false,
-});
+import PBDonationWrapper from '@/modules/public/pbdonation/PBDonationWrapper';
 
 
 export const metadata: Metadata = {
@@ -16,9 +12,13 @@ export const metadata: Metadata = {
     openGraph: {
         type: "website",
         title: "Anya Girlchild :: Donation",
-        images: ASSET_URL["group_donation"].src,
+        images: [
+            { url: ASSET_URL["group_donation"].src, width: 800, height: 600 },
+            { url: ASSET_URL["group_donation"].src, width: 1800, height: 1600 },
+        ],
         siteName: "Anya Girlchild Foundation",
         description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+        locale: 'en_US',
     }
 };
 
@@ -31,7 +31,7 @@ export default async function DonationPage() {
                 <aside className="p-4 flex-1 hidden lg:flex flex-col gap-8 w-full lg:max-w-[40rem] py-40 relative bg-primary">
                     <Image src={ASSET_URL["group_donation"]} alt='group_donation' className='object-cover object-top opacity-45' fill />
                 </aside>
-                    <PBDonationContainer />
+                    <PBDonationWrapper />
             </section>
         </main>
         </>

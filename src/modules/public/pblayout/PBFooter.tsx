@@ -32,7 +32,7 @@ export default function PBFooter() {
                 <Image src={ASSET_URL["anya_girlchild_logo"]} alt='AnyaGirlchild Logo' fill={true} className='object-cover flex-shrink-0' />
               </div>
               <div className="flex flex-col justify-center w-max -translate-y-1">
-                <h1 className={`text-white text-2xl sm:text-3xl w-max font-extrabold uppercase tracking-tight flex items-center`}>Anya<p className={`tracking-normal text-danger`}>GirlChild</p></h1>
+                <h1 className={`text-white text-3xl sm:text-3xl w-max font-bold font-grotesk uppercase tracking-tight flex items-center`}>Anya<p className={`tracking-normal text-danger`}>GirlChild</p></h1>
                 <p className="text-lg text-text text-center font-semibold tracking-[.5rem] leading-none uppercase w-full py-0.5 px-3 whitespace-pre-wrap bg-white">Foundation</p>
               </div>
             </Link>

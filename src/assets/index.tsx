@@ -17,11 +17,13 @@ import payment_secure from "./payment_secure.jpg"
 import anya_girlchild_logo from "./logo.jpg"
 
 import anyagirlchild_addressing from "./anyagirlchild_addressing.jpg" 
+import anyagirlchild_director from "./anyagirlchild_director.jpg" 
 import anyagirlchild_douvet_gift from "./anyagirlchild_douvet_gift.jpg" 
 import anyagirlchild_with_ngos from "./anyagirlchild_with_ngos.jpg" 
 import anyagirlchild_represented from "./anyagirlchild_represented.jpg" 
 import anyagirlchild_award from "./anyagirlchild_award.jpg" 
 import anyagirlchild_outreach from "./anyagirlchild_outreach.jpg" 
+import anyagirl_3 from "./anyagirl_3.jpg" 
 import anyagirl_6 from "./anyagirl_6.jpg" 
 import anyagirlchild_gift_girls from "./anyagirlchild_gift_girls.jpg"
 
@@ -40,11 +42,13 @@ export const ASSET_URL =  {
     payment_secure,
     anya_girlchild_logo,
     anyagirlchild_addressing,
+    anyagirlchild_director,
     anyagirlchild_douvet_gift,
     anyagirlchild_with_ngos,
     anyagirlchild_represented,
     anyagirlchild_award,
     anyagirlchild_outreach,
+    anyagirl_3,
     anyagirl_6,
     anyagirlchild_gift_girls,
 }

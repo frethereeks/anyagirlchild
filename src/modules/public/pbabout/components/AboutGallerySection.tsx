@@ -17,9 +17,9 @@ anyagirlchild_gift_to_girls
   
   */
   return (
-    <section className="relative flex flex-col gap-4 px-4 py-20 md:py-32 bg-background">
-      <h4 className="text-2xl md:text-4xl text-secondary text-center font-bold">Our Works</h4>
-      <p className="text-center text-small text-slate-500 leading-loose max-w-3xl mx-auto">Our approach involves not only education but also moral development, career mentorship, and self-care, ensuring that these girls grow into well-rounded, empowered individuals who can lead and inspire change in their communities.</p>
+    <section className="relative flex flex-col gap-4 px-4 py-20 bg-white">
+      <h4 className="text-2xl md:text-4xl text-secondary text-center font-bold font-grotesk">Our Works</h4>
+      <p className="text-center text-base md:text-lg text-text leading-loose max-w-3xl mx-auto">Our approach involves not only education but also moral development, career mentorship, and self-care, ensuring that these girls grow into well-rounded, empowered individuals who can lead and inspire change in their communities.</p>
       <div className="container mx-auto relative grid md:grid-cols-2 gap-4 justify-center items-center rounded-md pt-10">
         <div className="flex-1 rounded-tl-3xl relative overflow-hidden min-h-64 py-48">
           <Image src={ASSET_URL["anyagirlchild_gift_girls"]} alt="anyagirlchild_gift_girls" className="h-full w-full object-cover object-center rounded-sm absolute left-0 top-0" fill />

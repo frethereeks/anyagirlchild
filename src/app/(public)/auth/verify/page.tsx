@@ -11,6 +11,18 @@ import { IoCaretBack } from 'react-icons/io5'
 export const metadata: Metadata = {
     title: "Anya Girlchild :: Verify & Reset",
     description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+    icons: ASSET_URL["anya_girlchild_logo"].src,
+    openGraph: {
+        type: "website",
+        title: "Anya Girlchild :: Verify & Reset",
+        images: [
+            { url: ASSET_URL["group_donation"].src, width: 800, height: 600 },
+            { url: ASSET_URL["group_donation"].src, width: 1800, height: 1600 },
+        ],
+        siteName: "Anya Girlchild Foundation",
+        description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
+        locale: 'en_US',
+    }
 };
 
 type PageProps = {
