@@ -17,7 +17,7 @@ type TPageProps = {
 
 export default function BlogContainer({ data, role }: TPageProps) {
   const [viewType, setViewType] = useState<"grid" | "list">("grid")
-  const [open, setOpen] = useState<boolean>(false)
+  // const [open, setOpen] = useState<boolean>(false)
   const [selectedData, setSelectedData] = useState<TBlogItemProp | undefined>(undefined)
   const site = useAppSelector(state => state.site)
   const dispatch = useAppDispatch()
@@ -36,7 +36,10 @@ export default function BlogContainer({ data, role }: TPageProps) {
         footer={<></>}
         onCancel={() => dispatch(triggerModal({ id: undefined, open: false }))}
         afterClose={() => setSelectedData(undefined)}
-        className='min-w-48 md:min-w-96'
+        style={{ maxWidth: 'none', width: '80vw !important' }}
+        className='wide-modal'
+        centered
+        rootClassName='max-w-none w-[80vw]'
       >
         <AddBlogForm data={selectedData} />
       </Modal>

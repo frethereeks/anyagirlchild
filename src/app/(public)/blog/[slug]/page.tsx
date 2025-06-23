@@ -1,8 +1,9 @@
 import { fetchBlogPosts, fetchSingleBlogPost } from '@/app/action';
 import { ASSET_URL } from '@/assets';
+import PBBlogSingleWrapper from '@/modules/public/pbblog/pbblogsingle/PBBlogSingleWrapper';
 import { TBlogItemProp } from '@/types';
 import { Metadata } from 'next';
-import dynamic from "next/dynamic"
+
 
 type TPageParams = {
   params: {
@@ -10,7 +11,6 @@ type TPageParams = {
   }
 }
 
-const PBBlogSingleContainer = dynamic(() => import('@/modules/public/pbblog/pbblogsingle/PBBlogSingleContainer'), { ssr: false });
 
 export async function generateStaticParams() {
   const res = await fetchBlogPosts();
@@ -20,7 +20,8 @@ export async function generateStaticParams() {
   else return [];
 }
 
-export async function generateMetadata({ params: { slug } }: TPageParams): Promise<Metadata> {
+export async function generateMetadata({ params }: TPageParams): Promise<Metadata> {
+  const {slug} = await params
   const res = await fetchSingleBlogPost({ slug })
   const data = res?.data as TBlogItemProp
   return {
@@ -41,12 +42,12 @@ export async function generateMetadata({ params: { slug } }: TPageParams): Promi
   }
 }
 
-export default async function SingleBlogPage({ params: { slug } }: TPageParams) {
+export default async function SingleBlogPage({ params }: TPageParams) {
+  const {slug} = await params
   const res = await fetchSingleBlogPost({ slug })
   const data = res?.data as TBlogItemProp
 
-
   return (
-    <PBBlogSingleContainer data={data} related={{ previous: res?.previous, next: res?.next }} />
+    <PBBlogSingleWrapper key={"x22qpyci38404"} result={{ data, previous: res?.previous, next: res?.next}} />
   )
 }

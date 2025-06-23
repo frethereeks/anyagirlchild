@@ -18,7 +18,7 @@ export default function PBFooter() {
             <h4 className="text-xl md:text-2xl text-secondary font-semibold font-grotesk">Be the Change. Start Today.</h4>
             <p className="text-small md:text-lg text-primary/70 leading-loose">Join our global family of advocates, volunteers, and supporters.</p>
           </div>
-          <button className='bg-danger text-sm md:text-base text-white font-semibold font-grotesk cursor-pointer rounded-md py-2 px-6 md:px-8'>Become a Partner</button>
+          <Link href={appRoutePaths.partner} className='bg-danger text-sm md:text-base text-white font-semibold font-grotesk cursor-pointer rounded-md py-2 px-6 md:px-8'>Become a Partner</Link>
         </div>
       </section>
       <section className='relative bg-primary pt-10 pb-4 px-4'>
@@ -41,13 +41,13 @@ export default function PBFooter() {
           <aside className="flex flex-col sm:justify-center gap-4">
             <h4 className='heading-three'>Contact</h4>
             <div className="flex flex-col gap-3 text-base md:text-base opacity-90">
-              <Link href={appRoutePaths.contact} className="leading-loose flex items-center gap-3">
+              <Link href={appRoutePaths.contact} className="leading-loose text-white flex items-center gap-3">
                 <span className="h-6 w-6 text-lg flex-shrink-0 grid place-items-center"><IoLocateOutline /></span> 35 Asheik Jarma, Jabi. Abuja
               </Link>
-              <Link href={`mailto: info@anyagirlchild.com`} className="leading-loose flex items-center gap-3">
+              <Link href={`mailto: info@anyagirlchild.com`} className="leading-loose text-white flex items-center gap-3">
                 <span className="h-6 w-6 text-lg flex-shrink-0 grid place-items-center"><LuMessageSquare /></span> info@anyagirlchild.com
               </Link>
-              <Link href={`tel:08038859276`} className="leading-loose flex items-center gap-3">
+              <Link href={`tel:08038859276`} className="leading-loose text-white flex items-center gap-3">
                 <span className="h-6 w-6 text-lg flex-shrink-0 grid place-items-center"><LuPhoneCall /></span> 08038859276
               </Link>
             </div>
@@ -55,13 +55,13 @@ export default function PBFooter() {
           <aside className="flex flex-col sm:justify-center gap-4 xs:min-w-[10rem]">
             <h4 className='heading-three'>Quick Links</h4>
             <div className="flex flex-col text-base md:text-base opacity-90">
-              <Link href={appRoutePaths.about} className="leading-loose">About Us</Link>
-              <Link href={appRoutePaths.gallery} className="leading-loose">Gallery</Link>
-              <Link href={appRoutePaths.blog} className="leading-loose">Blog</Link>
-              {/* <Link href={appRoutePaths.contact} className="leading-loose">Contact</Link> */}
-              <Link href={appRoutePaths.privacyPolicy} className="leading-loose">Privacy Policy</Link>
-              <Link href={appRoutePaths.termsAndConditions} className="leading-loose">Terms &amp; Conditions</Link>
-              <Link href={appRoutePaths.sitemap} className="leading-loose">Sitemap</Link>
+              <Link href={appRoutePaths.about} className="leading-loose text-white">About Us</Link>
+              <Link href={appRoutePaths.gallery} className="leading-loose text-white">Gallery</Link>
+              <Link href={appRoutePaths.blog} className="leading-loose text-white">Blog</Link>
+              {/* <Link href={appRoutePaths.contact} className="leading-loose text-white">Contact</Link> */}
+              <Link href={appRoutePaths.privacyPolicy} className="leading-loose text-white">Privacy Policy</Link>
+              <Link href={appRoutePaths.termsAndConditions} className="leading-loose text-white">Terms &amp; Conditions</Link>
+              <Link href={appRoutePaths.sitemap} className="leading-loose text-white">Sitemap</Link>
             </div>
           </aside>
         </div>

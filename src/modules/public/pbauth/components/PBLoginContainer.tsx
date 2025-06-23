@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import { appRoutePaths } from '@/routes/paths'
-import { Form, Input, notification } from 'antd'
+import { App, Form, Input } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import Link from 'next/link'
 import { IoCaretBack } from 'react-icons/io5'
@@ -18,6 +18,7 @@ export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) 
     const [loading, setLoading] = useState<boolean>(false)
     const router = useRouter()
     const { status } = useSession()
+    const {notification} = App.useApp()
 
     useEffect(() => {
         if (status === "authenticated") {
@@ -39,10 +40,20 @@ export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) 
             }
             else {
                 if (res?.error === "CredentialsSignin") notification.error({ message: "Invalid credentials supplied, please, try again", key: "123" })
-                else notification.error({ message: res?.error || "Invalid credentials supplied, please, try again", key: "123" })
+                else if (res?.error?.includes("prisma")) {
+                    notification.error({ message: 'Sorry, we are currently unable not reach the database. Please, check your network and try again', key: "123" })
+                }
+                else {
+                    notification.error({ message: 'Unable to complete request, please, check your network and try again', key: "123" })
+                }
             }
         } catch (error) {
-            notification.error({ message: `Something went wrong. Due to ${error}`, key: "123" })
+            if (error instanceof Error) {
+                notification.error({ message: 'Something went wrong. ' + error.message, key: "123" })
+            }
+            else {
+                notification.error({ message: 'Unable to complete request, please, check your network and try again', key: "123" })
+            }
         } finally {
             setLoading(false)
         }
@@ -129,9 +140,9 @@ export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) 
                             </div>
                             <div className="flex flex-col-reverse sm:flex-row justify-between gap-4">
                                 <Link href={appRoutePaths.signup} className='flex items-center gap-1.5 text-text text-xs font-medium'>Don&apos;t have an account? <span className="font-bold text-secondary">Signup</span></Link>
-                                <button disabled={loading} type='submit' className='button w-max bg-secondary'>
+                                <button disabled={loading} type='submit' className='button flex items-center gap-2 w-max bg-secondary'>
                                     {loading ? <span className='animate-spin border-2 border-white border-r-transparent rounded-full h-5 w-5 grid place-items-center'></span> : <GrUserAdmin />}
-                                    {loading ? 'Processing...' : 'Get Started'}
+                                    {loading ? 'Processing...' : 'Login'}
                                 </button>
                             </div>
                             {/* <p className="text-xs md:text-sm text-text text-center pb-4">We&apos;ll get back to you in 1-2 business days</p> */}

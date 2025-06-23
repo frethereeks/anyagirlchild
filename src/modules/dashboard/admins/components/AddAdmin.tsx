@@ -5,7 +5,6 @@ import { triggerModal } from '@/lib/features/reducers/siteSlice'
 import { TAdminProps } from '@/types'
 import { $Enums } from '@prisma/client'
 import { Form, Input, notification, Select } from 'antd'
-import TextArea from 'antd/es/input/TextArea'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
@@ -20,8 +19,6 @@ export default function AddAdmin({ data, closeModal }: TPageProps) {
     const [form] = Form.useForm<TAdminProps>()
     const [loading, setLoading] = useState<boolean>(false)
     const imageRef = useRef<HTMLInputElement | null>(null)
-    const roleRef = useRef<HTMLSelectElement | null>(null)
-    const statusRef = useRef<HTMLSelectElement | null>(null)
     const [image, setImage] = useState<{ name: string, value: string }>({
         name: "Click to Upload Image",
         value: ""
@@ -42,17 +39,18 @@ export default function AddAdmin({ data, closeModal }: TPageProps) {
             })
             setImage((prev) => ({ ...prev, value: data?.image ?? "" }))
             // if (categoryRef.current) categoryRef.current.value = data?.categoryId
-            // if (statusRef.current) statusRef.current.value = data?.status
         }
         else {
             form.resetFields()
             if (imageRef.current) imageRef.current.value = ""
+            closeModal(false)
         }
 
         return () => {
             setImage(prev => ({ ...prev, value: "" }))
             form.resetFields()
         }
+        //eslint-disable-next-line
     }, [data, form])
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,10 +63,10 @@ export default function AddAdmin({ data, closeModal }: TPageProps) {
         setLoading(false)
     }
 
-    const handleCancelImage = async () => {
-        setImage({ name: "", value: "" })
-        imageRef.current?.removeAttribute("files")
-    }
+    // const handleCancelImage = async () => {
+    //     setImage({ name: "", value: "" })
+    //     imageRef.current?.removeAttribute("files")
+    // }
 
     const handleSubmit = async (values: TAdminProps) => {
         notification.info({ message: `Please wait while your request is being processed...`, key: "123" })
@@ -161,7 +159,7 @@ export default function AddAdmin({ data, closeModal }: TPageProps) {
                 <div className="flex flex-col gap-1">
                     <h4 className="text-sm text-text font-semibold">Role:</h4>
                     <div className="flex-1 flex flex-col md:flex-row gap-2">
-                        <Form.Item<TAdminProps> name="role" noStyle className='flex-1'>
+                        <Form.Item<TAdminProps> name="role" noStyle className='flex-1 w-full' initialValue={"ADMIN"}>
                             {/* <Select
                                 options={Object.entries($Enums.Role).map(([_, value]) => ({
                                     label: value,
@@ -169,7 +167,19 @@ export default function AddAdmin({ data, closeModal }: TPageProps) {
                                 }))}
                                 className='w-full'
                             /> */}
-                            <select
+                            <Select
+                                id="role"
+                                options={
+                                    Object.entries($Enums.Role).map(([key, value]) => ({
+                                        label: value,
+                                        value,
+                                        key
+                                    }))
+                                }
+                                className='bg-white w-full'
+                                getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+                            />
+                            {/* <select
                                 ref={roleRef}
                                 id='role'
                                 style={{ border: "1px solid #888", color: "#aaa", padding: ".51rem" }}
@@ -185,7 +195,7 @@ export default function AddAdmin({ data, closeModal }: TPageProps) {
                                         Object.entries($Enums.Role).reverse().map(([key, value]) => value === "ROOT" ? null : <option key={key} className='relative capitalize bg-background text-xs md:text-sm' value={value}>{value} ({value === "ADMIN" ? 'can create, edit and delete' : 'can only preview'})</option>)
                                     }
                                 </optgroup>
-                            </select>
+                            </select> */}
                         </Form.Item>
                     </div>
                 </div>

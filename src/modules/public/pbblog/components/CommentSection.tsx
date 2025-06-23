@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 "use client"
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import parse from 'html-react-parser';
-import DOMPurify from 'dompurify';
-import { notification } from 'antd'
+import React, { useEffect, useRef, useState } from 'react'
+// import parse from 'html-react-parser';
+// import DOMPurify from 'dompurify';
+import { App } from 'antd'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { MdOutlineDelete, MdOutlineModeEditOutline } from 'react-icons/md'
 import moment from 'moment'
 import CommentForm from './CommentForm'
 import { TCommentProps, TBlogItemProp, TReplyProps } from '@/types'
-import { createComment, createReply, fetchComments, updateComment } from '@/app/action'
+import { createComment, createReply, updateComment } from '@/app/action'
 import { useForm } from 'antd/es/form/Form'
 import ReplyForm from './ReplyForm'
 import { DeleteModal } from '@/modules/shared'
@@ -28,10 +29,11 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
     const [form] = useForm<TCommentProps>()
     const [replyForm] = useForm<TReplyProps>()
     const [showReply, setShowReply] = useState<string | null>(null)
-    // const [editableId, setEditableId] = useState<{id: string | undefined, type: "comment" | "reply"}>({id: undefined, type: "comment"})
     const [editableId, setEditableId] = useState<string | undefined>(undefined)
     const [deletingId, setDeletingId] = useState<React.Key[]>([])
     const [deleteModal, setDeleteModal] = useState<boolean>(false)
+    // const [editableId, setEditableId] = useState<{id: string | undefined, type: "comment" | "reply"}>({id: undefined, type: "comment"})
+    const {notification} = App.useApp()
 
     const { data: blogComments, isLoading, mutate } = useSWR<TCommentProps[]>(`/api/comments?blogId=${blog?.id}`, fetcher, {
         revalidateOnFocus: true,
@@ -40,6 +42,8 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
 
     useEffect(() => {
         setSelectedData(blogComments?.find(el => el.id === selectedData?.id!))
+        setSelectedReply(selectedReply)
+        //eslint-disable-next-line
     }, [selectedData])
     
     // const fetchComment = async (blogId: string) => {
@@ -92,6 +96,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                 setActiveTab("AllComments")
             }
         } catch (error) {
+            console.log('error', error)
             notification.error({ message: 'Unable to post your comment. Please, check your internet connection and try again', key: "123" })
         }
         finally {
@@ -107,11 +112,11 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
         setActiveTab("Comment")
     }
 
-    const handleToggleEditReply = (commentId: string) => {
-        const comment = blogComments?.find(el => el.id === commentId)
-        setSelectedData(comment)
-        setActiveTab("Comment")
-    }
+    // const handleToggleEditReply = (commentId: string) => {
+    //     const comment = blogComments?.find(el => el.id === commentId)
+    //     setSelectedData(comment)
+    //     setActiveTab("Comment")
+    // }
 
     const handleCommentDelete = async (id: string) => {
         setDeletingId([id])
@@ -133,6 +138,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                 setShowReply(null)
             }
         } catch (error) {
+            console.log('error', error)
             notification.error({ message: 'Unable to process request. Please, check your internet connection and try again', key: "123" })
         }
         finally {

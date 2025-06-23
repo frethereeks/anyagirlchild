@@ -55,6 +55,7 @@ export default function PBDonationContainer() {
   const initializePayment = usePaystackPayment(configData);
 
   const onSuccess = async (reference: TReferenceProps) => {
+    console.log({reference})
     setLoading(true)
     notification.info({ message: `Please wait while your request is being processed...`, key: "123" })
     const updatedInputs = { ...inputRef.current, reference: reference.reference, status: reference.status } as TDonationData
@@ -169,8 +170,8 @@ export default function PBDonationContainer() {
                       // { id: "x023498zse421", name: "GBP",  code: "&#163;", symbol: "£" },
                       // { id: "x023498zse422", name: "EUR", code: "&#8364;", symbol: "€" },
                       // { id: "x023498zse423", name: "USD", code: "&#36;", symbol: "$" },
-                    ].map(({ id, symbol }) => ({
-                      label: symbol,
+                    ].map(({ id, name, symbol }) => ({
+                      label: name,
                       value: symbol,
                       key: id
                     }))

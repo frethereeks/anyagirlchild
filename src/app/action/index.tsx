@@ -134,6 +134,7 @@ export const handleReset = async (email: string) => {
         revalidatePath(appRoutePaths.signin)
         return { error: false, message: `Password Reset Link has been sent to your email...` };
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Something went wrong. We could not send the mail...Please, try again` };
     }
 }
@@ -151,6 +152,7 @@ export const handlePasswordReset = async ({ email, password: plainPassword }: { 
         revalidatePath(appRoutePaths.signin)
         return { error: false, message: `Password reset is successful.` };
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Something went wrong. We could not complete your request...Please, try again` };
     }
 }
@@ -161,6 +163,7 @@ export const handleTokenVerification = async (email: string, token: string) => {
         if (!validMail) return { error: true, message: `We do not have an account with these details...Perhaps, this is an old link` };
         else return { error: false, message: `Success! Please, complete the process by choosing a new password` };
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Something went wrong. We could not complete your request...Please, try again` };
     }
 }
@@ -238,6 +241,7 @@ export const createUser = async (data: FormData) => {
             return { error: false, message: `Welcome ${firstname} ${lastname}. A verification link has been sent to your email. Click to complete your registration.` }
         }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Something went wrong. We could not complete your request` }
     }
 }
@@ -291,6 +295,7 @@ export const updateUser = async (data: FormData, type: "info" | "security") => {
             }
         }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Something went wrong. We could not complete your request` }
     }
 }
@@ -331,6 +336,7 @@ export const fetchAllUsers = async () => {
         })
         return { error: true, message: `All users fetched successfully.`, data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to delete blog. Please, try again.` }
     }
 }
@@ -343,6 +349,7 @@ export const fetchSingleUsers = async (id: string) => {
         })
         return { error: true, message: `User record found successfully.`, data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to delete blog. Please, try again.` }
     }
 }
@@ -368,6 +375,7 @@ export const fetchBlogPosts = async (start?: number, end?: number) => {
         })
         return { error: false, message: `Blog post successfully fetched.`, data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to fetch blog. Please, try again later or check your network connection.` }
     }
 }
@@ -405,6 +413,7 @@ export const fetchSingleBlogPost = async ({ slug }: { slug: string }) => {
         ])
         return { error: false, message: `Blog post successfully fetched.`, data, next, previous }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to fetch blog. Please, try again later or check your network connection.` }
     }
 }
@@ -427,6 +436,7 @@ export const createBlog = async (data: FormData) => {
         })
         return { error: false, message: `Congratulations! Your new blog post has been created successfully.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -440,6 +450,7 @@ export const deleteBlog = async (id: string) => {
 
         return { error: false, message: `Blog record successfully deleted.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to delete blog. Please, try again.` }
     }
 }
@@ -475,6 +486,7 @@ export const updateBlog = async (data: FormData) => {
         }
         return { error: false, message: `Your blog post has been updated successfully.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -489,6 +501,7 @@ export const updateBlogImage = async (id: string, image: File, oldImageName: str
         })
         return { error: false, message: `Blog image successfully updated.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete update blog image request. Please, try again.` }
     }
 }
@@ -507,6 +520,7 @@ export const fetchComments = async ({ blogId }: { blogId: string }) => {
         })
         return { error: true, message: "Comments fetched Successfully", data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -519,6 +533,7 @@ export const createComment = async (data: { blogId: string, fullname: string, em
         }) as TCommentProps
         return { error: false, message: `Comment posted successfully.`, data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to post comment. Please, try again.` }
     }
 }
@@ -532,6 +547,7 @@ export const updateComment = async (data: { id: string, fullname: string, email:
         })
         return { error: false, message: `Comment updated successfully.`, data: undefined }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to update comment. Please, try again.` }
     }
 }
@@ -543,6 +559,7 @@ export const deleteComment = async (id: string) => {
         })
         return { error: false, message: `Comment successfully deleted.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to delete comment. Please, try again.` }
     }
 }
@@ -555,6 +572,7 @@ export const createReply = async (values: { commentId: string, fullname: string,
         })
         return { error: false, message: `Reply posted successfully.`, data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to post reply. Please, try again.` }
     }
 }
@@ -566,6 +584,7 @@ export const deleteReply = async (id: string) => {
         })
         return { error: false, message: `Reply successfully deleted.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to delete reply. Please, try again.` }
     }
 }
@@ -578,6 +597,7 @@ export const fetchContact = async () => {
         })
         return { data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -624,6 +644,7 @@ export const createContact = async (data: FormData) => {
         await publicScreenLog({ id: "", fullname, email }, "created", "contact", true, "Anyagirlchild: New Contact Message", `A visiter named ${fullname} sent you a message`, email)
         return { error: false, message: `Thanks for contacting us ${fullname}. We will get back to you as soon as possible.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -636,6 +657,7 @@ export const updateContactStatus = async (id: string) => {
         })
         return { error: false, message: `Donation record successfully deleted.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to delete contact. Please, try again.` }
     }
 }
@@ -649,8 +671,9 @@ export const createDonation = async (data: FormData) => {
             data: { amount: +amount, currency, fullname, email, message, status, reference }
         })
         // await publicScreenLog("Anyagirlchild: New Donation Received!", {fullname, email}, "initiated", `We happy and most grateful to tell you a donation of the sum of ${currency}${+amount} to Anyagirlchild Foundation was received from ${fullname} for ${message}`, true, email, {email, fullname})
-        return { error: false, message: `Thanks for your donation of ${currency}${amount} to our foundation.` }
+        return { error: false, message: `Thank you for your donation of ${currency}${amount} to our foundation.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to perform donation. Please, try again.` }
     }
 }
@@ -664,9 +687,11 @@ export const fetchDonations = async () => {
         // await publicScreenLog("Activity: View Donations", { fullname: user.name!, email: user.email! }, "viewed", `A visiter named ${fullname} sent you a message`, true)
         return { error: false, message: `Donation fetched successfully.`, data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
+
 
 // Gallery
 export const fetchGalleryImages = async (start?: number, end?: number) => {
@@ -678,6 +703,7 @@ export const fetchGalleryImages = async (start?: number, end?: number) => {
         })
         return { error: false, message: `Gallery images fetched successfully`, data }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to fetch gallery images`, data: [] }
     }
 }
@@ -711,6 +737,7 @@ export const createGalleryImage = async (data: FormData) => {
         // await backendActionLog(`New image upload.`, {fullname: user.name!, email: user.email!}, "created", `Admin with userId ${user.id} created a new image`, false)
         return { error: false, message: `New gallery image(s) uploaded successfully.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to upload image. Please, try again.` }
     }
 }
@@ -735,7 +762,37 @@ export const updateGalleryImage = async (data: FormData) => {
         })
         return { error: false, message: `Gallery image updated successfully.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to update image. Please, try again.` }
+    }
+}
+
+// Partner
+export const createPartner = async (data: {fullname: string, email: string, message?: string, type: $Enums.PartnerType}) => {
+    const { fullname, email, type, message } = (data)
+    try {
+        await prisma.partner.create({
+            data: { fullname, email, message, type }
+        })
+        // await publicScreenLog("Anyagirlchild: New Donation Received!", {fullname, email}, "initiated", `We happy and most grateful to tell you a donation of the sum of ${currency}${+amount} to Anyagirlchild Foundation was received from ${fullname} for ${message}`, true, email, {email, fullname})
+        return { error: false, message: `Thank you for showing interest in being our ${type}. We look forward to receiving your response email.` }
+    } catch (error) {
+        console.log('error', error)
+        return { error: true, message: `Unable to complete your request to perform donation. Please, try again.` }
+    }
+}
+
+export const fetchPartners = async () => {
+    await verifyUser()
+    try {
+        const data = await prisma.partner.findMany({
+            orderBy: { createdAt: "desc" }
+        })
+        // await publicScreenLog("Activity: View Donations", { fullname: user.name!, email: user.email! }, "viewed", `A visiter named ${fullname} sent you a message`, true)
+        return { error: false, message: `Partner fetched successfully.`, data }
+    } catch (error) {
+        console.log('error', error)
+        return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
 
@@ -749,6 +806,7 @@ export const deleteGalleryImage = async (id: string) => {
         })
         return { error: true, message: `Photo successfully deleted.` }
     } catch (error) {
+        console.log('error', error)
         return { error: true, message: `Unable to complete your request to delete photo. Please, try again.` }
     }
 }

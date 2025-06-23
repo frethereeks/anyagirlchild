@@ -5,7 +5,7 @@ import { useAppDispatch } from '@/lib/features/hooks'
 import { triggerModal } from '@/lib/features/reducers/siteSlice'
 import { TGalleryProps } from '@/types'
 import { $Enums } from '@prisma/client'
-import { Form, notification } from 'antd'
+import { Form, notification, Select } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -26,6 +26,7 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
     const dispatch = useAppDispatch()
 
     useEffect(() => {
+        const imageInput = imageRef?.current;
         if (data) {
             form.setFieldsValue({
                 id: data?.id,
@@ -44,7 +45,7 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
 
         return () => {
             setImage({ name: "Click to Upload Image", value: "" })
-            if (imageRef.current) imageRef.current.files = null
+            if (imageInput) imageInput.files = null
         }
     }, [data, form])
 
@@ -134,14 +135,26 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
                 <div className="flex flex-col gap-1">
                     <h4 className="w-[10rem] text-sm text-text font-semibold">Visibility:</h4>
                     <div className="flex-1 flex flex-col md:flex-row gap-2">
-                        <Form.Item<TGalleryProps> name="status" noStyle className='flex-1'>
-                            <select ref={statusRef} name="status" id="status" className="border border-text/50 rounded-md text-xs text-text w-full py-2 px-4 bg-white">
+                        <Form.Item<TGalleryProps> name="status" noStyle className='flex-1 w-full' initialValue={"VISIBLE"}>
+                            <Select
+                                id="status"
+                                options={
+                                    Object.entries($Enums.ViewStatus).map(([key, value]) => ({
+                                        label: key,
+                                        value,
+                                        key
+                                    }))
+                                }
+                                className='bg-white w-full'
+                                getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+                            />
+                            {/* <select ref={statusRef} name="status" id="status" className="border border-text/50 rounded-md text-xs text-text w-full py-2 px-4 bg-white">
                                 {
                                     Object.entries($Enums.ViewStatus).map(([key, value]) => (
                                         <option key={key} value={value} className="text-xs text-text bg-white px-4">{key}</option>
                                     ))
                                 }
-                            </select>
+                            </select> */}
                         </Form.Item>
                     </div>
                 </div>

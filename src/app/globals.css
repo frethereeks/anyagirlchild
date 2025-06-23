@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   outline: none !important;
@@ -16,7 +18,7 @@ body {
 }
 
 @layer components {
-  .overlay {
+   .overlay {
     @apply font-grotesk top-0 left-0 absolute w-full h-full;
   }
 
@@ -98,6 +100,12 @@ body {
 }
 
 @layer utilities {
+  .wide-modal.ant-modal {
+    max-width: none !important;
+    width: 80vw !important;
+    top: 100px;
+  }
+
   .scrollbar::-webkit-scrollbar {
     width: 20px;
     height: 20px;

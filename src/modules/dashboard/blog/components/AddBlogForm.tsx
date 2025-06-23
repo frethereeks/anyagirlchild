@@ -1,26 +1,26 @@
+import React, { useEffect, useRef, useState } from 'react'
 import { createBlog, updateBlog } from '@/app/action'
 import { fileUpload } from '@/lib'
 import { useAppDispatch } from '@/lib/features/hooks'
 import { triggerModal } from '@/lib/features/reducers/siteSlice'
 import { TBlogItemProp } from '@/types'
 import { $Enums } from '@prisma/client'
-import { Form, Input, notification } from 'antd'
+import { Form, Input, App, Select } from 'antd'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
 import { GrArticle } from 'react-icons/gr'
-// import { Editor } from '@tinymce/tinymce-react';
-// import { Editor as TinyMCEEditor } from 'tinymce';
-import RichTextEditor from 'rich-text-editor'
-
+import { fontFamily, THEME_COLOR } from '@/config/theme'
+import ReactQuill from 'react-quill-new';
+import "quill/dist/quill.core.css";
+import 'react-quill-new/dist/quill.snow.css';
 
 export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined }) {
+    const { notification } = App.useApp()
     const [form] = Form.useForm<TBlogItemProp>()
     const [loading, setLoading] = useState<boolean>(false)
     const [newImage, setNewImage] = useState<boolean>(false)
-    // const editorRef = useRef<TinyMCEEditor | null>(null);
+    const [value, setValue] = useState<string>("")
     const imageRef = useRef<HTMLInputElement | null>(null)
-    const statusRef = useRef<HTMLSelectElement | null>(null)
     const [image, setImage] = useState<{ name: string, value: string }>({
         name: "Click to Upload Image",
         value: ""
@@ -28,12 +28,27 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
     const router = useRouter()
     const dispatch = useAppDispatch()
 
-    // const log = () => {
-    //     if (editorRef.current) {
-    //         const value = editorRef?.current?.getContent()
-    //         console.log({value});
-    //     }
-    // };
+    
+const toolbarOptions = [
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+    ['link', 'image', 'video', 'formula'],
+  
+    // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }, { 'list': 'check' }],
+    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+    [{ 'direction': 'rtl' }],                         // text direction
+  
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+  
+    [{ 'color': [THEME_COLOR.primary, THEME_COLOR.secondary, THEME_COLOR.danger, THEME_COLOR.text] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'font': [...[fontFamily.grotesk, fontFamily.poppins, 'Helvetica', 'Cursive', 'Monotype']] }],
+    [{ 'align': [] }],
+  
+    ['clean']                                         // remove formatting button
+  ];
 
     useEffect(() => {
         if (data) {
@@ -46,8 +61,7 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
                 status: data.status,
             })
             setImage((prev) => ({ ...prev, value: data?.image ?? "" }))
-            // if (categoryRef.current) categoryRef.current.value = data?.categoryId
-            if (statusRef.current) statusRef.current.value = data?.status
+            setValue(data.text)
         }
         else {
             form.resetFields()
@@ -71,6 +85,7 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
     }
 
     const handleSubmit = async (values: TBlogItemProp) => {
+        console.log({values})
         notification.info({ message: `Please wait while your request is being processed...`, key: "123" })
         setLoading(true)
         let res;
@@ -81,9 +96,9 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
                 formData.append(key, value as string)
             })
             formData.append("id", data?.id as string)
-            formData.append("status", statusRef?.current?.value as string)
+            // formData.append("status", statusRef?.current?.value as string)
             formData.append("newImage", newImage as unknown as string)
-            // formData.append("text", editorRef?.current?.getContent() as unknown as string)
+            formData.append("text", value as unknown as string)
 
             if (data?.id || values.id) {
                 res = await updateBlog(formData)
@@ -118,7 +133,7 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
             <Form
                 form={form}
                 onFinish={handleSubmit}
-                className={`w-full max-w-xl flex-1 flex flex-col gap-4 overflow-hidden`}
+                className={`w-full max-w-screen-xl mx-auto flex-1 flex flex-col gap-4 overflow-hidden`}
             >
                 <h4 className="text-sm md:text-lg font-bold text-text p-4 border-l-4 border-secondary py-2">Create Blog Post</h4>
                 <div className="flex flex-col gap-1">
@@ -126,7 +141,7 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
                     <Form.Item<TBlogItemProp> name="image" noStyle>
                         <label htmlFor='image' className="relative flex-1 flex flex-col md:flex-row md:items-center gap-4 cursor-pointer">
                             <input ref={imageRef} type="file" onChange={handleFileUpload} name="image" id="image" accept='image/jpeg, image/png' className="absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer z-20" />
-                            <div className="flex-1 relative h-20 md:h-44 w-full rounded-md overflow-hidden bg-text flex-shrink-0">
+                            <div className="flex-1 relative h-44 md:h-60 w-full rounded-md overflow-hidden bg-text flex-shrink-0">
                                 {image.value && <Image src={image?.value} alt={"Preview Image"} className="object-cover object-top" fill />}
                             </div>
                         </label>
@@ -144,71 +159,35 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
                 <div className="flex flex-col gap-1">
                     <h4 className="w-[10rem] text-sm text-text font-semibold">Visibility:</h4>
                     <div className="flex-1 flex flex-col md:flex-row gap-2">
-                        <Form.Item<TBlogItemProp> name="status" noStyle className='flex-1'>
-                            <select ref={statusRef} name="status" id="status" className="border border-text/50 rounded-md text-xs text-text w-full py-2 px-4 bg-white">
-                                {
-                                    Object.entries($Enums.ViewStatus).map(([key, value]) => (
-                                        <option key={key} value={value} className="text-xs text-text font-semibold bg-white px-4">{key}</option>
-                                    ))
+                        <Form.Item<TBlogItemProp> name="status" noStyle className='flex-1 w-full' initialValue={"VISIBLE"}>
+                            <Select
+                                id="status"
+                                options={
+                                    Object.entries($Enums.ViewStatus).map(([key, value]) => ({
+                                        label: key,
+                                        value,
+                                        key
+                                    }))
                                 }
-                            </select>
+                                className='bg-white w-full'
+                                getPopupContainer={(triggerNode) => triggerNode.parentElement!}
+                            />
                         </Form.Item>
                     </div>
                 </div>
-                {/* <div className="flex flex-col gap-1 h-[315px]">
+                <div className="flex flex-col gap-1 h-[500px]">
                     <h4 className="text-sm text-text font-semibold">Blog Content:</h4>
-                    <div className="flex-1 flex flex-col md:flex-row gap-2 relative h-[250px] border border-background">
-                        <Form.Item<TBlogItemProp> name="text" noStyle className='flex-1 relative h-[250px]'>
+                    <div className="flex-1 flex flex-col md:flex-row gap-2 relative h-[500px]">
+                        <Form.Item<TBlogItemProp> name="text" noStyle className='flex-1 relative w-full h-full' initialValue={value}>
                             <ReactQuill
                                 defaultValue={value}
-                                onChange={(value) => {
-                                    form.setFieldValue("text", value)
-                                    setValue(value)
-                                }}
+                                onChange={(value) => setValue(value)}
+                                modules={{toolbar: toolbarOptions}}
                                 placeholder="Write a well-detailed and elaborative information about the post"
-                                style={{ height: '250px' }}
-                                className='w-full h-full absolute left-0 top-0 rounded-md text-sm text-slate-700' theme="snow" />
-                        </Form.Item>
-                    </div>
-                </div> */}
-                <div className="flex flex-col gap-1 h-[400px]">
-                    <h4 className="text-sm text-text font-semibold">Blog Content:</h4>
-                    <div className="flex-1 flex flex-col md:flex-row gap-2 relative h-[400px] border border-background">
-                        <Form.Item<TBlogItemProp> name="text" noStyle className='flex-1 relative h-[400px]'>
-                            <div className="flex flex-col">
-                                <RichTextEditor 
-                                    key={"qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc"}
-                                    lang='EN'
-                                    allowedFileTypes={["image/jpg", "image/jpeg", "image/png"]}
-                                    initialValue={data?.text ?? ""}
-                                    onValueChange={richText => console.log({ richText })}
-                                    className='w-full h-full'
-                                />
-                                {/* <Editor
-                                    apiKey='qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc'
-                                    onInit={(_evt: any, editor: TinyMCEEditor | null) => editorRef.current = editor}
-                                    initialValue={data?.text ?? ""}
-                                    // ref={editorRef}
-                                    init={{
-                                        height: 400,
-                                        menubar: false,
-                                        plugins: [
-                                            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                                            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                                        ],
-                                        toolbar: 'undo redo | blocks | ' +
-                                            'bold italic forecolor | alignleft aligncenter ' +
-                                            'alignright alignjustify | bullist numlist outdent indent | ' +
-                                            'removeformat | help',
-                                        content_style: 'body { font-family: Helvetica,Arial,sans-serif; font-size: 14px }'
-                                    }}
-                                    onGetContent={e => {
-                                        e.content = e.content.replace(/<p>\s*(<div.*?>.*?<\/div>)\s*<\/p>/g, '$1');
-                                    }}
-                                /> */}
-                                {/* <button type="button" className="button bg-secondary py-2 w-max" onClick={log}>Log editor content</button> */}
-                            </div>
+                                style={{ height: '400px !important', width: '100%' }}
+                                theme="snow"
+                                className='w-full h-[400px] absolute left-0 top-0 rounded-md text-sm text-slate-700'
+                            />
                         </Form.Item>
                     </div>
                 </div>
@@ -223,44 +202,47 @@ export default function AddBlogForm({ data }: { data: TBlogItemProp | undefined 
     )
 }
 
-
-{/*
-    
-    // import { BoldExtension, ItalicExtension, UnderlineExtension } from 'remirror/extensions';
-// import type { RemirrorJSON } from 'remirror';
-// // import { OnChangeJSON } from '@remirror/react';
-// import { Remirror, useRemirror, OnChangeJSON } from '@remirror/react';
-// import { WysiwygEditor } from '@remirror/react-editors/wysiwyg';
-
-// // const extensions = () => [new BoldExtension(), new ItalicExtension(), new UnderlineExtension()];
-
-
-// const Editor = ({ onChange }: { onChange: (json: RemirrorJSON) => void }) => {
-//     const { manager, state } = useRemirror({
-//         // extensions,
-//         content: '<p>Hi <strong>Friend</strong></p>',
-//         stringHandler: 'html',
-//         selection: 'end',
-//     });
-
-//     return (
-//         <Remirror manager={manager} initialContent={state}>
-//             <OnChangeJSON onChange={onChange} />
-//         </Remirror>
-//     );
-// };
-
-    <div className="flex flex-col gap-1 h-[315px]">
+{/* <div className="flex flex-col gap-1 h-[400px]">
     <h4 className="text-sm text-text font-semibold">Blog Content:</h4>
-    <div className="flex-1 flex flex-col md:flex-row gap-2 relative h-[250px] border border-background">
-        <Form.Item<TBlogItemProp> name="text" noStyle className='flex-1 relative h-[250px]'>
-            <Editor onChange={handleEditorChange}/>
+    <div className="flex-1 flex flex-col md:flex-row gap-2 relative h-[400px] border border-background">
+        <Form.Item<TBlogItemProp> name="text" noStyle className='flex-1 relative h-[400px]'>
+            <div className="flex flex-col">
+                <RichTextEditor
+                    key={"qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc"}
+                    lang='EN'
+                    allowedFileTypes={["image/jpg", "image/jpeg", "image/png"]}
+                    initialValue={data?.text ?? ""}
+                    onValueChange={richText => console.log({ richText })}
+                    editorStyle={{ width: '100%', height: '100%', minWidth: '100%', border: "2px solid #f66" }}
+                    textAreaProps={{ className: 'w-full h-full border-2 border-secondary' }}
+                    className='w-full h-full'
+                />
+            </div>
         </Form.Item>
     </div>
-</div>
-<div className="flex flex-col gap-1">
-    <h4 className="w-[10rem] text-sm text-text font-semibold">Text:</h4>
-    <div className='h-[230px] mb-2 relative'>
-        <WysiwygEditor />
-    </div>
 </div> */}
+
+    {/* <Editor
+        apiKey='qagffr3pkuv17a8on1afax661irst1hbr4e6tbv888sz91jc'
+        onInit={(_evt: any, editor: TinyMCEEditor | null) => editorRef.current = editor}
+        initialValue={data?.text ?? ""}
+        // ref={editorRef}
+        init={{
+            height: 400,
+            menubar: false,
+            plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+            ],
+            toolbar: 'undo redo | blocks | ' +
+                'bold italic forecolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+            content_style: 'body { font-family: Helvetica,Arial,sans-serif; font-size: 14px }'
+        }}
+        onGetContent={e => {
+            e.content = e.content.replace(/<p>\s*(<div.*?>.*?<\/div>)\s*<\/p>/g, '$1');
+        }}
+    /> */}
+    {/* <button type="button" className="button bg-secondary py-2 w-max" onClick={log}>Log editor content</button> */}

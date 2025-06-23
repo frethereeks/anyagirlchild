@@ -1,6 +1,6 @@
 import { ThemeConfig } from "antd";
 
-const THEME_COLOR = {
+export const THEME_COLOR = {
     primary: "#0d182d",
     accentColor: "#64748b",
     "light-primary": "#16a39435",
@@ -9,19 +9,19 @@ const THEME_COLOR = {
     "light-secondary": "#ffe8ca",
     background: "#f2f2f2",
     "light-grey": "#e5e6eb",
-    // text: "#b8a8a8",
+    danger: "#f34f7c",
     text: "#64748b",
 }
 
-const fontFamily = {
-    mulish: "var(--mulish)",
-    inter: "var(--inter)",
+export const fontFamily = {
+    grotesk: "var(--grotesk)",
+    poppins: "var(--poppins)",
 }
 
 export const appThemeConfig: ThemeConfig = {
     cssVar: true,
     token: {
-        fontFamily: fontFamily.mulish,
+        fontFamily: fontFamily.grotesk,
         colorPrimary: THEME_COLOR.primary,
         colorLinkHover: "inherit",
         colorLink: THEME_COLOR.accentColor,
@@ -33,7 +33,7 @@ export const appThemeConfig: ThemeConfig = {
             siderBg: THEME_COLOR.text,
             headerBg: THEME_COLOR["light-secondary"],
             screenXS: 200,
-            fontFamily: fontFamily.inter,
+            fontFamily: fontFamily.poppins,
             fontSize: 12,
         },
         Table: {
