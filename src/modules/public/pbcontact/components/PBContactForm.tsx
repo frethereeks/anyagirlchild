@@ -31,6 +31,7 @@ export default function PBContactForm() {
         form.resetFields()
       }
     } catch (error) {
+      console.log('error', error)
       notification.error({ message: 'Unable to send message. Please, check your internet connection and try again', key: "123" })
     }
     finally {

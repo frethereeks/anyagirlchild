@@ -37,7 +37,10 @@ export default function DashLayout({ children, image }: { children: React.ReactN
             redirect(appRoutePaths.home)
         }
         catch (error) {
-            notification.error({message: 'Unable to perform the logout operation. Please, check your network and try again', key: "123"})
+            if (error instanceof Error) {
+                notification.error({message: `Unable to perform the logout operation due to ${error.message}`, key: "123"})
+            }
+            else notification.error({message: 'Unable to perform the logout operation. Please, check your network and try again', key: "123"})
         }
         finally {
             setLoading(false)
@@ -94,8 +97,8 @@ export default function DashLayout({ children, image }: { children: React.ReactN
                                     ))
                                 }
                             </div>
-                            <button onClick={handleLogout} className={`button bg-danger text-white text-sm flex items-center gap-2 py-1.5`}>
-                                <span className="w-6 text-base"><GrLogout /></span>
+                            <button disabled={loading} onClick={handleLogout} className={`button bg-danger text-white text-sm flex items-center gap-2 py-1.5`}>
+                            {loading ? <span className='animate-spin border-2 border-white border-r-transparent rounded-full h-5 w-5 grid place-items-center'></span> : <span className="w-6 text-base"><GrLogout /></span>}
                                 <p className='text-sm'>Logout</p>
                             </button>
                         </div>

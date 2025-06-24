@@ -1,10 +1,11 @@
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   /* config options here */
-  allowedDevOrigins: [
-    "192.168.183.233",
-  ],
+  // allowedDevOrigins: [
+  //   "192.168.183.233",
+  // ],
   images: {
     // Define the maximum file size for images to be optimized and cached
     deviceSizes: [320, 420, 768, 1024, 1200, 1800, 1920],

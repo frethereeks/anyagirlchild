@@ -21,7 +21,7 @@ export default function UpdateStatus({ data, table, statusType = $Enums.Status }
         setLoading(true)
         notification.info({ message: `Please wait while your request is being processed...`, key: "8206" })
         try {
-            const res = await updateEntity(JSON.stringify(data), statusRef?.current?.value!, table)
+            const res = await updateEntity(JSON.stringify(data), statusRef?.current?.value as string, table)
           if (res?.error) notification.error({ message: res?.message, key: "8206" })
           else {
             notification.success({ message: res?.message, key: "8206" })

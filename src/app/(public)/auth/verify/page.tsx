@@ -25,14 +25,15 @@ export const metadata: Metadata = {
     }
 };
 
-type PageProps = {
+type TVerifyPageProps = {
+    params: Record<string, string | string[] | undefined>;
     searchParams: {
-        email?: string
-        token?: string
-    }
-}
+        email?: string;
+        token?: string;
+    };
+};
 
-export default async function PBVerifyPage({ searchParams: { email, token } }: PageProps) {
+export default async function PBVerifyPage({ searchParams: { email, token } }: TVerifyPageProps) {
     const data = await fetchUserViaToken(email, token);
 
     if (!data) {

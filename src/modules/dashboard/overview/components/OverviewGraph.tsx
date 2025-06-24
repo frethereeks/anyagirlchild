@@ -1,11 +1,8 @@
 "use client"
-import React, {useState, useTransition, useEffect} from 'react'
 import dynamic from "next/dynamic"
-import { BiBarChart } from 'react-icons/bi'
 import DonationChart from '@/modules/shared/BarChart'
 // import ApexChart from "react-apexcharts"
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
-// import { Bar, BarConfig, Pie, Scatter, Histogram } from '@ant-design/plots'
 
 export default function OverviewGraph() {
   const data = [
@@ -15,35 +12,6 @@ export default function OverviewGraph() {
     { year: '2024', value: 143, },
     { year: '2025', value: 56, },
   ]
-  // const config: BarConfig = {
-  //   xField: 'value',
-  //   yField: 'year',
-  //   seriesField: 'year',
-  //   // color: ['#1890ff', '#ff4d4f', '#52c41a'],
-  //   color: ['#16a394', '#f34f7c', '#52c41a'],
-  //   legend: {
-  //     position: 'top-right',
-  //     itemName: {
-  //       style: {
-  //         fill: '#666',
-  //         fontSize: 12,
-  //       }
-  //     }
-  //   },
-  //   animate: {
-  //     appear: {
-  //       animation: 'path-in',
-  //       zoom: 2000
-  //     }
-  //   },
-  //   autoFit: true,
-  //   scrollbar: { type: "vertical" },
-  //   // slider: {start: 0.1, end: 0.9},
-  // }
-  // const props = {
-  //   data,
-  //   ...config
-  // }
 
   return (
     <>

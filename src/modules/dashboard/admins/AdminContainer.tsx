@@ -1,9 +1,8 @@
 "use client"
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { AddAdmin } from './components'
-import { Modal, notification, Table, TableProps } from 'antd'
+import { Modal, Table, TableProps } from 'antd'
 import { ADMIN_COLUMN } from './columns'
-// import { BiSolidPencil } from 'react-icons/bi'
 import { AiOutlineDelete } from "react-icons/ai";
 import { TAdminProps } from '@/types'
 import { $Enums } from '@prisma/client'
@@ -11,22 +10,18 @@ import { GrUserAdmin } from 'react-icons/gr'
 import { DeleteModal, UpdateStatus } from '@/modules/shared'
 import { useAppDispatch, useAppSelector } from '@/lib/features/hooks'
 import { triggerModal } from '@/lib/features/reducers/siteSlice'
-import { useRouter } from 'next/navigation'
 
 
 export default function AdminContainer({ data, role }: { data: TAdminProps[], role: $Enums.Role }) {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [deleteModal, setDeleteModal] = useState<boolean>(false)
-  const [uploadModal, setUploadModal] = useState<boolean>(false)
   const [selectedData, setSelectedData] = useState<TAdminProps | undefined>(undefined)
   const site = useAppSelector(state => state.site)
   const dispatch = useAppDispatch()
-  const [loading, setLoading] = useState<boolean>(false)
-  const statusRef = useRef<HTMLSelectElement | null>(null)
-  const router = useRouter()
 
 
   React.useEffect(() => {
+    console.log({})
     if (site.selectedId) {
       setSelectedData(data?.find(el => el.id === site.selectedId))
     }
@@ -63,7 +58,7 @@ export default function AdminContainer({ data, role }: { data: TAdminProps[], ro
         afterClose={() => setSelectedData(undefined)}
         footer={null}
       >
-        <AddAdmin data={selectedData} closeModal={setUploadModal} />
+        <AddAdmin data={selectedData} />
       </Modal>
       <section className='flex flex-col gap-4'>
         <aside className="card flex bg-white justify-between gap-4 p-4 min-w-52 overflow-x-scroll">

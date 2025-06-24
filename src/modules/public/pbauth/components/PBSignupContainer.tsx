@@ -3,7 +3,7 @@ import { createUser } from '@/app/action'
 import { appRoutePaths } from '@/routes/paths'
 import { TAuthProps } from '@/types'
 import { Form, Input, notification } from 'antd'
-import { Rule } from 'antd/es/form'
+// import { Rule } from 'antd/es/form'
 import { useForm } from 'antd/es/form/Form'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -35,7 +35,7 @@ export default function PBSignupContainer() {
                 router.replace(appRoutePaths.signin)
             }
         } catch (error) {
-            console.log('error')
+            console.log('error', error)
             notification.error({message: "Something went wrong. Please, check your internet connection and try again", key: "123"})
         }
         finally {
@@ -43,18 +43,18 @@ export default function PBSignupContainer() {
         }
     }
 
-    const validatePass = (): Rule => ({
-        required: true,
-        validator: async (_, value: string) => {
-            if (value === undefined) {
-                throw new Error("Password cannot be empty")
-            }
-            if (/[A-Za-z\d!@#$%^&*()_+={};:'<>,./?]{8,}/.test(value)) {
-                throw new Error("Password must be a combination of alphabets, at least one number, and a symbol")
-            }
-            return true
-        },
-    })
+    // const validatePass = (): Rule => ({
+    //     required: true,
+    //     validator: async (_, value: string) => {
+    //         if (value === undefined) {
+    //             throw new Error("Password cannot be empty")
+    //         }
+    //         if (/[A-Za-z\d!@#$%^&*()_+={};:'<>,./?]{8,}/.test(value)) {
+    //             throw new Error("Password must be a combination of alphabets, at least one number, and a symbol")
+    //         }
+    //         return true
+    //     },
+    // })
 
     return (
         <aside className='flex-1 md:px-20 flex-col gap-8 p-4 py-10 md:py-40'>

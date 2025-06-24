@@ -24,8 +24,8 @@ export default function ContactContainer({ data, role }: { data: TContactProps[]
 
   // This is to populate the selectedData value when the view donation button is clicked
   React.useEffect(() => {
-    // eslint-disable-next-line
     setSelectedData(data?.find(el => el.id === site.selectedId))
+    // eslint-disable-next-line
   }, [site.selectedId])
 
   const rowSelection: TableProps<TContactProps>["rowSelection"] = {

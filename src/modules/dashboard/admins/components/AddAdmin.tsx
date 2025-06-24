@@ -12,10 +12,9 @@ import { GrCamera, GrUserAdmin } from 'react-icons/gr'
 
 type TPageProps = {
     data: TAdminProps | undefined
-    closeModal: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function AddAdmin({ data, closeModal }: TPageProps) {
+export default function AddAdmin({ data }: TPageProps) {
     const [form] = Form.useForm<TAdminProps>()
     const [loading, setLoading] = useState<boolean>(false)
     const imageRef = useRef<HTMLInputElement | null>(null)
@@ -43,14 +42,12 @@ export default function AddAdmin({ data, closeModal }: TPageProps) {
         else {
             form.resetFields()
             if (imageRef.current) imageRef.current.value = ""
-            closeModal(false)
         }
 
         return () => {
             setImage(prev => ({ ...prev, value: "" }))
             form.resetFields()
         }
-        //eslint-disable-next-line
     }, [data, form])
 
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {

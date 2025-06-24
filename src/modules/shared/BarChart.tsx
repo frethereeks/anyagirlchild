@@ -40,11 +40,14 @@ export default function DonationChart() {
     };
 
     useEffect(() => {
+
         fetchData(year);
     }, [year]);
 
     useEffect(() => {
         filterByMonth(month);
+        console.log('isPending', isPending)
+        //eslint-disable-next-line
     }, [month, allData]);
 
     const options = {

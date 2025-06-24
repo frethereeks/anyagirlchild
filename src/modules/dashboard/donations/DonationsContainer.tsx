@@ -21,15 +21,15 @@ export default function DonationsContainer({ data, role }: { data: TDonationProp
   const dispatch = useAppDispatch()
 
   React.useEffect(() => {
-    // eslint-disable-next-line
     setSelectedData(data?.find(el => el.id === selectedRowKeys[0]))
+    // eslint-disable-next-line
   }, [selectedRowKeys, site])
 
   // This is to populate the selectedData value when the view donation button is clicked
   React.useEffect(() => {
-    // eslint-disable-next-line
     setSelectedData(data?.find(el => el.id === site.selectedId))
     console.log({ selectedData, selectedId: site.selectedId })
+    // eslint-disable-next-line
   }, [site.selectedId])
 
   const rowSelection: TableProps<TDonationProps>["rowSelection"] = {

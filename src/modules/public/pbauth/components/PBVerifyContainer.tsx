@@ -4,7 +4,6 @@ import { appRoutePaths } from '@/routes/paths'
 import { Form, Input, notification } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import Link from 'next/link'
-import { FaArrowLeft } from 'react-icons/fa6'
 import { TAuthProps } from '@/types'
 import { useRouter } from 'next/navigation'
 import { handlePasswordReset } from '@/app/action'
@@ -35,6 +34,7 @@ export default function PBVerifyContainer({ data }: TPageProps) {
         router.refresh()
       }
     } catch (error) {
+      console.log('error', error)
       notification.error({ message: 'Unable to complete request, please, check your network and try again', key: "123" })
     }
     finally {

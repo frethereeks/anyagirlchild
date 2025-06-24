@@ -20,6 +20,8 @@ import { TCommentProps } from "@/types";
 // import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 // import Email from "next-auth/providers/email";
 
+console.log({config})
+
 const limit = plimit(10)
 
 // common form data
@@ -126,6 +128,7 @@ export const handleReset = async (email: string) => {
             if (err) {
                 return { error: true, message: `Something went wrong. We could not send the mail...Please, try again` };
             }
+            console.log({info})
         })
         await prisma.user.update({
             where: { email },
@@ -169,7 +172,7 @@ export const handleTokenVerification = async (email: string, token: string) => {
 }
 
 // Analytics Data
-export const fetchDashboarData = async () => {
+export const fetchDashboardData = async () => {
     try {
         const [adminData, donationData, galleryData, blogData] = await prisma.$transaction([
             prisma.user.findMany({ orderBy: { createdAt: "desc" }, take: 5 }),
@@ -194,6 +197,7 @@ export const fetchDonationStats = async ({
     const start = new Date(year, 0, 1);
     const end = new Date(year + 1, 0, 1);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {
         createdAt: { gte: start, lt: end },
     };
@@ -214,11 +218,12 @@ export const fetchDonationStats = async ({
     // WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt}
     // GROUP BY month
     // // ORDER BY month ASC;`;
-    const results = await prisma.$queryRaw`SELECT EXTRACT(MONTH FROM createdAt) AS month, currency, SUM(amount) AS total FROM donation WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month, currency ORDER BY month, currency ASC;`;
-    console.log({ results })
+    const query = await prisma.$queryRaw<Array<{month: string, currency: string, total: number}>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, currency, SUM(amount) AS total FROM donation WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month, currency ORDER BY month, currency ASC;`;
+    const result = query.map(row => ({month: Number(row.month), currency: row.currency, total: Number(row.total)}))
+    console.log({ result })
 
     // return { result: JSON.stringify(results) }; // [{ month: 1, total: 5000 }, ...]
-    return { result: [{ month: 1, total: 5000 }, { month: 2, total: 3500 }] }; // [{ month: 1, total: 5000 }, ...]
+    return { result }; // [{ month: 1, total: 5000 }, ...]
 };
 
 
@@ -442,7 +447,7 @@ export const createBlog = async (data: FormData) => {
 }
 
 export const deleteBlog = async (id: string) => {
-    const user = await verifyUser()
+    await verifyUser()
     try {
         // Change the 
         await prisma.blog.delete({ where: { id } })
@@ -679,7 +684,7 @@ export const createDonation = async (data: FormData) => {
 }
 
 export const fetchDonations = async () => {
-    const user = await verifyUser()
+    await verifyUser()
     try {
         const data = await prisma.donation.findMany({
             orderBy: { createdAt: "desc" }
@@ -867,7 +872,7 @@ export const uploadEntityImage = async (id: string, data: FormData, table: IDENT
 // DELETE ACTIONS
 export const deleteEntity = async (id: string, table: IDENTIFIED_TABLES) => {
     const entityIDs = JSON.parse(id) as string[];
-    let errorMsg = "";
+    const errorMsg = "";
     try {
         switch (table) {
             case "user": {
@@ -881,6 +886,7 @@ export const deleteEntity = async (id: string, table: IDENTIFIED_TABLES) => {
                     await Promise.allSettled(deleteUsers)
                 }
                 catch (err) {
+                    console.log({ err })
                     return { error: true, message: "Invalid delete request detected." };
                 }
             }
@@ -935,16 +941,16 @@ export const deleteEntity = async (id: string, table: IDENTIFIED_TABLES) => {
         revalidatePath(path)
         console.log('Got here. Even though it was wrong', { errorMsg })
         return { error: errorMsg !== "" ? true : false, message: errorMsg === "" ? `${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} has been successfully deleted` : errorMsg }
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.log('Now at the right place, because it was wrong')
-        console.log({ errorCause: error?.cause })
+        console.log({ errorCause: error })
         return { error: true, message: `Something went wrong while attempting to make your request, please, try again.` }
     }
 }
 // STATUS ACTIONS
 export const updateEntity = async (id: string, status: string, table: IDENTIFIED_TABLES) => {
     const entityIDs = JSON.parse(id) as string[];
-    console.log({ entityIDs, status, table })
+    // console.log({ entityIDs, status, table })
     try {
         switch (table) {
             case "user": {
@@ -1045,19 +1051,19 @@ const publicScreenLog = async (user: { id: string, fullname: string, email: stri
     }
 }
 
-const backendScreenLog = async (subject: string, user: { id: string, fullname: string, email: string }, action: "created" | "edited" | "deleted" | "initiated" | "viewed", page: IDENTIFIED_TABLES, sendmail: boolean, description: string, reply?: string, copy?: { email: string, fullname?: string }) => {
-    const data = await verifyUser()
-    try {
-        const message = `<a href="${config.APP_PRIMARY_API_BASE_URL}/${appRoutePaths.adminadmin}?id=${user.id}">${user.fullname}</a> with email ${user.email} ${action} a ${page} record. ${description}`;
-        await prisma.logger.create({
-            data: { userId: data.id, message }
-        })
-        if (sendmail) {
-            await sendEmail(subject ??= `Anyagirlchild: New ${action} Record`, [config.NEXT_MAIL_BCC!, user.email], message, reply ?? "", copy)
-        }
-    }
-    catch (error) {
-        console.log(`Log Error: Unable to save log because of error ${error}`)
-    }
-}
+// const backendScreenLog = async (subject: string, user: { id: string, fullname: string, email: string }, action: "created" | "edited" | "deleted" | "initiated" | "viewed", page: IDENTIFIED_TABLES, sendmail: boolean, description: string, reply?: string, copy?: { email: string, fullname?: string }) => {
+//     const data = await verifyUser()
+//     try {
+//         const message = `<a href="${config.APP_PRIMARY_API_BASE_URL}/${appRoutePaths.adminadmin}?id=${user.id}">${user.fullname}</a> with email ${user.email} ${action} a ${page} record. ${description}`;
+//         await prisma.logger.create({
+//             data: { userId: data.id, message }
+//         })
+//         if (sendmail) {
+//             await sendEmail(subject ??= `Anyagirlchild: New ${action} Record`, [config.NEXT_MAIL_BCC!, user.email], message, reply ?? "", copy)
+//         }
+//     }
+//     catch (error) {
+//         console.log(`Log Error: Unable to save log because of error ${error}`)
+//     }
+// }
 

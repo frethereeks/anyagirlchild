@@ -2,7 +2,7 @@ import { fetchBlogPosts, fetchSingleBlogPost } from '@/app/action';
 import { ASSET_URL } from '@/assets';
 import PBBlogSingleWrapper from '@/modules/public/pbblog/pbblogsingle/PBBlogSingleWrapper';
 import { TBlogItemProp } from '@/types';
-import { Metadata } from 'next';
+// import { Metadata } from 'next';
 
 
 type TPageParams = {
@@ -10,7 +10,6 @@ type TPageParams = {
     slug: string
   }
 }
-
 
 export async function generateStaticParams() {
   const res = await fetchBlogPosts();
@@ -20,8 +19,8 @@ export async function generateStaticParams() {
   else return [];
 }
 
-export async function generateMetadata({ params }: TPageParams): Promise<Metadata> {
-  const {slug} = await params
+export async function generateMetadata({ params }: TPageParams) {
+  const {slug} = params
   const res = await fetchSingleBlogPost({ slug })
   const data = res?.data as TBlogItemProp
   return {
@@ -43,7 +42,7 @@ export async function generateMetadata({ params }: TPageParams): Promise<Metadat
 }
 
 export default async function SingleBlogPage({ params }: TPageParams) {
-  const {slug} = await params
+  const {slug} = params
   const res = await fetchSingleBlogPost({ slug })
   const data = res?.data as TBlogItemProp
 

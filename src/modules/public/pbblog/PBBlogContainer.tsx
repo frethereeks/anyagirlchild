@@ -6,6 +6,7 @@ import { TBlogItemProp } from '@/types'
 
 export default function PBBlogContainer({data}: {data: TBlogItemProp[] | undefined}) {
   const [currentPage, setCurrentPage] = useState<number>(0)
+  
   return (
     <main className='flex flex-col gap-4'>
       <section className="py-10 md:py-20 px-4 relative bg-backdrop">
@@ -27,7 +28,7 @@ export default function PBBlogContainer({data}: {data: TBlogItemProp[] | undefin
               data?.length &&
               data?.length > DEFAULT_PAGE_SIZE && 
               Array.from({ length: Math.ceil((data?.length || 0) / DEFAULT_PAGE_SIZE) }).map((_, val) => (
-                <button key={val} className={`w-6 h-6 md:w-8 md:h-8 flex justify-center items-center border border-grey text-xs sm:text-sm rounded-md cursor-pointer ${val === currentPage ? 'hover:bg-gray bg-dark hover:text-dark/60 text-backdrop' : 'bg-gray hover:bg-dark text-dark/60 hover:text-backdrop'}`}>{
+                <button onClick={() => setCurrentPage(val)} key={val} className={`w-6 h-6 md:w-8 md:h-8 flex justify-center items-center border border-grey text-xs sm:text-sm rounded-md cursor-pointer ${val === currentPage ? 'hover:bg-gray bg-dark hover:text-dark/60 text-backdrop' : 'bg-gray hover:bg-dark text-dark/60 hover:text-backdrop'}`}>{
                 val}</button>
               ))
             }

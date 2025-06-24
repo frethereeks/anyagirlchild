@@ -1,7 +1,5 @@
 import React from 'react'
 import Image from 'next/image'
-// import {Image} from "antd"
-import { ASSET_URL } from '@/assets'
 import { $Enums } from '@prisma/client'
 import { TGalleryProps } from '@/types'
 

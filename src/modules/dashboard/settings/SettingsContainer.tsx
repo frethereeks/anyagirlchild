@@ -1,14 +1,13 @@
 "use client"
 
 import React, { useRef, useState } from 'react'
-import { ASSET_URL } from '@/assets'
 import Image from 'next/image'
 import { RiCamera2Line, RiVerifiedBadgeFill } from "react-icons/ri";
 import { useForm } from 'antd/es/form/Form';
 import { Form, Input, notification } from 'antd';
 import { TAdminProps } from '@/types';
 import { fileUpload } from '@/lib';
-import { updateUser, updateUserImage, uploadEntityImage } from '@/app/action';
+import { updateUser, updateUserImage } from '@/app/action';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -85,7 +84,8 @@ export default function SettingsContainer({ data }: { data: TAdminProps }) {
     try {
       const formData = new FormData()
       Object.entries(values).map(([key, value]) => {
-        key === "image" ? formData.append(key, value as File) : formData.append(key, value as string)
+        if (key === "image") formData.append(key, value as File)
+        else formData.append(key, value as string)
       })
       formData.append("newImage", (image.value !== data?.image) as unknown as string)
       formData.append("oldImage", data.image as string)
@@ -167,7 +167,7 @@ export default function SettingsContainer({ data }: { data: TAdminProps }) {
                     </label>
                     <div className="flex-1 flex gap-4">
                       <button disabled={loading || image.value === data?.image} type={"button"} onClick={handleProfileImageUpload} className="button disabled:cursor-not-allowed bg-secondary hover:bg-secondary/90">Upload Photo</button>
-                      <button disabled={loading || image.value === data?.image} type={"button"} onClick={() => setImage({ name: data?.firstname, value: data?.image! })} className="button disabled:cursor-not-allowed hover:bg-background/50 bg-transparent border border-danger/40 hover:border-text/20 text-danger px-6 font-normal">Delete</button>
+                      <button disabled={loading || image.value === data?.image} type={"button"} onClick={() => setImage({ name: data?.firstname, value: data?.image as string })} className="button disabled:cursor-not-allowed hover:bg-background/50 bg-transparent border border-danger/40 hover:border-text/20 text-danger px-6 font-normal">Delete</button>
                     </div>
                   </div>
                 </Form.Item>

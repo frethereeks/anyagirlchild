@@ -28,13 +28,17 @@ export default function PBHeader() {
     }
     return () => {
       setFixed(false);
-      window && window.scrollTo(0, 0)
+      if (typeof window !== "undefined") {
+        window.scrollTo(0, 0)
+      }
       setNavShow(false);
     }
   }, [])
-
+  
   useEffect(() => {
-    window && window.scrollTo(0, 0);
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0)
+    }
     setNavShow(false)
     //eslint-ignore-next-line
   }, [location])

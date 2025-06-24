@@ -1,9 +1,9 @@
-import toast from "react-hot-toast";
+import { notification } from "antd";
 import {utils, writeFile} from "xlsx"
 
-export const handleExport = async(headings: string[], data: any[], title: string) => {
+export const handleExport = async (headings: string[], data: unknown[], title: string) => {
     if(!data.length) {
-        toast.error(`Nothing here...You cannot download an empty record`, {id: "826502", duration: 4000})
+        notification.error({message: `Nothing here...You cannot download an empty record`, key: "826502"})
         return;
     }
     const wb = utils.book_new()

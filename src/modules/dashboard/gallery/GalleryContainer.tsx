@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Modal } from 'antd';
 import { DEFAULT_PAGE_SIZE } from '@/constants'
 import AddGallery from './components/AddGallery';
@@ -8,10 +8,10 @@ import { triggerModal } from '@/lib/features/reducers/siteSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/features/hooks';
 import { $Enums } from '@prisma/client';
 import Image from 'next/image';
-import { AiOutlineDelete, AiOutlineCheck } from 'react-icons/ai';
+import { AiOutlineDelete } from 'react-icons/ai';
 import { DeleteModal, UpdateStatus } from '@/modules/shared';
-import { FiGrid } from 'react-icons/fi';
-import { FaCheck, FaList } from 'react-icons/fa6';
+// import { FiGrid } from 'react-icons/fi';
+import { FaCheck } from 'react-icons/fa6';
 import { GrGallery } from 'react-icons/gr';
 
 type TPageProps = {
@@ -21,25 +21,24 @@ type TPageProps = {
 
 export default function GalleryContainer({ data, role }: TPageProps) {
     const [currentPage, setCurrentPage] = useState<number>(0)
-    const [viewType, setViewType] = useState<"grid" | "list">("grid")
+    // const [viewType, setViewType] = useState<"grid" | "list">("grid")
     const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
     const [selectedData, setSelectedData] = useState<TGalleryProps | undefined>(undefined)
     const [deleteModal, setDeleteModal] = useState<boolean>(false)
     const site = useAppSelector(state => state.site)
     const dispatch = useAppDispatch()
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (site.selectedId) {
             setSelectedData(data?.find(el => el.id === site.selectedId))
         }
         // eslint-disable-next-line
     }, [site.selectedId, dispatch])
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!deleteModal) {
             setSelectedRowKeys([])
         }
-        // eslint-disable-next-line
     }, [deleteModal])
 
     const handleDelete = (key: string) => {
@@ -48,7 +47,7 @@ export default function GalleryContainer({ data, role }: TPageProps) {
     }
 
     const handleClick = (val: number) => {
-
+        setCurrentPage(val)
     }
 
 

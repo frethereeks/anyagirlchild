@@ -1,6 +1,6 @@
 import { type NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { $Enums, User as MainUser } from '@prisma/client';
+import { $Enums } from '@prisma/client';
 import jwt from "jsonwebtoken"
 import { appRoutePaths } from '@/routes/paths';
 import prisma from '@/lib/prisma';

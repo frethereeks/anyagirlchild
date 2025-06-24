@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { IoLocateOutline } from 'react-icons/io5'
 import { LuMessageSquare, LuPhoneCall } from 'react-icons/lu'
-import { PBContactForm, PBContactMap } from './components'
+import { PBContactForm } from './components'
 
 export default function PBContactContainer() {
   return (

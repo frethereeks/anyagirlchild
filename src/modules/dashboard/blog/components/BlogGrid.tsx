@@ -7,18 +7,19 @@ import { DeleteModal } from '@/modules/shared'
 import { TBlogItemProp } from '@/types'
 import { $Enums } from '@prisma/client'
 
-export default function BlogGrid({ data, role }: { data: TBlogItemProp[] | undefined, role: $Enums.Role }) {
+export default function BlogGrid({ data,  }: { data: TBlogItemProp[] | undefined, role: $Enums.Role }) {
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
-  const [selectedData, setSelectedData] = useState<TBlogItemProp | undefined>(undefined)
+  // const [selectedData, setSelectedData] = useState<TBlogItemProp | undefined>(undefined)
   const [deleteModal, setDeleteModal] = useState<boolean>(false)
   
-  const handleDelete = (key: string) => {
-    setDeleteModal(!deleteModal)
-    setSelectedRowKeys([key])
-  }
-  const handleClick = (val: number) => {
-    console.log({ val })
+  // const handleDelete = (key: string) => {
+  //   setDeleteModal(!deleteModal)
+  //   setSelectedRowKeys([key])
+  // }
+  const handleClick = (value: number) => {
+    console.log({ value })
+    setCurrentPage(value)
   }
 
   return (

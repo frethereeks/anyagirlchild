@@ -27,6 +27,7 @@ export default function ReplyForm({ handlePostReply, data, commentId }: { handle
         return () => {
             // form.resetFields()
         }
+        //eslint-disable-next-line
     }, [data])
 
     const handleSubmit = async (data: TReplyProps) => {

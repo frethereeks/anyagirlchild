@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function OverviewBlogs({blogData }: { blogData: TBlogItemProp[] }) {
+export default function OverviewBlogs({blogData }: { blogData: Omit<TBlogItemProp, "comments" | "user">[] }) {
     return (
         <aside className = "card p-4 flex flex-col gap-4 text-text">
             <List

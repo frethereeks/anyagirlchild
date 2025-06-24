@@ -5,12 +5,12 @@ import { appRoutePaths } from '@/routes/paths'
 import { BiMessageDetail } from "react-icons/bi";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib';
-import { fetchDashboarData } from '@/app/action';
+import { fetchDashboardData } from '@/app/action';
 
 export default async function OverviewContainer() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
-  const res = await fetchDashboarData()
+  const res = await fetchDashboardData()
   
   return (
     <main className='flex flex-col gap-4 w-full'>
@@ -36,6 +36,7 @@ export default async function OverviewContainer() {
         </div>
         <section className="flex flex-col gap-4">
           <OverviewGallery galleryData={res?.data?.galleryData || []} />
+          <OverviewBlogs blogData={res?.data?.blogData || []} />
         </section>
       </aside>
     </main>

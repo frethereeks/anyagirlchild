@@ -1,9 +1,10 @@
+import { Metadata } from 'next';
 import React from 'react'
 import { ASSET_URL } from '@/assets'
 import { PBLoginContainer } from '@/modules/public/pbauth'
-import { Metadata } from 'next';
 import Image from 'next/image'
 import { config } from '@/config';
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(config.APP_PUBLIC_SITE_URL),
@@ -24,13 +25,15 @@ export const metadata: Metadata = {
 };
 
 type TPageProps = {
+  params: Record<string, string | string[] | undefined>;
   searchParams: {
-    view?: string | null
-  }
-}
+    view?: string | string[];
+  };
+};
 
-export default async function PBLoginPage({ searchParams }: TPageProps) {
-  const { view } = await searchParams;
+export default function PBLoginPage({ searchParams }: TPageProps) {
+  const view = searchParams?.view ?? null;
+
   return (
     <main className='flex flex-col md:flex-row gap-4 lg:gap-8 md:h-full'>
       <section className="container mx-auto flex flex-col lg:flex-row gap-4 md:h-full">
