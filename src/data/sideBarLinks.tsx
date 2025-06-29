@@ -1,7 +1,8 @@
 import { appRoutePaths } from "@/routes/paths"
 import { GrArticle, GrSettingsOption, GrUserAdmin, GrGallery } from "react-icons/gr"
 import { LuLayoutDashboard, LuMessageSquareText, LuTickets } from "react-icons/lu";
-import { RiBarChartBoxAiLine } from "react-icons/ri";
+// import { RiBarChartBoxAiLine } from "react-icons/ri";
+
 type SidebarProps = {
     id: string
     title: string
@@ -52,10 +53,10 @@ export const sideBarLinks: SidebarProps[] = [
         icon: <GrSettingsOption />,
         link: appRoutePaths.adminsettings,
     },
-    {
-        id: '8q2s03x5068q27',
-        title: 'Logs',
-        icon: <RiBarChartBoxAiLine />,
-        link: appRoutePaths.adminlogs,
-    },
+    // {
+    //     id: '8q2s03x5068q27',
+    //     title: 'Logs',
+    //     icon: <RiBarChartBoxAiLine />,
+    //     link: appRoutePaths.adminlogs,
+    // },
 ]
