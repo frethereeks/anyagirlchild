@@ -43,7 +43,7 @@ export const BLOG_COLUMN = (): TableColumnsType<TBlogItemProp> => {
             key: "Status",
             title: "Status",
             render: (_, val) => (
-                <p className={`px-2 text-sm ${val.status === "VISIBLE" ? 'text-secondary' : 'text-danger'} font-medium`}>{val.status.toString()}</p>
+                <p className={`px-2 text-sm ${val.status === "Visible" ? 'text-secondary' : 'text-danger'} font-medium`}>{val.status.toString()}</p>
             ),
         },
         {

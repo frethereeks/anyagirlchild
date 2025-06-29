@@ -159,7 +159,7 @@ const toolbarOptions = [
                 <div className="flex flex-col gap-1">
                     <h4 className="w-[10rem] text-sm text-text font-semibold">Visibility:</h4>
                     <div className="flex-1 flex flex-col md:flex-row gap-2">
-                        <Form.Item<TBlogItemProp> name="status" noStyle className='flex-1 w-full' initialValue={"VISIBLE"}>
+                        <Form.Item<TBlogItemProp> name="status" noStyle className='flex-1 w-full' initialValue={"Visible"}>
                             <Select
                                 id="status"
                                 options={
