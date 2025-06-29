@@ -19,12 +19,12 @@ export default function DonationChart() {
 
     const fetchData = (year: number) => {
         startTransition(() => {
-            fetchDonationStats({ year, month: 'all' }).then((res: {result: {month: number, total: number}[]}) => {
-                // const data = JSON.parse(res?.result)
-                console.log({ res,  })
-                if (Array.isArray(res)) {
-                    setAllData(res); // Save the **entire year's** dataset in memory
-                    setDisplayData(res); // Initialize the view
+            fetchDonationStats({ year, month: 'all' }).then((res: {result: string}) => {
+                const data = JSON.parse(res?.result) as unknown as { month: number, total: number }[] 
+                console.log({ res, data  })
+                if (Array.isArray(data)) {
+                    setAllData(data); // Save the **entire year's** dataset in memory
+                    setDisplayData(data); // Initialize the view
                 }
             });
         });

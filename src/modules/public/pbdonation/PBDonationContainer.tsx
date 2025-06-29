@@ -42,7 +42,7 @@ export default function PBDonationContainer() {
     email: inputs?.email || "",
     currency: "USD",
     amount: +(inputs?.amount || 0) * 100, //Amount is in the country's lowest currency. E.g Kobo, so 20000 kobo = N200
-    publicKey: config.NEXT_PUBLIC_PAYSTACK_PKEY,
+    publicKey: config.PAYSTACK.PUBLIC_KEY,
     label: `A donation from ${inputs?.fullname || ""} worth ${inputs?.currency || ""}${inputs?.amount || 0}`,
     metadata: {
       custom_fields: [
@@ -143,19 +143,19 @@ export default function PBDonationContainer() {
             Thank you for standing with us to give the girl child a better shot at life.
             For any questions about donations, please contact: */}
 
-            <h4 className="text-text text-3xl md:text-3xl font-semibold font-grotesk">Donate to empower a &#8358; <span className="font-bold text-secondary">Girl’s Future</span></h4>
-            <p className="text-sm md:text-base text-text">Your support helps us provide education, health support, and life-changing opportunities for girls in vulnerable communities. Every donation—no matter the size—makes a difference.</p>
+            <h4 className="text-text text-3xl md:text-3xl font-semibold font-grotesk">Donate to empower a <span className="font-bold text-secondary">Girl’s Future</span></h4>
+            <p className="text-sm md:text-base text-text">Your support—no matter the size—helps us provide education, health support, and life-changing opportunities for girls in vulnerable communities.</p>
           </div>
           <div className="flex flex-col gap-1">
             <label htmlFor="fullname" className="w-full text-sm md:text-base text-text/70 font-medium font-grotesk">Fullname:</label>
-            <Form.Item<TDonationData> name="fullname" id="fullname">
-              <Input type='text' className='text-text/70 capitalize' placeholder='Jonathan Daniel' required style={{ background: "transparent" }} />
+            <Form.Item<TDonationData> name="fullname" id="fullname" rules={[{required: true, message: 'Full name is required'}]}>
+              <Input type='text' className='text-text/70 capitalize' placeholder='Jonathan Daniel' style={{ background: "transparent" }} />
             </Form.Item>
           </div>
           <div className="flex flex-col gap-1 -mt-3">
             <label htmlFor="email" className="w-full text-sm md:text-base text-text/70 font-medium font-grotesk">Email:</label>
-            <Form.Item<TDonationData> name="email" id="email">
-              <Input type='email' className='text-text/70 w-full' placeholder='Emails (send success notification to the sender)' min={1000} required style={{ background: "transparent", width: "100%" }} />
+            <Form.Item<TDonationData> name="email" id="email" rules={[{required: true, message: 'Email is required'}, {type: "email", message: 'Please enter a valid email'}]}>
+              <Input type='email' className='text-text/70 w-full' placeholder='Emails (send success notification to the sender)' min={1000} style={{ background: "transparent", width: "100%" }} />
             </Form.Item>
           </div>
           <div className="flex flex-col gap-1 -mt-3">
@@ -179,21 +179,9 @@ export default function PBDonationContainer() {
                   className='bg-white'
                   getPopupContainer={(triggerNode) => triggerNode.parentElement!}
                 />
-                {/* <select ref={currencyRef} name="status" id="status" className="border border-text/50 rounded-md text-xs text-text w-max py-2 px-4 bg-white">
-                  {
-                    [
-                      { id: "x023498zse420", name: "NGN", code: "&#8358;", symbol: "₦" },
-                      // { id: "x023498zse421", name: "GBP",  code: "&#163;", symbol: "£" },
-                      // { id: "x023498zse422", name: "EUR", code: "&#8364;", symbol: "€" },
-                      // { id: "x023498zse423", name: "USD", code: "&#36;", symbol: "$" },
-                    ].map(({ id, name, symbol }) => (
-                      <option key={id} value={name} className="text-sm md:text-lg text-text font-semibold bg-white px-4">{symbol}</option>
-                    ))
-                  }
-                </select> */}
               </Form.Item>
-              <Form.Item<TDonationData> name="amount" id="amount" className='flex-1'>
-                <InputNumber type='number' className='text-text/70 w-full' placeholder='Starting from 1000' min={1000} required style={{ background: "transparent", width: "100%" }} />
+              <Form.Item<TDonationData> name="amount" id="amount" className='flex-1' rules={[{ required: true, message: 'Amount is required' }, { type: "number", message: 'Amount must be a number' }, {min: 1000, message: 'Amount cannot be less than 1,000. Thank you.'}]}>
+                <InputNumber type='number' className='text-text/70 w-full' placeholder='Starting from 1000' min={1000} style={{ background: "transparent", width: "100%" }} />
               </Form.Item>
             </div>
           </div>

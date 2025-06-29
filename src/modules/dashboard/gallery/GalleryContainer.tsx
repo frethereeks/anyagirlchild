@@ -85,7 +85,7 @@ export default function GalleryContainer({ data, role }: TPageProps) {
                                 <figure key={gallery.id} className="relative">
                                     <div className="group relative border-2 border-text/50 rounded-md overflow-hidden h-32 md:h-40 cursor-pointer">
                                         {
-                                            role !== "USER" &&
+                                            role !== "User" &&
                                             <div className={`absolute top-0  ${selectedRowKeys.find(el => el === gallery.key) ? 'md:top-0' : ' md:-top-full md:group-hover:top-0'} text-white left-0 w-full p-2 bg-primary/40 flex justify-between gap-2 z-10`}>
                                                 <button onClick={() => setSelectedRowKeys(prev => [...prev, gallery.key])} className={`cursor-pointer rounded-md w-6 h-6 grid place-items-center border border-text/50 ${selectedRowKeys.find(el => el === gallery.key) ? 'bg-secondary' : 'bg-backdrop'} text-white`}>
                                                     <FaCheck />

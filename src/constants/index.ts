@@ -3,7 +3,8 @@ export const blogFolder = 'anyagirlchild/blog';
 export const galleryFolder = 'anyagirlchild/gallery';
 
 export const DEFAULT_PAGE_SIZE = 12
-export type IDENTIFIED_TABLES = "blog" | "comment" | "contact" | "donation" | "logger" | "gallery" | "reply" | "user" 
+export type IDENTIFIED_TABLES = "blog" | "comment" | "contact" | "donation" | "gallery" | "logger" | "partner" | "reply" | "user" 
+export type IDENTIFIED_ACTIONS = "create" | "update" | "delete" | "view" | "reset"
 
 export const SOCIAL_LINKS = {
     facebook: "https://www.facebook.com/anyagirlchild",

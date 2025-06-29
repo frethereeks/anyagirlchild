@@ -33,14 +33,14 @@ export const ADMIN_COLUMN = (): TableColumnsType<TAdminProps> => {
             key: "Role",
             title: "Role",
             render: (_, val) => (
-                <p className={`text-left text-sm ${val.role === "ROOT" ? 'text-secondary font-bold' : 'bg-transparent text-text'} py-1 rounded-sm font-medium capitalize`}>{val.role === "ROOT" ? "Owner" : val.role}</p>
+                <p className={`text-left text-sm ${val.role === "Root" ? 'text-secondary font-bold' : 'bg-transparent text-text'} py-1 rounded-sm font-medium capitalize`}>{val.role === "Root" ? "Owner" : val.role}</p>
             ),
         },
         {
             key: "Status",
             title: "Status",
             render: (_, val) => (
-                <p className={`text-left text-sm ${val.status === "ACTIVE" ? 'text-secondary' : val.status === "SUSPENDED" ? 'text-danger' : 'text-text'} font-medium`}>{val.status}</p>
+                <p className={`text-left text-sm ${val.status === "Active" ? 'text-secondary' : val.status === "Suspended" ? 'text-danger' : 'text-text'} font-medium`}>{val.status}</p>
             ),
         },
         {

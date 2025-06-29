@@ -156,7 +156,7 @@ export default function AddAdmin({ data }: TPageProps) {
                 <div className="flex flex-col gap-1">
                     <h4 className="text-sm text-text font-semibold">Role:</h4>
                     <div className="flex-1 flex flex-col md:flex-row gap-2">
-                        <Form.Item<TAdminProps> name="role" noStyle className='flex-1 w-full' initialValue={"ADMIN"}>
+                        <Form.Item<TAdminProps> name="role" noStyle className='flex-1 w-full' initialValue={"Admin"}>
                             {/* <Select
                                 options={Object.entries($Enums.Role).map(([_, value]) => ({
                                     label: value,
@@ -189,7 +189,7 @@ export default function AddAdmin({ data }: TPageProps) {
                                 <optgroup label='User Right'>
 
                                     {
-                                        Object.entries($Enums.Role).reverse().map(([key, value]) => value === "ROOT" ? null : <option key={key} className='relative capitalize bg-background text-xs md:text-sm' value={value}>{value} ({value === "ADMIN" ? 'can create, edit and delete' : 'can only preview'})</option>)
+                                        Object.entries($Enums.Role).reverse().map(([key, value]) => value === "Root" ? null : <option key={key} className='relative capitalize bg-background text-xs md:text-sm' value={value}>{value} ({value === "Admin" ? 'can create, edit and delete' : 'can only preview'})</option>)
                                     }
                                 </optgroup>
                             </select> */}

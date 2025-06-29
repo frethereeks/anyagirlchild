@@ -1,22 +1,22 @@
 "use client"
 import moment from "moment"
 import { TableColumnsType } from "antd"
-import { TContactProps } from "@/types"
+import { TLoggerProps } from "@/types"
 import { useAppDispatch } from "@/lib/features/hooks"
 import { triggerModal } from "@/lib/features/reducers/siteSlice"
 import { $Enums } from "@prisma/client"
 import { useRouter } from 'next/navigation';
 import { updateEntity } from '@/app/action';
 
-export const CONTACT_COLUMN = (): TableColumnsType<TContactProps> => {
+export const LOGGER_COLUMN = (): TableColumnsType<TLoggerProps> => {
     const dispatch = useAppDispatch()
     const router = useRouter()
 
     const handleUpdateContact = async (id: string, status: $Enums.ContactStatus) => {
         try {
-            await updateEntity(JSON.stringify([id]), status, "contact")
+            await updateEntity(JSON.stringify([id]), status, "logger")
         } catch (error) {
-            console.log({ error })
+            console.log('Unable to update log view status', { error })
         }
         finally {
             router.refresh()
@@ -28,6 +28,22 @@ export const CONTACT_COLUMN = (): TableColumnsType<TContactProps> => {
             title: "Message Details",
             render: (_, val) => (
                 <div
+                    title={`User ID: ${val.userId}`}
+                    className="flex items-center gap-2 py-1.5 relative"
+                >
+
+                    <span className={`h-4 w-4 rounded-full ${val.error ? "bg-red-grad" : "bg-green-grad"} flex-shrink-0 -rotate-12`}></span>
+                    <div className="flex-1 flex flex-col">
+                        <h4 className="flex-1 text-sm text-text font-semibold leading-none">{val.fullname}</h4>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            key: "Activity",
+            title: "Activity",
+            render: (_, val) => (
+                <p
                     title={val.message}
                     onClick={() => {
                         // Trigger the view message modal
@@ -37,24 +53,8 @@ export const CONTACT_COLUMN = (): TableColumnsType<TContactProps> => {
                             handleUpdateContact(val.id, "Read")
                         }
                     }}
-                    className="flex items-center gap-2 cursor-pointer py-1.5 relative"
-                >
-                    <div className={`h-8 w-8 rounded-full ${val.status === "Read" ? "bg-green-grad" : "bg-dark-grad"}  text-white text-xl grid place-items-center flex-shrink-0 -rotate-12`}>
-                        {/* <FaRegCircleUser /> */}
-                        <p className="text-lg font-black -tracking-[0.25rem]">{val.fullname.split(" ")[0][0]} {val.fullname.split(" ")[1][0]}</p>
-                    </div>
-                    <div className="flex-1 flex flex-col">
-                        <h4 className="flex-1 text-sm text-text font-semibold leading-none">{val.fullname}</h4>
-                        <p className="text-sm text-text truncate line-clamp-1 font-medium leading-none">{val.message.slice(0, 70)}{val.message.length > 70 ? "..." : ""}</p>
-                    </div>
-                </div>
-            ),
-        },
-        {
-            key: "Email",
-            title: "Email",
-            render: (_, val) => (
-                <p className="text-sm text-text font-medium">{val.email.toLocaleString()}</p>
+                    className="text-sm text-text truncate line-clamp-1 cursor-pointer font-medium leading-none"
+                >{val.message.slice(0, 70)}{val.message.length > 70 ? "..." : ""}</p>
             ),
         },
         {

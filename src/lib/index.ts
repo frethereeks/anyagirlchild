@@ -1,15 +1,19 @@
+import {authOptions} from "./authOptions"
+import {capitalize} from "./capitalize"
 import { fileUpload } from "./fileUpload";
 import { generateSlug } from "./generateSlug";
+import { logAction } from "./logAction"
 import prisma from "./prisma";
 import { fetcher } from "./fetcher";
-// import { urlBase64ToUint8Array } from "./urlBase64ToUint8Array"
-import {authOptions} from "./authOptions"
+import { emailTemplate } from "./emailTemplate"
 
 export {
+    authOptions,
+    capitalize,
     fileUpload,
     generateSlug,
-    // urlBase64ToUint8Array,
-    authOptions,
+    logAction,
+    emailTemplate,
     prisma,
     fetcher,
 }

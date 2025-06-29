@@ -53,7 +53,7 @@ export const DONATION_COLUMN = (): TableColumnsType<TDonationProps> => {
                     title={val.message}
                     placement="bottomLeft"
                 >
-                    <p onClick={() => dispatch(triggerModal({ id: val.id, open: true }))} className={`text-sm text-text truncate line-clamp-1 ${val.visiblity === "UNREAD" ? 'font-bold' : val.visiblity === "READ" ? 'font-medium' : 'font-medium'}`} title={val.message}>{val.message.slice(0, 40)}{val.message.length > 40 ? "..." : ""}</p>
+                    <p onClick={() => dispatch(triggerModal({ id: val.id, open: true }))} className={`text-sm text-text truncate line-clamp-1 ${val.visiblity === "Unread" ? 'font-bold' : val.visiblity === "Read" ? 'font-medium' : 'font-medium'}`} title={val.message}>{val.message.slice(0, 40)}{val.message.length > 40 ? "..." : ""}</p>
                 </Tooltip>
             ),
         },

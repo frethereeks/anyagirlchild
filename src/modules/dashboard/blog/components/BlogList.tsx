@@ -14,7 +14,7 @@ export default function BlogList({ data, role }: { data: TBlogItemProp[] | undef
     selectedRowKeys,
     type: "checkbox",
     onChange(keys: React.Key[]) {
-      if (role === "USER") {
+      if (role === "User") {
         return false;
       }
       else setSelectedRowKeys(keys)

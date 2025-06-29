@@ -18,9 +18,10 @@ export const adminRoutes = {
     admindashboard: "/dashboard/overview",
     admingallery: "/dashboard/gallery",
     admincontact: "/dashboard/contact",
-    adminadmin: "/dashboard/admins",
+    adminuser: "/dashboard/admins",
     admindonations: "/dashboard/donations",
     adminsettings: "/dashboard/settings",
+    adminlogs: "/dashboard/logs",
     adminblogs: "/dashboard/blogs",
 }
 

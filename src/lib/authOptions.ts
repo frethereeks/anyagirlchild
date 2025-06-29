@@ -58,10 +58,10 @@ export const authOptions: NextAuthOptions = {
                 if (!user) return null
                 const matchPassword = await bcryptjs.compare(password, user.password)
                 if (!matchPassword) return null
-                if (user.status === "PENDING") {
-                    throw new Error("Your account status is set to PENDING at the moment. Please, contact the admin for account activation.")
+                if (user.status === "Pending") {
+                    throw new Error("Your account status is set to Pending at the moment. Please, contact the admin for account activation.")
                 }
-                else if (user.status === "SUSPENDED") {
+                else if (user.status === "Suspended") {
                     throw new Error("Oh No! Your account has been suspended. If you believe this is an error, contact the admin")
                 }
                 return user as User

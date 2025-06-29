@@ -23,8 +23,8 @@ export const appThemeConfig: ThemeConfig = {
     token: {
         fontFamily: fontFamily.grotesk,
         colorPrimary: THEME_COLOR.primary,
-        colorLinkHover: "inherit",
-        colorLink: THEME_COLOR.accentColor,
+        colorLinkHover: "#fff",
+        colorLink: "#fff",
         fontSize: 16
     },
     components: {

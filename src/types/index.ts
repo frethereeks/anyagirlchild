@@ -21,7 +21,7 @@ export type TAdminProps = Pick<User, "id" | "firstname" | "lastname" | "email" |
 export type TContactProps = Pick<Contact, "id" | "fullname" | "email" | "message" | "status" | "createdAt" | "updatedAt">
 export type TDonationProps = Omit<Donation, "updatedBy">
 export type TGalleryProps = Omit<Gallery, "updatedBy" | "userId">
-export type TLoggerProps = Pick<Logger, "id" | "message" | "userId" | "status" | "createdAt" | "updatedAt">
+export type TLoggerProps = Pick<Logger, "id" | "message" | "error" | "userId" | "status" | "createdAt" | "updatedAt"> & {fullname: string}
 
 export type Prettify<T> = {
     [P in keyof T]: T[P];

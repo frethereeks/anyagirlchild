@@ -2,7 +2,7 @@
 
 import { createContact } from '@/app/action'
 import { TContactProps } from '@/types'
-import { Form, Input, notification } from 'antd'
+import { Form, Input, App } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import TextArea from 'antd/es/input/TextArea'
 import { useRouter } from 'next/navigation'
@@ -11,7 +11,8 @@ import React, { useState } from 'react'
 export default function PBContactForm() {
   const [form] = useForm<TContactProps>()
   const [loading, setLoading] = useState<boolean>(false)
-    const router = useRouter()
+  const router = useRouter()
+  const { notification } = App.useApp()
 
   const handleSubmit = async (data: TContactProps) => {
     setLoading(true)
@@ -31,8 +32,10 @@ export default function PBContactForm() {
         form.resetFields()
       }
     } catch (error) {
-      console.log('error', error)
-      notification.error({ message: 'Unable to send message. Please, check your internet connection and try again', key: "123" })
+      if (error instanceof Error) {
+        notification.error({ message: `Unable to send message due to ${error?.message}. Please, try again`, key: "123" })
+      }
+      else notification.error({ message: 'Unable to send message. Please, check your internet connection and try again', key: "123" })
     }
     finally {
       setLoading(false)

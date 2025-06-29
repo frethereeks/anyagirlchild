@@ -12,6 +12,10 @@
   outline: 0 !important;
 }
 
+*:not(.ant-btn) a:hover, *:where(.css-dev-only-do-not-override-os2fvf) > a:hover {
+  color: inherit;
+}
+
 html,
 body {
   overflow-x: hidden;
@@ -95,7 +99,7 @@ body {
   }
 
   .button {
-    @apply font-grotesk py-1 px-4 md:px-6 rounded-sm text-white text-xs md:text-sm font-medium cursor-pointer whitespace-nowrap;
+    @apply font-grotesk py-2 px-4 md:px-6 rounded-sm text-white text-xs md:text-sm font-medium cursor-pointer whitespace-nowrap;
   }
 }
 

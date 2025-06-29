@@ -180,7 +180,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                                     // If the logged in user is the owner of the comment, give him the option to edit his comment
                                                     // TODO: Make this time-base (i.e. vailable only after x number of minutes)
                                                     // user && +(user?.id) === item.userId &&
-                                                    editableId === item.id || data?.user.role === "ROOT" ?
+                                                    editableId === item.id || data?.user.role === "Root" ?
                                                         <div className="z-10 absolute -top-4 -right-0 hidden group-hover:flex gap-2">
                                                             <span onClick={() => handleCommentDelete(item.id)} className="flex-shrink-0 cursor-pointer w-6 h-6 grid place-items-center bg-danger text-white text-lg rounded-full border border-danger">
                                                                 <MdOutlineDelete />
@@ -197,7 +197,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                             <div className="flex flex-col gap-1.5">
                                                 <div className="flex flex-wrap gap-2">
                                                     <div className="flex items-center gap-4 pl-2">
-                                                        {editableId === item.id || data?.user.role === "ROOT" ?
+                                                        {editableId === item.id || data?.user.role === "Root" ?
                                                             <p onClick={() => handleToggleEditing(item.id)} className="text-xs text-text font-semibold cursor-pointer">Edit</p> : ""
                                                         }
                                                         <span className="text-danger">•</span>

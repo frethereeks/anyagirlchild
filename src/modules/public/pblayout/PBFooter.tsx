@@ -10,7 +10,7 @@ import { LuMessageSquare, LuPhoneCall } from 'react-icons/lu'
 export default function PBFooter() {
   return (
     <footer className="flex flex-col">
-      <section className="relative bg-slate-100">
+      <section className="relative bg-slate-100 text-white">
         {/* <Image src={ASSET_URL['donation_personnel']} alt='donation_personnel' className='object-cover object-center opacity-80' fill /> */}
         <div className="relative max-w-screen-lg mx-auto flex flex-col sm:flex-row items-center gap-4 py-10 px-4">
           <div className="flex-1 flex flex-col text-center sm:text-left">
@@ -18,13 +18,13 @@ export default function PBFooter() {
             <h4 className="text-xl md:text-2xl text-secondary font-semibold font-grotesk">Be the Change. Start Today.</h4>
             <p className="text-small md:text-lg text-primary/70 leading-loose">Join our global family of advocates, volunteers, and supporters.</p>
           </div>
-          <Link href={appRoutePaths.partner} className='bg-danger text-sm md:text-base text-white font-semibold font-grotesk cursor-pointer rounded-md py-2 px-6 md:px-8'>Become a Partner</Link>
+          <Link href={appRoutePaths.partner} className='bg-danger text-sm md:text-base text-white hover:text-white font-semibold font-grotesk cursor-pointer rounded-md py-2 px-6 md:px-8'>Become a Partner</Link>
         </div>
       </section>
       <section className='relative bg-primary pt-10 pb-4 px-4'>
         <Image src={ASSET_URL['adult_intervention']} alt='adult_intervention' className='object-cover object-top opacity-75' fill />
         <div className="overlay bg-primary z-10 shadow-none opacity-70 backdrop-blur-sm"></div>
-        <div className="container mx-auto relative z-20 flex flex-wrap sm:grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10 py-10 rounded-md text-white">
+        <div className="container mx-auto relative z-20 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10 py-10 rounded-md text-white">
           <aside className="flex flex-col sm:justify-center gap-4 w-full col-span-2 md:col-span-1">
             <Link href="/" className="flex items-center py-2 gap-2">
               <div className="w-14 min-h-14 flex justify-center items-center rounded-md overflow-hidden relative bg-backdrop flex-shrink-0">

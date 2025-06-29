@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { Flex, Layout, notification } from 'antd'
 import Link from 'next/link'
-import { LuMenu } from 'react-icons/lu'
+import { LuChartNoAxesGantt } from 'react-icons/lu'
 import { GrLogout } from "react-icons/gr";
 import Footer from './Footer'
 import { sideBarLinks } from '@/data/sideBarLinks'
@@ -69,7 +69,7 @@ export default function DashLayout({ children, image }: { children: React.ReactN
                         <div className="flex items-center gap-2">
                             <Link href={appRoutePaths.adminsettings}>{image}</Link>
                             <button onClick={() => setOpenSidebar(prev => !prev)} className={`group py-2 px-2 bg-secondary hover:bg-secondary/80 text-white text-lg rounded-md ml-auto mx-4`}>
-                                <LuMenu className={`${openSideBar ? 'scale-100' : '-scale-100'}`} />
+                                <LuChartNoAxesGantt className={`${openSideBar ? 'scale-100' : '-scale-100'}`} />
                             </button>
                         </div>
                     </div>

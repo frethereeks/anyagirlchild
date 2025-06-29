@@ -41,7 +41,7 @@ export default function ThematicSection({ total }: { total: number }) {
                                     <div className="pl-4">
                                         {
                                             thematic.activities.map(el => (
-                                                <p key={el} className="relative before:absolute before:h-3 before:w-3 before:bg-danger before:-left-4 before:top-3  p-2 text-sm md:text-base font-normal font-grotesk text-text text-justify">{el}</p>
+                                                <p key={el} className="relative before:absolute before:h-3 before:w-3 before:bg-danger before:-left-4 before:top-3 before:translate-y-1/4 p-2 text-sm md:text-base font-normal font-grotesk text-text text-justify">{el}</p>
                                             ))
                                         }
                                     </div>

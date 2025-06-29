@@ -36,7 +36,7 @@ export const BLOG_COLUMN = (): TableColumnsType<TBlogItemProp> => {
             key: "Author",
             title: "Author",
             render: (_, val) => (
-                <p className="text-sm text-text underline font-medium"><Link href={`${appRoutePaths.adminadmin}?id=${val.user?.id}`}>{val.user?.firstname} {val.user?.lastname}</Link></p>
+                <p className="text-sm text-text underline font-medium"><Link href={`${appRoutePaths.adminuser}?id=${val.user?.id}`}>{val.user?.firstname} {val.user?.lastname}</Link></p>
             ),
         },
         {

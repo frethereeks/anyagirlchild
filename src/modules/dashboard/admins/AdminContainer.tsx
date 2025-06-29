@@ -37,13 +37,13 @@ export default function AdminContainer({ data, role }: { data: TAdminProps[], ro
     selectedRowKeys,
     type: "checkbox",
     onChange(keys: React.Key[]) {
-      if (role === "USER") {
+      if (role === "User") {
         return false;
       }
       else setSelectedRowKeys(keys)
     },
     getCheckboxProps: (record: TAdminProps) => ({
-      disabled: record.role === "ROOT",
+      disabled: record.role === "Root",
       name: record.role
     })
   }
@@ -69,7 +69,7 @@ export default function AdminContainer({ data, role }: { data: TAdminProps[], ro
         </aside>
         <aside className="card p-2 flex flex-col gap-4 text-text min-w-52 overflow-x-scroll overflow-y-visible">
           <div className="flex items-end gap-2">
-            {/* { role !== "ROOT" && ((selectedRowKeys.length > 0) && <button onClick={() => setDeleteModal(!deleteModal)} className="button py-2 px-4 bg-danger flex items-center gap-2"><AiOutlineDelete /> Delete All</button>)} */}
+            {/* { role !== "Root" && ((selectedRowKeys.length > 0) && <button onClick={() => setDeleteModal(!deleteModal)} className="button py-2 px-4 bg-danger flex items-center gap-2"><AiOutlineDelete /> Delete All</button>)} */}
             {(selectedRowKeys.length > 0) && <button onClick={() => setDeleteModal(!deleteModal)} className="button rounded-sm py-2 px-4 bg-danger flex items-center gap-2"><AiOutlineDelete /> Delete All</button>}
             <UpdateStatus key={"80234609234"} data={selectedRowKeys} table='user' />
           </div>

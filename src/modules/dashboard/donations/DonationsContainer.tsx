@@ -36,7 +36,7 @@ export default function DonationsContainer({ data, role }: { data: TDonationProp
     selectedRowKeys,
     type: "checkbox",
     onChange(keys: React.Key[]) {
-      if (role === "USER") {
+      if (role === "User") {
         return false;
       }
       else setSelectedRowKeys(keys)
@@ -81,7 +81,7 @@ export default function DonationsContainer({ data, role }: { data: TDonationProp
             <h4 className="text-text text-lg md:text-xl font-bold pr-4 text-nowrap">All Donations</h4>
           </div>
           <div className="flex gap-2">
-            {role !== "ADMIN" && (
+            {role !== "Admin" && (
               <>
                 {(selectedRowKeys.length > 0) && <button onClick={() => setDeleteModal(!deleteModal)} className="button bg-danger flex items-center gap-2 py-1"><AiOutlineDelete /> Delete</button>}
               </>

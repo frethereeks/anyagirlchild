@@ -33,7 +33,7 @@ export default function RootLayout({
           <ThemeProvider>
             <AosProvider>
               <PBHeader />
-              <div className="font-poppins min-h-[80vh]"> {children} </div>
+              <div className="font-poppins min-h-[80vh] text-"> {children} </div>
               <Analytics />
               <PBFooter />
             </AosProvider>

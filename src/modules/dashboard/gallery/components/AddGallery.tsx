@@ -5,19 +5,17 @@ import { useAppDispatch } from '@/lib/features/hooks'
 import { triggerModal } from '@/lib/features/reducers/siteSlice'
 import { TGalleryProps } from '@/types'
 import { $Enums } from '@prisma/client'
-import { Form, notification, Select } from 'antd'
+import { Form, Input, notification, Select } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GrGallery } from 'react-icons/gr'
 
 export default function AddGallery({ data }: { data: TGalleryProps | undefined }) {
     const [form] = Form.useForm<TGalleryProps>()
     const [loading, setLoading] = useState<boolean>(false)
     const [newImage, setNewImage] = useState<boolean>(false)
-    const imageRef = useRef<HTMLInputElement | null>(null)
-    const statusRef = useRef<HTMLSelectElement | null>(null)
     const [image, setImage] = useState<{ name: string, value: string }>({
         name: "Click to Upload Image",
         value: ""
@@ -26,26 +24,22 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        const imageInput = imageRef?.current;
+        // const imageInput = imageRef?.current;
         if (data) {
             form.setFieldsValue({
                 id: data?.id,
                 title: data?.title,
-                image: "",
+                image: data?.image,
                 status: data.status,
             })
             setImage((prev) => ({ ...prev, value: data?.image ?? "" }))
-            // if (categoryRef.current) categoryRef.current.value = data?.categoryId
-            if (statusRef.current) statusRef.current.value = data?.status
         }
         else {
             form.resetFields()
-            if (imageRef.current) imageRef.current.files = null
         }
 
         return () => {
             setImage({ name: "Click to Upload Image", value: "" })
-            if (imageInput) imageInput.files = null
         }
     }, [data, form])
 
@@ -54,7 +48,7 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
         const file = e?.target?.files![0]
         setImage((prev) => ({ ...prev, name: file.name }))
         const data = await fileUpload(file) as unknown as string
-        form.setFieldValue("image", file)
+        form.setFieldValue("image", e?.target?.files)
         setImage(prev => ({ ...prev, value: data }))
         setLoading(false)
         setNewImage(true)
@@ -63,20 +57,25 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
     const handleSubmit = async (values: TGalleryProps) => {
         notification.info({ message: `Please wait while your request is being processed...`, key: "123" })
         setLoading(true)
-        console.log({data, values})
         let res;
         try {
             const formData = new FormData()
-            formData.append("title", form.getFieldValue("title") ?? "Anyagirlchild Project Image")
-            formData.append("status", statusRef.current?.value as string)
+            Object.entries(values).map(([key, value]) => {
+                if (key === "image") {
+                    if (values.image.length > 0) {
+                        Array.from(values.image as unknown as FileList).forEach((file: File) => {
+                            formData.append("image", file);
+                        });
+                    }
+                    else {
+                        formData.append("image", values.image as unknown as Blob);
+                    }
+                }
+                else if (key === "title") formData.append("title", values.title ?? "Anyagirlchild Project Image")
+                else formData.append(key, value as string)
+            })
             formData.append("newImage", newImage as unknown as string)
-            const files = imageRef.current?.files;
 
-            if (files && files.length > 0) {
-                Array.from(files).forEach((file: File) => {
-                    formData.append("image", file);
-                });
-            }
             if (data?.id || values.id) {
                 formData.append("oldImage", data?.image as string)
                 formData.append("id", data?.id as string)
@@ -108,19 +107,16 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
                 onFinish={handleSubmit}
                 className={`w-full max-w-xl flex-1 flex flex-col gap-4 overflow-hidden`}
             >
-                {/* <h4 className="text-sm md:text-lg font-bold text-text p-4 border-l-4 border-secondary py-2">{data ? "Add" : "Edit"} Gallery Image</h4> */}
                 <div className="flex flex-col gap-1">
                     <h4 className="w-full text-base pt-4 text-text font-semibold flex items-center gap-2">Picture: <span className="text-xs">({image.name})</span></h4>
-                    <Form.Item<TGalleryProps> name="image" noStyle>
-                        <label htmlFor='image' className="relative flex-1 flex flex-col md:flex-row md:items-center gap-4 cursor-pointer min-h-32">
-                            <input ref={imageRef} type="file" multiple={data?.id ? false : true} onChange={handleFileUpload} name="image" id="image" accept='image/jpeg, image/png' className="absolute left-0 top-0 w-full h-full opacity-0 cursor-pointer z-20" />
-                            <div className="flex-1 relative border-2 h-40 md:h-44 w-full rounded-md overflow-hidden bg-text flex-shrink-0 grid place-items-center text-3xl md:text-4xl text-white">
+                    <Form.Item<TGalleryProps> name="image" rules={[{required: true, message: 'You must choose at least 1 image'}]}>
+                        <label htmlFor='image' className="relative flex-1 cursor-pointer min-h-32 md:min-h-48 overflow-hidden rounded-md  bg-text grid place-items-center text-3xl md:text-4xl text-white">
+                            <Input type="file" multiple={data?.id ? false : true} onChange={handleFileUpload} name="image" id="image" accept='image/jpeg, image/png' className="absolute left-0 top-0 w-full min-h-32 md:min-h-48 opacity-0 cursor-pointer z-30" style={{position: 'absolute'}} />
                                 {
                                     image.value ?
-                                        <Image src={image?.value} alt={image?.name} className="min-h-40 h-full object-cover object-center" fill /> :
+                                        <Image src={image?.value} alt={image?.name} className="min-h-40 h-full object-cover object-center z-40" fill /> :
                                         <GrGallery />
                                 }
-                            </div>
                         </label>
                     </Form.Item>
                 </div>
@@ -148,13 +144,6 @@ export default function AddGallery({ data }: { data: TGalleryProps | undefined }
                                 className='bg-white w-full'
                                 getPopupContainer={(triggerNode) => triggerNode.parentElement!}
                             />
-                            {/* <select ref={statusRef} name="status" id="status" className="border border-text/50 rounded-md text-xs text-text w-full py-2 px-4 bg-white">
-                                {
-                                    Object.entries($Enums.ViewStatus).map(([key, value]) => (
-                                        <option key={key} value={value} className="text-xs text-text bg-white px-4">{key}</option>
-                                    ))
-                                }
-                            </select> */}
                         </Form.Item>
                     </div>
                 </div>

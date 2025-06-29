@@ -5,7 +5,7 @@ CREATE TABLE `Blog` (
     `slug` VARCHAR(300) NOT NULL,
     `image` VARCHAR(200) NULL,
     `text` LONGTEXT NOT NULL,
-    `status` ENUM('VISIBLE', 'HIDDEN') NOT NULL DEFAULT 'VISIBLE',
+    `status` ENUM('Visible', 'Hidden') NOT NULL DEFAULT 'Visible',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `userId` VARCHAR(191) NULL,
@@ -34,7 +34,7 @@ CREATE TABLE `Contact` (
     `fullname` VARCHAR(100) NOT NULL,
     `email` VARCHAR(100) NOT NULL,
     `message` VARCHAR(250) NOT NULL,
-    `status` ENUM('READ', 'UNREAD', 'DELETED') NOT NULL DEFAULT 'UNREAD',
+    `status` ENUM('Read', 'Unread', 'Deleted') NOT NULL DEFAULT 'Unread',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `updatedBy` VARCHAR(50) NOT NULL DEFAULT 'null',
@@ -53,7 +53,7 @@ CREATE TABLE `Donation` (
     `message` VARCHAR(160) NOT NULL,
     `reference` VARCHAR(160) NOT NULL,
     `status` ENUM('pending', 'success', 'declined') NOT NULL DEFAULT 'pending',
-    `visiblity` ENUM('READ', 'UNREAD', 'DELETED') NOT NULL DEFAULT 'UNREAD',
+    `visiblity` ENUM('Read', 'Unread', 'Deleted') NOT NULL DEFAULT 'Unread',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `updatedBy` VARCHAR(50) NOT NULL DEFAULT 'null',
@@ -67,7 +67,7 @@ CREATE TABLE `Gallery` (
     `id` VARCHAR(50) NOT NULL,
     `image` VARCHAR(200) NOT NULL,
     `title` VARCHAR(100) NOT NULL,
-    `status` ENUM('VISIBLE', 'HIDDEN') NOT NULL DEFAULT 'VISIBLE',
+    `status` ENUM('Visible', 'Hidden') NOT NULL DEFAULT 'Visible',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
     `updatedBy` VARCHAR(50) NULL DEFAULT 'null',
@@ -82,11 +82,28 @@ CREATE TABLE `Logger` (
     `id` VARCHAR(191) NOT NULL,
     `message` LONGTEXT NOT NULL,
     `userId` VARCHAR(50) NULL,
+    `error` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
-    `status` ENUM('READ', 'UNREAD', 'DELETED') NOT NULL DEFAULT 'UNREAD',
+    `status` ENUM('Read', 'Unread', 'Deleted') NOT NULL DEFAULT 'Unread',
 
     INDEX `Logger_id_idx`(`id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Partner` (
+    `id` VARCHAR(191) NOT NULL,
+    `fullname` VARCHAR(100) NOT NULL,
+    `email` VARCHAR(100) NOT NULL,
+    `message` VARCHAR(250) NULL,
+    `type` ENUM('Volunteer', 'Partner') NOT NULL DEFAULT 'Partner',
+    `status` ENUM('Read', 'Unread', 'Deleted') NOT NULL DEFAULT 'Unread',
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `updatedBy` VARCHAR(50) NOT NULL DEFAULT 'null',
+
+    INDEX `Partner_id_idx`(`id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -112,8 +129,8 @@ CREATE TABLE `User` (
     `image` VARCHAR(200) NULL,
     `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
-    `status` ENUM('PENDING', 'ACTIVE', 'SUSPENDED') NOT NULL DEFAULT 'PENDING',
-    `role` ENUM('ROOT', 'ADMIN', 'USER') NOT NULL DEFAULT 'USER',
+    `status` ENUM('Pending', 'Active', 'Suspended') NOT NULL DEFAULT 'Pending',
+    `role` ENUM('Root', 'Admin', 'User') NOT NULL DEFAULT 'User',
     `token` VARCHAR(100) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,

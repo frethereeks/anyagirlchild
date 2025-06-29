@@ -6,16 +6,26 @@ export const config = {
     APP_PRIMARY_API_REFRESH_TOKEN_KEY: "jwt", //has to be in sync with api
     APP_PRIMARY_API_ACCESS_TOKEN_KEY: "accessToken", //does not have to be in sync with api
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || "ANYAGIRLCHILD_9ase7xq2",
-    NEXT_MAIL_FROM: process.env.NEXT_MAIL_FROM,
-    NEXT_MAIL_BCC: process.env.NEXT_MAIL_BCC,
+    NEXT_MAIL: {
+        HOST: process.env.NEXT_MAIL_HOST,
+        PORT: process.env.NEXT_MAIL_PORT,
+        USERNAME: process.env.NEXT_MAIL_USERNAME,
+        PASSWORD: process.env.NEXT_MAIL_PASSWORD,
+        RECEIVER: process.env.NEXT_MAIL_RECEIVER,
+        NOREPLY: process.env.NEXT_MAIL_NOREPLY,
+        FROM: process.env.NEXT_MAIL_USERNAME,
+        BCC: process.env.NEXT_MAIL_BCC,
+    },
     FACEBOOK_CLIENT_ID: process.env.FACEBOOK_CLIENT_ID || "",
     FACEBOOK_CLIENT_SECRET: process.env.FACEBOOK_CLIENT_SECRET || "",
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "",
     GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
     APP_SESSION_MAX_AGE: 30 * 24 * 60 * 60,
     TOKEN_ENCRYPTION_KEY: process.env.TOKEN_ENCRYPTION_KEY || "Uwz0^axz!12i9a%yaxp0w",
-    NEXT_PUBLIC_PAYSTACK_PKEY: process.env.NEXT_PUBLIC_PAYSTACK_PKEY || "PUBL1CKEY=W#NTW0RK",
-    NEXT_PAYSTACK_SKEY: process.env.NEXT_PAYSTACK_SKEY || "SECR3T=W#NTW0RK",
+    PAYSTACK: {
+        PUBLIC_KEY: process.env.NEXT_PUBLIC_PAYSTACK_PKEY || "PUBL1CKEY=W#NTW0RK",
+        SECRET_KEY: process.env.NEXT_PAYSTACK_SKEY || "SECR3T=W#NTW0RK",
+    },
     CLOUDINARY: {
         API_KEY: process.env.NEXT_CLOUDINARY_API_KEY || "674181944781841", //look into not exposing this values whether via api endpoint or next ....
         UPLOAD_PRESET: process.env.NEXT_CLOUDINARY_UPLOAD_PRESET || "TH#5I5wR0NG",
