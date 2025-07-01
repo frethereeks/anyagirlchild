@@ -5,6 +5,7 @@ import DashThemeProvider from "@/provider/ThemeProvider";
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import { DashLayout, DashImage } from "@/modules/dashboard/layout";
 import StoreProvider from "@/provider/ReduxProvider";
+import NextTopLoader from "nextjs-toploader";
 
 const poppins = Poppins({ subsets: ["latin"], variable: "--poppins", weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], fallback: ["cursive"] });
 const grotesk = Space_Grotesk({ weight: ["300", "400", "500", "600", "700"], subsets: ["latin"], variable: "--grotesk", fallback: ["Helvetica", "Arial", "sans-serif"] });
@@ -26,6 +27,7 @@ export default function RootLayout({
                 <AntdRegistry>
                     <DashThemeProvider>
                         <StoreProvider>
+                            <NextTopLoader color="#16a394" showSpinner={false} />
                             <DashLayout image={<DashImage />}>
                                 <div className="font-grotesk min-h-[80vh]"> {children} </div>
                             </DashLayout>

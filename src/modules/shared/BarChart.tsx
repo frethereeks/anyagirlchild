@@ -40,7 +40,6 @@ export default function DonationChart() {
     };
 
     useEffect(() => {
-
         fetchData(year);
     }, [year]);
 

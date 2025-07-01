@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Space_Grotesk } from 'next/font/google'
 import "../globals.css";
 import { Analytics } from '@vercel/analytics/next';
-
+import NextTopLoader from 'nextjs-toploader';
 import { AntdRegistry } from '@ant-design/nextjs-registry'
 import ThemeProvider from "@/provider/ThemeProvider";
 import PBHeader from "@/modules/public/pblayout/PBHeader";
@@ -32,6 +32,7 @@ export default function RootLayout({
         <AntdRegistry>
           <ThemeProvider>
             <AosProvider>
+              <NextTopLoader color="#16a394" showSpinner={false} />
               <PBHeader />
               <div className="font-poppins min-h-[80vh] text-"> {children} </div>
               <Analytics />

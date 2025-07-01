@@ -1,6 +1,6 @@
 "use client"
 import dynamic from "next/dynamic"
-import DonationChart from '@/modules/shared/BarChart'
+// import DonationChart from '@/modules/shared/BarChart'
 // import ApexChart from "react-apexcharts"
 const ApexChart = dynamic(() => import("react-apexcharts"), { ssr: false })
 
@@ -77,11 +77,11 @@ export default function OverviewGraph() {
           />
         </div>
       </section>
-      <section className="card p-4 flex flex-col  gap-4 text-text">
+      {/* <section className="card p-4 flex flex-col  gap-4 text-text">
         <div className="h-64 md:h-72 w-full border">
           <DonationChart />
         </div>
-      </section>
+      </section> */}
       <section className="card p-4 flex flex-col  gap-4 text-text">
         <div className="h-64 md:h-72 w-full border">
           <ApexChart

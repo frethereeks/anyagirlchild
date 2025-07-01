@@ -61,7 +61,7 @@ export default function AdminContainer({ data, role }: { data: TAdminProps[], ro
         <AddAdmin data={selectedData} />
       </Modal>
       <section className='flex flex-col gap-4'>
-        <aside className="card flex bg-white justify-between gap-4 p-4 min-w-52 overflow-x-scroll">
+        <aside className="card flex bg-white text-white justify-between gap-4 p-4 min-w-52 overflow-x-scroll">
           <div className="flex justify-between items-center gap-2">
             <h4 className="text-text text-lg md:text-xl font-bold pr-4 text-nowrap">Admin List</h4>
             {<button onClick={() => dispatch(triggerModal({ id: undefined, open: true }))} className="button bg-secondary py-1 flex items-center gap-2"><GrUserAdmin /> New Admin</button>}
@@ -77,7 +77,7 @@ export default function AdminContainer({ data, role }: { data: TAdminProps[], ro
             key={"82034798a09834"}
             pagination={{
               hideOnSinglePage: true,
-              // pageSize: 10,
+              pageSize: 20,
               showSizeChanger: false,
               showQuickJumper: false,
             }}

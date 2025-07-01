@@ -11,7 +11,8 @@ export default async function OverviewContainer() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
   const res = await fetchDashboardData()
-  
+  const totalDonation = res?.data?.donationData?.reduce((oldValue, el) => +(el.amount) + oldValue, 0) || 0
+
   return (
     <main className='flex flex-col gap-4 w-full'>
       <aside className="card flex justify-between items-center gap-2">
@@ -23,10 +24,10 @@ export default async function OverviewContainer() {
           <BiMessageDetail />
         </Link>
       </aside>
-      <aside className="sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <aside className="sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-white">
         <div className="lg:col-span-2 flex flex-col gap-4">
           <OverviewSections 
-            totalDonation={res?.data?.donationData?.reduce((oldValue, el) => +(el.amount) + oldValue, 0) || 0} 
+            totalDonation={totalDonation} 
             totalBlog={res?.data?.blogData.length || 0} 
             totalGallery={res?.data?.galleryData.length || 0} 
           />
@@ -36,7 +37,7 @@ export default async function OverviewContainer() {
         </div>
         <section className="flex flex-col gap-4">
           <OverviewGallery galleryData={res?.data?.galleryData || []} />
-          <OverviewBlogs blogData={res?.data?.blogData || []} />
+          <OverviewBlogs blogData={res?.data?.blogData|| []} />
         </section>
       </aside>
     </main>

@@ -1,6 +1,6 @@
 "use client"
 import moment from "moment"
-import { TableColumnsType } from "antd"
+import { TableColumnsType, Tooltip } from "antd"
 import { TLoggerProps } from "@/types"
 import { useAppDispatch } from "@/lib/features/hooks"
 import { triggerModal } from "@/lib/features/reducers/siteSlice"
@@ -43,18 +43,23 @@ export const LOGGER_COLUMN = (): TableColumnsType<TLoggerProps> => {
             key: "Activity",
             title: "Activity",
             render: (_, val) => (
-                <p
+                <Tooltip
+                    trigger={["click", "hover"]}
                     title={val.message}
-                    onClick={() => {
-                        // Trigger the view message modal
-                        dispatch(triggerModal({ id: val.id, open: true }))
-                        // Change the status of the message to from "Unread" to "Read" if it is the first time this unread message is being viewed
-                        if (val.status === "Unread") {
-                            handleUpdateContact(val.id, "Read")
-                        }
-                    }}
-                    className="text-sm text-text truncate line-clamp-1 cursor-pointer font-medium leading-none"
-                >{val.message.slice(0, 70)}{val.message.length > 70 ? "..." : ""}</p>
+                >
+                    <p
+                        title={val.message}
+                        onClick={() => {
+                            // Trigger the view message modal
+                            dispatch(triggerModal({ id: val.id, open: true }))
+                            // Change the status of the message to from "Unread" to "Read" if it is the first time this unread message is being viewed
+                            if (val.status === "Unread") {
+                                handleUpdateContact(val.id, "Read")
+                            }
+                        }}
+                        className="text-sm text-text truncate line-clamp-1 cursor-pointer font-medium leading-none"
+                    >{val.message.slice(0, 70)}{val.message.length > 70 ? "..." : ""}</p>
+                </Tooltip>
             ),
         },
         {

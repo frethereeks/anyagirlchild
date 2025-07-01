@@ -11,8 +11,8 @@ export default function OverviewGallery({ galleryData }: { galleryData: TGallery
         <section className="card p-4 flex flex-col gap-4 text-text">
             <aside className='flex flex-col gap-4'>
                 <div className='flex justify-between items-center gap-4 text-text pb-4'>
-                    <h4 className="text-default font-bold pl-4 border-l-4 border-secondary">Recent Images</h4>
-                    <Link href={appRoutePaths.admingallery} className='opacity-70 text-xs'>See All</Link>
+                    <h4 className="text-default font-bold pl-4 border-l-4 border-danger">Recent Images</h4>
+                    <Link href={appRoutePaths.admingallery} className='py-1.5 px-4 rounded-md bg-danger opacity-70 text-xs'>See All</Link>
                 </div>
                 <div className="grid grid-cols-2 auto-rows-[200px] md:auto-rows-[300px] gap-2 md:gap-4">
                     {

@@ -15,12 +15,12 @@ export default function OverviewDonations({ donationData }: { donationData: TDon
                 key={"82034798a09834"}
                 pagination={{
                     hideOnSinglePage: true,
-                    // pageSize: 10,
+                    pageSize: 20,
                     showSizeChanger: false,
                     showQuickJumper: false,
                 }}
                 caption={
-                    <div className='flex justify-between items-center gap-4 text-text pb-4'>
+                    <div className='flex justify-between items-center gap-4 text-white pb-4'>
                         <h4 className="text-default text-secondary font-bold pl-4 border-l-4 border-secondary">Recent Donations</h4>
                         <Link href={appRoutePaths.admindonations} className='py-1.5 px-4 rounded-md bg-secondary hover:bg-secondary text-white text-xs flex items-center gap-2'>View All <IoChevronForward /></Link>
                     </div>

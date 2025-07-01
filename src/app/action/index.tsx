@@ -196,7 +196,6 @@ export const fetchDonationStats = async ({
     // // ORDER BY month ASC;`;
     const query = await prisma.$queryRaw<Array<{ month: string, currency: string, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, currency, SUM(amount) AS total FROM donation WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month, currency ORDER BY month, currency ASC;`;
     const result = query.map(row => ({ month: Number(row.month), currency: row.currency, total: Number(row.total) }))
-    console.log({ result })
 
     // return { result: JSON.stringify(results) }; // [{ month: 1, total: 5000 }, ...]
     return { result: JSON.stringify(result) }; // [{ month: 1, total: 5000 }, ...]
@@ -586,7 +585,7 @@ export const updateContactStatus = async (id: string) => {
             where: { id },
             data: { status: "Read" }
         })
-        const message = `${user.name} viewed the message <a class="color: inherit !important; font-weight: 700;" href="${appRoutePaths.admincontact}">#${contact.id}: ${contact.fullname}</a> on ${new Date(contact.updatedAt).toDateString()}`
+        const message = `${user.name} viewed the message by #${contact.id}: ${contact.fullname} on ${new Date(contact.updatedAt).toDateString()}`
         await logAction({ userId: user.id, actionType: "update", message, })
         return { error: false, message: `Contact message viewed.` }
     } catch (error) {  
@@ -716,8 +715,6 @@ export const fetchLogs = async () => {
             }
             else return {...log, fullname: 'Visitor'}
         }))
-        console.log({logData: data})
-        // await publicScreenLog("Activity: View Donations", { fullname: user.name!, email: user.email! }, "view", `A visiter named ${fullname} sent you a message`, true)
         return { error: false, message: `Partner fetched successfully.`, data }
     } catch (error) {
         await logAction({ userId: user.id, actionType: "create", message: `Activity: Fetch Partners/Volunteers. Error: ${error}`, isError: true })
@@ -974,7 +971,9 @@ export const updateEntity = async (id: string, status: string, table: IDENTIFIED
         const pageName = table + `${table === "contact" || table === "gallery" ? "" : "s"}`
         const path = `/dashboard/${pageName}`
         revalidatePath(path)
-        await logAction({ userId: user.id, actionType: "update", message: `Activity: ${user.name} updated ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} to ${status} in ${table} list. `, })
+        if (table !== "logger") {
+            await logAction({ userId: user.id, actionType: "update", message: `Activity: ${user.name} updated ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} to ${status} in ${table} list. `, })
+        }
         return { error: false, message: `${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} has been successfully updated` }
     } catch (error) {
         console.log({ error })

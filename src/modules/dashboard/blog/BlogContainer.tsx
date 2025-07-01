@@ -45,7 +45,7 @@ export default function BlogContainer({ data, role }: TPageProps) {
       </Modal>
       <section className="flex flex-col gap-4">
         <aside className="card">
-          <div className='flex justify-between items-center gap-4 text-text'>
+          <div className='flex justify-between items-center gap-4 text-white'>
             <div className="flex items-center gap-4">
               <h4 className="text-default text-text font-bold">All Blog Posts</h4>
               <div className="flex gap-2 border rounded-md p-2">

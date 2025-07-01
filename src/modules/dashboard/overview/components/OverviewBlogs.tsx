@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 import { appRoutePaths } from '@/routes/paths'
 import { TBlogItemProp } from '@/types'
 import { List } from 'antd'
@@ -7,6 +7,7 @@ import Link from 'next/link'
 import React from 'react'
 
 export default function OverviewBlogs({blogData }: { blogData: Omit<TBlogItemProp, "comments" | "user">[] }) {
+
     return (
         <aside className = "card p-4 flex flex-col gap-4 text-text">
             <List
@@ -14,9 +15,9 @@ export default function OverviewBlogs({blogData }: { blogData: Omit<TBlogItemPro
                 dataSource={blogData}
                 loadMore
                 header={
-                    <div className='flex justify-between items-center gap-4 text-text pb-4'>
-                        <h4 className="text-default font-bold pl-4 border-l-4 border-secondary">Recent Blogs</h4>
-                        <Link href={appRoutePaths.adminblogs} className='opacity-70 text-xs'>See All</Link>
+                    <div className='flex justify-between items-center gap-4 text-white pb-4'>
+                        <h4 className="text-default text-text font-bold pl-4 border-l-4 border-secondary">Recent Blogs</h4>
+                        <Link href={appRoutePaths.adminblogs} className='py-1.5 px-4 rounded-md bg-secondary opacity-70 text-xs'>See All</Link>
                     </div>
                 }
                 renderItem={(val) => (

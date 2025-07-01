@@ -9,6 +9,7 @@ import { triggerModal } from '@/lib/features/reducers/siteSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/features/hooks';
 import moment from 'moment';
 import { DeleteModal } from '@/modules/shared';
+import Parser from "html-react-parser"
 
 export default function LogContainer({ data, role }: { data: TLoggerProps[], role: $Enums.Role }) {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
@@ -66,7 +67,7 @@ export default function LogContainer({ data, role }: { data: TLoggerProps[], rol
                   <p className="text-text/60 text-xs font-medium font-grotesk select-none">{moment(selectedData.createdAt).fromNow()}</p>
                 </div>
                 <p className="relative bg-white rounded-md py-2 text-text/80 text-sm text-justify">
-                  {selectedData.message}
+                  {Parser(selectedData.message)}
                 </p>
               </div>
             </div>
@@ -91,7 +92,7 @@ export default function LogContainer({ data, role }: { data: TLoggerProps[], rol
             key={"82034798a09834"}
             pagination={{
               hideOnSinglePage: true,
-              // pageSize: 10,
+              pageSize: 100,
               showSizeChanger: false,
               showQuickJumper: false,
             }}

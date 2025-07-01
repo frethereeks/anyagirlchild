@@ -65,7 +65,7 @@ export default function GalleryContainer({ data, role }: TPageProps) {
                 <AddGallery key={"i2304897q234"} data={selectedData} />
             </Modal>
             <main className='relative flex flex-col gap-4'>
-                <aside className="card p-2 sm:p-4 flex justify-between items-center gap-4">
+                <aside className="card p-2 sm:p-4 text-white flex justify-between items-center gap-4">
                     <h4 className="text-default text-text font-bold">Gallery Images</h4>
                     <button onClick={() => dispatch(triggerModal({ id: undefined, open: true }))} className='py-1.5 px-4 rounded-md bg-danger hover:bg-danger text-white text-xs flex items-center gap-2'><GrGallery /> Add Image</button>
                 </aside>
