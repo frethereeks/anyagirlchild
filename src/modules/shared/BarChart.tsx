@@ -2,36 +2,33 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import dynamic from 'next/dynamic';
-import { fetchDonationStats } from '@/app/action'; // Server action → fetch ALL donations for a year
+import { fetchDashboardDataSorted } from '@/app/action'; // Server action → fetch ALL donations for a year
 
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-type Donation = { month: number; total: number };
+type TDonation = { month: number; total: number };
 
 export default function DonationChart() {
-    const [allData, setAllData] = useState<Donation[]>([]);
-    const [displayData, setDisplayData] = useState<Donation[]>([]);
+    const [allData, setAllData] = useState<TDonation[]>([]);
+    const [displayData, setDisplayData] = useState<TDonation[]>([]);
     const [year, setYear] = useState<number>(new Date().getFullYear());
-    const [month, setMonth] = useState<'all' | number>('all');
+    const [month, setMonth] = useState<'All' | number>('All');
     const [isPending, startTransition] = useTransition();
 
     const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     const fetchData = (year: number) => {
         startTransition(() => {
-            fetchDonationStats({ year, month: 'all' }).then((res: {result: string}) => {
-                const data = JSON.parse(res?.result) as unknown as { month: number, total: number }[] 
-                console.log({ res, data  })
-                if (Array.isArray(data)) {
-                    setAllData(data); // Save the **entire year's** dataset in memory
-                    setDisplayData(data); // Initialize the view
-                }
+            fetchDashboardDataSorted({ year, month: 'All', table: "donation" }).then(res => {
+                const data = res.data || []
+                setAllData(data); // Save the **entire year's** dataset in memory
+                setDisplayData(data); // Initialize the view
             });
         });
     };
 
-    const filterByMonth = (month: 'all' | number) => {
-        if (month === 'all') {
+    const filterByMonth = (month: 'All' | number) => {
+        if (month === 'All') {
             setDisplayData(allData);
         } else {
             const filtered = allData.filter((item) => item.month === month);
@@ -70,10 +67,10 @@ export default function DonationChart() {
             <div className="flex gap-2 mb-4">
                 <select
                     value={month}
-                    onChange={(e) => setMonth(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
+                    onChange={(e) => setMonth(e.target.value === 'All' ? 'All' : parseInt(e.target.value))}
                     className="border rounded p-1"
                 >
-                    <option value="all">All Months</option>
+                    <option value="All">All Months</option>
                     {[...Array(12)].map((_, i) => (
                         <option key={i + 1} value={i + 1}>
                             {months[i + 1]}

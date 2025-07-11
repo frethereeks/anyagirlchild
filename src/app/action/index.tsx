@@ -176,7 +176,7 @@ export const fetchDonationStats = async () => {
     return { error: false, message: 'Dashboard data fetched successfully', data: {blogData, donationData, galleryData, userData} }; // [{ month: 1, total: 5000 }, ...]
 };
 
-export const fetchDashboardDataSorted = async ({ table, year, month = 'All'}: { table: "blog" | "donation" | "gallery" | "user", year: number, month?: number | "All" }) => {
+export const fetchDashboardDataSorted = async ({ table, year, month = 'All'}: { table: "blog" | "donation" | "gallery", year: number, month?: number | "All" }) => {
     const start = new Date(year, 0, 1), end = new Date(year + 1, 0, 1);
     const where = {
         createdAt: { gte: start, lt: end}
@@ -187,22 +187,23 @@ export const fetchDashboardDataSorted = async ({ table, year, month = 'All'}: { 
             lt: new Date(year, month, 1)
         }
     }
-    let otherQuery : { month: number; total: number; }[] | undefined = undefined;
-    let userQuery: { type: string; total: number; }[] | undefined = undefined;
+    let query : { month: number; total: number; }[] | undefined = undefined;
+    // let userQuery: { type: string; total: number; }[] | undefined = undefined;
     // check which table and query against the appropriate table
     if (table === "blog") {
-        otherQuery = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, COUNT(id) AS total FROM blog WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
+        query = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, COUNT(id) AS total FROM blog WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
     }
     else if (table === "donation") {
-        otherQuery = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, SUM(amount) AS total FROM donation WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
+        query = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, SUM(amount) AS total FROM donation WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
     }
     else if (table === "gallery") {
-        otherQuery = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, COUNT(id) AS total FROM gallery WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
+        query = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, COUNT(id) AS total FROM gallery WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
     }
-    else {
-        userQuery = await prisma.$queryRaw<Array<{ type: string, total: number }>>`SELECT role AS type, COUNT(id) AS total FROM gallery WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
-    }
-    const data = table === "user" ? userQuery?.map(el => ({ ...el, total: Number(el.total) })) : otherQuery?.map(el => ({ month: Number(el.month), total: Number(el.total) }))
+    // else {
+    //     userQuery = await prisma.$queryRaw<Array<{ type: string, total: number }>>`SELECT role AS type, COUNT(id) AS total FROM gallery WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
+    // }
+    // const data = table === "user" ? userQuery?.map(el => ({ ...el, total: Number(el.total) })) : otherQuery?.map(el => ({ month: Number(el.month), total: Number(el.total) }))
+    const data = query?.map(el => ({ month: Number(el.month), total: Number(el.total) }))
     
     return { data }
 }
