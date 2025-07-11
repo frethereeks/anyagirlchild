@@ -7,7 +7,7 @@ import { GrLogout } from "react-icons/gr";
 import Footer from './Footer'
 import { sideBarLinks } from '@/data/sideBarLinks'
 import { appRoutePaths } from '@/routes/paths'
-import { redirect, usePathname } from 'next/navigation'
+import {  usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 
 const { Content, Header, Sider } = Layout
@@ -34,7 +34,7 @@ export default function DashLayout({ children, image }: { children: React.ReactN
         try{
             notification.info({message: 'Trying to log you out...', key: "123"})
             await signOut({ callbackUrl: appRoutePaths.signin })
-            redirect(appRoutePaths.home)
+            // redirect(appRoutePaths.home)
         }
         catch (error) {
             if (error instanceof Error) {

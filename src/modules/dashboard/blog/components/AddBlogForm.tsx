@@ -85,7 +85,6 @@ const toolbarOptions = [
     }
 
     const handleSubmit = async (values: TBlogItemProp) => {
-        console.log({values})
         notification.info({ message: `Please wait while your request is being processed...`, key: "123" })
         setLoading(true)
         let res;

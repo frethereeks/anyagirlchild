@@ -130,7 +130,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
     `status` ENUM('Pending', 'Active', 'Suspended') NOT NULL DEFAULT 'Pending',
-    `role` ENUM('Root', 'Admin', 'User') NOT NULL DEFAULT 'User',
+    `role` ENUM('Owner', 'Admin', 'User') NOT NULL DEFAULT 'User',
     `token` VARCHAR(100) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,

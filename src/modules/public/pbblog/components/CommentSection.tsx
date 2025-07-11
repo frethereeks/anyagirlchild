@@ -172,7 +172,10 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                     <div className="flex-1 flex flex-col gap-4">
                                         <div className="flex-1 flex flex-col gap-1.5">
                                             <div className="flex justify-between gap-4 translate-y-1 pb-2">
-                                                <h5 className="text-text text-sm md:text-base font-semibold font-grotesk select-none">{item.fullname}</h5>
+                                                <div className="flex flex-wrap gap-2">
+                                                    <h5 className="text-text text-sm md:text-base font-semibold font-grotesk">{item.fullname}</h5>
+                                                    <h5 className="text-text text-sm md:text-base font-semibold font-grotesk"> • ({item.email})</h5>
+                                                </div>
                                                 <p className="text-text/60 text-xs font-grotesk select-none">{moment(item.createdAt).fromNow()}</p>
                                             </div>
                                             <p className="group relative after:absolute after:-top-[2px] after:-left-[6px] after:border-[6px] after:border-transparent after:border-t-[#5bbeb4] after:skew-x-[40deg] after:rotate-[40deg] bg-[#5bbeb4] rounded-md p-2 text-white text-sm text-justify flex gap-2">
@@ -180,7 +183,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                                     // If the logged in user is the owner of the comment, give him the option to edit his comment
                                                     // TODO: Make this time-base (i.e. vailable only after x number of minutes)
                                                     // user && +(user?.id) === item.userId &&
-                                                    editableId === item.id || data?.user.role === "Root" ?
+                                                    editableId === item.id || data?.user.role === "Owner" ?
                                                         <div className="z-10 absolute -top-4 -right-0 hidden group-hover:flex gap-2">
                                                             <span onClick={() => handleCommentDelete(item.id)} className="flex-shrink-0 cursor-pointer w-6 h-6 grid place-items-center bg-danger text-white text-lg rounded-full border border-danger">
                                                                 <MdOutlineDelete />
@@ -197,7 +200,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                             <div className="flex flex-col gap-1.5">
                                                 <div className="flex flex-wrap gap-2">
                                                     <div className="flex items-center gap-4 pl-2">
-                                                        {editableId === item.id || data?.user.role === "Root" ?
+                                                        {editableId === item.id || data?.user.role === "Owner" ?
                                                             <p onClick={() => handleToggleEditing(item.id)} className="text-xs text-text font-semibold cursor-pointer">Edit</p> : ""
                                                         }
                                                         <span className="text-danger">•</span>
@@ -225,7 +228,10 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                                     <div className="relative h-6 w-6 md:h-8 md:w-8 rounded-full bg-primary overflow-hidden flex-shrink-0"></div>
                                                     <div className="flex-1 flex flex-col gap-4">
                                                         <div className="flex justify-between gap-4 translate-y-1">
-                                                            <h5 className="text-text text-sm md:text-base font-semibold font-grotesk select-none">{reply.fullname}</h5>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                <h5 className="text-text text-sm md:text-base font-semibold font-grotesk">{reply.fullname}</h5>
+                                                                <h5 className="text-text text-sm md:text-base font-semibold font-grotesk"> • ({reply.email})</h5>
+                                                            </div>
                                                             <p className="text-text/60 text-xs font-medium font-grotesk select-none">{moment(reply.createdAt).fromNow()}</p>
                                                         </div>
                                                         <p className="relative after:absolute after:-top-[2px] after:-left-[6px] after:border-[6px] after:border-transparent after:border-t-backdrop after:skew-x-[40deg] after:rotate-[40deg] border-text/20 bg-backdrop rounded-lg rounded-tl-none p-2 text-text/80 text-sm text-justify">

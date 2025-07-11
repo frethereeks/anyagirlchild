@@ -5,13 +5,14 @@ import { appRoutePaths } from '@/routes/paths'
 import { BiMessageDetail } from "react-icons/bi";
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib';
-import { fetchDashboardData } from '@/app/action';
+import {fetchDashboardData, fetchDonationStats } from '@/app/action';
 
 export default async function OverviewContainer() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
   const res = await fetchDashboardData()
   const totalDonation = res?.data?.donationData?.reduce((oldValue, el) => +(el.amount) + oldValue, 0) || 0
+  const stat = await fetchDonationStats()
 
   return (
     <main className='flex flex-col gap-4 w-full'>
@@ -31,7 +32,7 @@ export default async function OverviewContainer() {
             totalBlog={res?.data?.blogData.length || 0} 
             totalGallery={res?.data?.galleryData.length || 0} 
           />
-          <OverviewGraph />
+          <OverviewGraph blogData={stat.data?.blogData} galleryData={stat.data?.galleryData} donationData={stat.data?.donationData} userData={stat.data?.userData}  />
           <OverviewAdmins adminData={res?.data?.adminData || []}/>
           <OverviewDonations donationData={res?.data?.donationData || []} />
         </div>

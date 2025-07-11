@@ -30,7 +30,7 @@ const userData = (data: FormData) => ({
     image: data?.get("image")?.valueOf() as File,
     plainPassword: data?.get("password")?.valueOf() as string,
     verifyPassword: data?.get("verifyPassword")?.valueOf() as string,
-    role: data?.get("role")?.valueOf() as $Enums.Role || "Root",
+    role: data?.get("role")?.valueOf() as $Enums.Role || "Owner",
 })
 
 const donationData = (data: FormData) => ({
@@ -163,43 +163,49 @@ export const fetchDashboardData = async () => {
     }
 }
 
-export const fetchDonationStats = async ({
-    year,
-    month,
-}: {
-    year: number;
-    month?: number | 'all';
-}) => {
-    const start = new Date(year, 0, 1);
-    const end = new Date(year + 1, 0, 1);
+export const fetchDonationStats = async () => {
+    const blogQuery = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, COUNT(id) AS total FROM blog WHERE EXTRACT(YEAR FROM createdAt) = ${new Date().getFullYear()} GROUP BY month`;
+    const donationQuery = await prisma.$queryRaw<Array<{ month: string, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, SUM(amount) AS total FROM donation GROUP BY month ORDER BY month ASC;`;
+    const galleryQuery = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, COUNT(id) AS total FROM gallery WHERE EXTRACT(YEAR FROM createdAt) = ${new Date().getFullYear()} GROUP BY month`;
+    const userQuery = await prisma.$queryRaw<Array<{ type: string, total: number }>>`SELECT role AS type, COUNT(id) AS total FROM user GROUP BY role`;
+    const blogData = blogQuery.map(row => ({ month: Number(row.month), total: Number(row.total) }))
+    const donationData = donationQuery.map(row => ({ month: Number(row.month), total: Number(row.total) }))
+    const galleryData = galleryQuery.map(row => ({ month: Number(row.month), total: Number(row.total) }))
+    const userData = userQuery.map(row => ({ ...row, total: Number(row.total) }))
+    // return { result: JSON.stringify(results) }; // [{ month: 1, total: 5000 }, ...]
+    return { error: false, message: 'Dashboard data fetched successfully', data: {blogData, donationData, galleryData, userData} }; // [{ month: 1, total: 5000 }, ...]
+};
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const where: any = {
-        createdAt: { gte: start, lt: end },
-    };
-
-    if (month && month !== 'all') {
+export const fetchDashboardDataSorted = async ({ table, year, month = 'All'}: { table: "blog" | "donation" | "gallery" | "user", year: number, month?: number | "All" }) => {
+    const start = new Date(year, 0, 1), end = new Date(year + 1, 0, 1);
+    const where = {
+        createdAt: { gte: start, lt: end}
+    }
+    if (month && month !== "All") {
         where.createdAt = {
             gte: new Date(year, month - 1, 1),
-            lt: new Date(year, month, 1),
-        };
+            lt: new Date(year, month, 1)
+        }
     }
-    console.log({ where })
-    // const results = await prisma.$queryRaw<
-    //     Array<{ month: number; total: number }>
-    // >`SELECT 
-    //   EXTRACT(MONTH FROM createdAt) AS month,
-    //   SUM(amount) AS total
-    // FROM Donation
-    // WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt}
-    // GROUP BY month
-    // // ORDER BY month ASC;`;
-    const query = await prisma.$queryRaw<Array<{ month: string, currency: string, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, currency, SUM(amount) AS total FROM donation WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month, currency ORDER BY month, currency ASC;`;
-    const result = query.map(row => ({ month: Number(row.month), currency: row.currency, total: Number(row.total) }))
-
-    // return { result: JSON.stringify(results) }; // [{ month: 1, total: 5000 }, ...]
-    return { result: JSON.stringify(result) }; // [{ month: 1, total: 5000 }, ...]
-};
+    let otherQuery : { month: number; total: number; }[] | undefined = undefined;
+    let userQuery: { type: string; total: number; }[] | undefined = undefined;
+    // check which table and query against the appropriate table
+    if (table === "blog") {
+        otherQuery = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, COUNT(id) AS total FROM blog WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
+    }
+    else if (table === "donation") {
+        otherQuery = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, SUM(amount) AS total FROM donation WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
+    }
+    else if (table === "gallery") {
+        otherQuery = await prisma.$queryRaw<Array<{ month: number, total: number }>>`SELECT EXTRACT(MONTH FROM createdAt) AS month, COUNT(id) AS total FROM gallery WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
+    }
+    else {
+        userQuery = await prisma.$queryRaw<Array<{ type: string, total: number }>>`SELECT role AS type, COUNT(id) AS total FROM gallery WHERE createdAt >= ${where.createdAt.gte} AND createdAt < ${where.createdAt.lt} GROUP BY month`;
+    }
+    const data = table === "user" ? userQuery?.map(el => ({ ...el, total: Number(el.total) })) : otherQuery?.map(el => ({ month: Number(el.month), total: Number(el.total) }))
+    
+    return { data }
+}
 
 
 // User
@@ -261,7 +267,7 @@ export const updateUser = async (data: FormData, type: "info" | "security") => {
             const password = data.get("password")?.valueOf() as string
             const plainPassword = data.get("newPassword")?.valueOf() as string
             const matchPassword = await bcryptjs.compare(password, user.password)
-            console.log({ password, plainPassword, matchPassword })
+            // console.log({ password, plainPassword, matchPassword })
             if (!matchPassword) {
                 return { error: true, message: `Your security password does not match your current. Please, check and try again` }
             }

@@ -189,7 +189,7 @@ export default function AddAdmin({ data }: TPageProps) {
                                 <optgroup label='User Right'>
 
                                     {
-                                        Object.entries($Enums.Role).reverse().map(([key, value]) => value === "Root" ? null : <option key={key} className='relative capitalize bg-background text-xs md:text-sm' value={value}>{value} ({value === "Admin" ? 'can create, edit and delete' : 'can only preview'})</option>)
+                                        Object.entries($Enums.Role).reverse().map(([key, value]) => value === "Owner" ? null : <option key={key} className='relative capitalize bg-background text-xs md:text-sm' value={value}>{value} ({value === "Admin" ? 'can create, edit and delete' : 'can only preview'})</option>)
                                     }
                                 </optgroup>
                             </select> */}

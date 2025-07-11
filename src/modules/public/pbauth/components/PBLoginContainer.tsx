@@ -145,7 +145,6 @@ export default function PBLoginContainer({ viewReset }: { viewReset: boolean }) 
                                     {loading ? 'Processing...' : 'Login'}
                                 </button>
                             </div>
-                            {/* <p className="text-xs md:text-sm text-text text-center pb-4">We&apos;ll get back to you in 1-2 business days</p> */}
                         </Form>
                     </aside>
             }

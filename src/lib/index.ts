@@ -1,6 +1,7 @@
 import {authOptions} from "./authOptions"
 import {capitalize} from "./capitalize"
 import { fileUpload } from "./fileUpload";
+import { generateAllMonths } from "./generateAllMonths";
 import { generateSlug } from "./generateSlug";
 import { logAction } from "./logAction"
 import prisma from "./prisma";
@@ -11,6 +12,7 @@ export {
     authOptions,
     capitalize,
     fileUpload,
+    generateAllMonths,
     generateSlug,
     logAction,
     emailTemplate,

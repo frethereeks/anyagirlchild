@@ -88,7 +88,7 @@ export default function ThematicSection({ total }: { total: number }) {
                                 <div className="grid grid-cols-2 md:grid-cols-[repeat(auto-fit,_minmax(250px,_350px))] justify-center gap-3 sm:gap-6 md:gap-8 py-10">
                                     {
                                         thematicsData.slice(6).map((el, index) => (
-                                            <div onClick={() => toggleModal(index)} key={el.id} className={`relative w-full ${index === 0 ? 'row-span-2' : 'h-28 md:h-40'}  overflow-hidden rounded-md`}>
+                                            <div onClick={() => toggleModal((index+6))} key={el.id} className={`relative w-full ${index === 0 ? 'row-span-2' : 'h-28 md:h-40'}  overflow-hidden rounded-md`}>
                                                 {
                                                      
                                                 }

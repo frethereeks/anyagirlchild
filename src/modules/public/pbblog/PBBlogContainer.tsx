@@ -14,7 +14,7 @@ export default function PBBlogContainer({data}: {data: TBlogItemProp[] | undefin
           <div className="flex-1 flex flex-col justify-center gap-2 md:max-w-xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl text-secondary font-bold font-grotesk">Activities and Inspirational Posts
             </h2>
-            <p className="text-sm md:text-base text-text font-normal leading-loose font-sans">Immerse yourself in
+            <p className="text-sm md:text-base text-text font-normal leading-loose font-poppins">Immerse yourself in
               inspiration and expert insights with our blog section, offering a deep dive into trends and tips
               for elevating your living spaces</p>
           </div>

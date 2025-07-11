@@ -39,7 +39,7 @@ enum ViewStatus {
 }
 
 enum Role {
-  Root
+  Owner
   Admin
   User
 }

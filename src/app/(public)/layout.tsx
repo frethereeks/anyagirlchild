@@ -9,6 +9,7 @@ import PBHeader from "@/modules/public/pblayout/PBHeader";
 import PBFooter from "@/modules/public/pblayout/PBFooter";
 import { AosProvider } from "@/modules/shared";
 import { config } from "@/config";
+import StoreProvider from "@/provider/ReduxProvider";
 
 const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--grotesk", weight: ["300", "400", "500", "600", "700"], fallback: ["cursive"] });
 const poppins = Poppins({ subsets: ["latin"], variable: "--poppins", weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], fallback: ["cursive"] });
@@ -32,11 +33,13 @@ export default function RootLayout({
         <AntdRegistry>
           <ThemeProvider>
             <AosProvider>
-              <NextTopLoader color="#16a394" showSpinner={false} />
-              <PBHeader />
-              <div className="font-poppins min-h-[80vh] text-"> {children} </div>
-              <Analytics />
-              <PBFooter />
+              <StoreProvider>
+                <NextTopLoader color="#16a394" showSpinner={false} />
+                <PBHeader />
+                <div className="font-poppins min-h-[80vh] text-"> {children} </div>
+                <Analytics />
+                <PBFooter />
+              </StoreProvider>
             </AosProvider>
           </ThemeProvider>
         </AntdRegistry>
