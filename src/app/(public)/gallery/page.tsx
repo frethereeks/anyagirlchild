@@ -4,8 +4,6 @@ import PBBreadCrumb from '@/modules/public/pblayout/PBBreadCrumb'
 import React from 'react'
 import { Metadata } from 'next';
 import { fetchGalleryImages } from '@/app/action';
-import { authOptions } from '@/lib';
-import { getServerSession } from 'next-auth';
 
 
 export const metadata: Metadata = {
@@ -28,12 +26,11 @@ export const metadata: Metadata = {
 
 export default async function GalleryPage() {
   const res = await fetchGalleryImages()
-  const session = await getServerSession(authOptions)
 
   return (
     <main className='flex flex-col gap-4'>
       <PBBreadCrumb image={ASSET_URL["group_donation"]} />
-      <PBGalleryContainer data={res.data} role={session?.user?.role} />
+      <PBGalleryContainer data={res.data} />
     </main>
   )
 }

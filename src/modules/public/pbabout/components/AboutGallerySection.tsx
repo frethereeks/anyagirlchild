@@ -4,20 +4,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-export default function AboutGallerySection() {
-  /* 
-  anyagirlchild_addressing
-anyagirlchild_douvet_gift
-anyagirlchild_with_
-anyagirlchild_represented
-anyagirlchild_award
-anyagirlchild_outreach
-anyagirlchild_director
-anyagirlchild_gift_to_girls
-  
-  */
+export default async function AboutGallerySection() {
   return (
-    <section className="relative flex flex-col gap-4 px-4 py-20 bg-white">
+    <section className="relative flex flex-col gap-4 px-4 py-20 bg-white text-white">
       <h4 className="text-2xl md:text-4xl text-secondary text-center font-bold font-grotesk">Our Works</h4>
       <p className="text-center text-base md:text-lg text-text leading-loose max-w-3xl mx-auto">Our approach involves not only education but also moral development, career mentorship, and self-care, ensuring that these girls grow into well-rounded, empowered individuals who can lead and inspire change in their communities.</p>
       <div className="container mx-auto relative grid md:grid-cols-2 gap-4 justify-center items-center rounded-md pt-10">
@@ -50,7 +39,7 @@ anyagirlchild_gift_to_girls
           <Image src={ASSET_URL["anyagirlchild_with_ngos"]} alt="anyagirlchild_with_ngos" className="h-full w-full object-cover object-top rounded-sm absolute left-0 top-0" fill />
         </div>
       </div>
-      <Link href={appRoutePaths.gallery} className="heading-five font-medium rounded-sm text-center mx-auto text-white w-max mt-5 px-10 py-2 bg-danger">See More</Link>
+      <Link href={appRoutePaths.gallery} className="heading-five font-medium rounded-sm text-center mx-auto text-white hover:text-white w-max mt-5 px-10 py-2 bg-danger">See More</Link>
     </section>
   )
 }
