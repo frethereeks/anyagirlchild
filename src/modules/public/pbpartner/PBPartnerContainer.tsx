@@ -56,7 +56,7 @@ return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Volunteer Section */}
             <div className="bg-white shadow-[0px_0px_12px_-2px_#0004] hover:shadow-[0px_0px_16px_-2px_#0005] rounded-lg p-6 flex flex-col items-center text-center">
-                <Image src={ASSET_URL['donation_vanunload']} alt="Volunteer" className="w-full h-48 object-cover rounded-md border-2 border-backdrop mb-4" />
+                <Image src={ASSET_URL['anya_girlchild_group']} alt="Volunteer" className="w-full h-48 object-cover rounded-md border-2 border-backdrop mb-4" />
                 <h3 className="text-2xl text-secondary font-semibold font-grotesk mb-2">Volunteer with Us</h3>
                 <p className="text-text mb-4">Share your time and skills to create lasting impact.</p>
                 <Button type="primary" size="middle" onClick={() => handleOpenModal("Volunteer")}>

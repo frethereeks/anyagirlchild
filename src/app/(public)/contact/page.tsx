@@ -12,8 +12,8 @@ export const metadata: Metadata = {
         type: "website",
         title: "Anya Girlchild :: Contact",
         images: [
-            { url: ASSET_URL["donation_vanunload"].src, width: 800, height: 600 },
-            { url: ASSET_URL["donation_vanunload"].src, width: 1800, height: 1600 },
+            { url: ASSET_URL["anya_girlchild_group"].src, width: 800, height: 600 },
+            { url: ASSET_URL["anya_girlchild_group"].src, width: 1800, height: 1600 },
         ],
         siteName: "Anya Girlchild Foundation",
         description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
     return (
         <main className='flex flex-col gap-4 py-10'>
-            {/* <PBBreadCrumb image={ASSET_URL["donation_vanunload"]} /> */}
+            {/* <PBBreadCrumb image={ASSET_URL["anya_girlchild_group"]} /> */}
             <PBContactContainer />
         </main>
     )

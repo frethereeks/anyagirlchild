@@ -11,7 +11,7 @@ export default function PBContactContainer() {
     <main className='flex flex-col'>
       <section className="relative flex flex-col justify-center py-20 px-4 bg-slate-100">
         <div className="absolute w-3/4 right-0 h-full">
-          <Image src={ASSET_URL['donation_vanunload']} alt='' className='object-cover object-center' fill />
+          <Image src={ASSET_URL['anya_girlchild_group']} alt='' className='object-cover object-left' fill />
         </div>
         <div className="container mx-auto relative z-10">
           <div className="flex flex-col justify-center bg-white shadow-lg shadow-text/50 px-4 py-8 md:px-8 md:py-14 w-full max-w-xl">

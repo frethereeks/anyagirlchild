@@ -31,8 +31,8 @@ export async function generateMetadata({ params }: TPageParams) {
       type: "website",
       title: "Anya Girlchild :: Contact",
       images: [
-        { url: data?.image ?? ASSET_URL["alms_donation"].src, width: 800, height: 600 },
-        { url: data?.image ?? ASSET_URL["alms_donation"].src, width: 1800, height: 1600 },
+        { url: data?.image ?? ASSET_URL["back_to_school"].src, width: 800, height: 600 },
+        { url: data?.image ?? ASSET_URL["back_to_school"].src, width: 1800, height: 1600 },
       ],
       siteName: "Anya Girlchild Foundation",
       description: data?.text,

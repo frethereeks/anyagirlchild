@@ -65,7 +65,7 @@ export default function PBBlogSingleContainer({ data, related }: TPageProps) {
       </aside>
       <aside className="container mx-auto flex flex-col justify-end items-center px-4 relative h-[90vh]">
         <div className="h-full w-full absolute top-0 left-0 bg-slate-800">
-          <Image src={data?.image ?? ASSET_URL["alms_donation"]} alt={data?.title ?? "image description"} className=' object-cover object-top' fill />
+          <Image src={data?.image ?? ASSET_URL["back_to_school"]} alt={data?.title ?? "image description"} className=' object-cover object-top' fill />
         </div>
       </aside>
       <section className="relative flex-1 bg-white pb-10">

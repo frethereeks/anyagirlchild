@@ -13,8 +13,8 @@ export const metadata: Metadata = {
         type: "website",
         title: "Anya Girlchild :: Terms and Conditions",
         images: [
-            { url: ASSET_URL["adult_intervention"].src, width: 800, height: 600 },
-            { url: ASSET_URL["adult_intervention"].src, width: 1800, height: 1600 },
+            { url: ASSET_URL["anyagirlchild_douvet_gift"].src, width: 800, height: 600 },
+            { url: ASSET_URL["anyagirlchild_douvet_gift"].src, width: 1800, height: 1600 },
         ],
         siteName: "Anya Girlchild Foundation",
         description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
@@ -29,7 +29,7 @@ export default function PBTermsAndConditions() {
                 <div className="container mx-auto flex flex-col gap-3 font-grotesk">
                     <div className="flex flex-col md:flex-row gap-4 md:gap-8">
                         <aside className="relative flex-1 h-60vh md:h-auto gap-4 text-center md:text-left">
-                            <Image src={ASSET_URL['donation_man']} alt={'donation_woman'} className='object-cover object-top' fill />
+                            <Image src={ASSET_URL['anyagirlchild_outreach']} alt={'donation_woman'} className='object-cover object-top' fill />
                             <div className="relative bg-primary/50 flex-1 h-full flex flex-col justify-center items-center gap-4 text-center md:text-left p-4">
                             </div>
                         </aside>
@@ -93,7 +93,7 @@ export default function PBTermsAndConditions() {
                             </ul>
                         </aside>
                         <aside className="relative flex-1 h-60vh md:h-auto gap-4 text-center md:text-left">
-                            <Image src={ASSET_URL['adult_intervention']} alt={'donation_woman'} className='object-cover object-top' fill />
+                            <Image src={ASSET_URL['anyagirlchild_douvet_gift']} alt={'donation_woman'} className='object-cover object-top' fill />
                             <div className="relative bg-primary/50 flex-1 h-full flex flex-col justify-center items-center gap-4 text-center md:text-left p-4">
                             </div>
                         </aside>

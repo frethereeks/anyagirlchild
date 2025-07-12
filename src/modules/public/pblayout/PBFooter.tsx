@@ -22,7 +22,7 @@ export default function PBFooter() {
         </div>
       </section>
       <section className='relative bg-primary pt-10 pb-4 px-4'>
-        <Image src={ASSET_URL['adult_intervention']} alt='adult_intervention' className='object-cover object-top opacity-75' fill />
+        <Image src={ASSET_URL['anyagirlchild_represented']} alt='anyagirlchild_represented' className='object-cover object-top opacity-75' fill />
         <div className="overlay bg-primary z-10 shadow-none opacity-70 backdrop-blur-sm"></div>
         <div className="container mx-auto relative z-20 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10 py-10 rounded-md text-white">
           <aside className="flex flex-col sm:justify-center gap-4 w-full col-span-2 md:col-span-1">

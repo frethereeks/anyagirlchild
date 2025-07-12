@@ -40,7 +40,7 @@ export default function PBGalleryContainer({ data }: TPageProps) {
       >
         <div className="flex flex-col gap-2">
           <figure className="relative before:absolute before:w-full before:h-full before:left-0 before:top-0 before:bg-backdrop h-[500px] w-full">
-            <Image src={selectedData?.image ?? ""} alt={selectedData?.title || "anyagirlchild gallery photo"} className="object-contain object-top h-full w-full absolute top-0 left-0" fill priority />
+            <Image src={selectedData?.image ?? ""} alt={selectedData?.title || "anyagirlchild gallery photo"} className="object-cover object-top h-1/2 w-full absolute top-1/2 left-0" fill />
           </figure>
           <h4 className="text-lg md:text-xl text-primary/80 font-bold leading-loose font-grotesk p-4">{selectedData?.title}</h4>
         </div>

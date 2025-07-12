@@ -13,8 +13,8 @@ export const metadata: Metadata = {
     type: "website",
     title: "Anya Girlchild :: Partner",
     images: [
-          { url: ASSET_URL["hungry_man"].src, width: 800, height: 600 },
-          { url: ASSET_URL["hungry_man"].src, width: 1800, height: 1600 },
+          { url: ASSET_URL["anyagirlchild_outreach"].src, width: 800, height: 600 },
+          { url: ASSET_URL["anyagirlchild_outreach"].src, width: 1800, height: 1600 },
         ],
         siteName: "Anya Girlchild Foundation",
         description: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
@@ -27,7 +27,7 @@ export default async function PartnerPage() {
 
   return (
     <main className='flex flex-col gap-4'>
-      <PBBreadCrumb image={ASSET_URL["hungry_man"]} />
+      <PBBreadCrumb image={ASSET_URL["anyagirlchild_outreach"]} />
       <PBPartnerContainer />
     </main>
   )

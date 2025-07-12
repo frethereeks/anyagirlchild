@@ -32,7 +32,7 @@ export default async function GalleryPage() {
 
   return (
     <main className='flex flex-col gap-4'>
-      <PBBreadCrumb image={ASSET_URL["little_child"]} />
+      <PBBreadCrumb image={ASSET_URL["group_donation"]} />
       <PBGalleryContainer data={res.data} role={session?.user?.role} />
     </main>
   )

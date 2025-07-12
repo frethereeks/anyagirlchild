@@ -33,10 +33,10 @@ export default async function HomeGallerySection() {
       </div>
       {/* <div className="container mx-auto relative grid grid-cols-2 md:grid-rows-2 gap-4 justify-center items-center rounded-md">
         <div className="border w-full flex-1 row-span-2 rounded-l-xl relative overflow-hidden min-h-full">
-          <Image src={ASSET_URL["alms_donation"]} alt="alms_donation" className="h-full w-full object-cover object-top rounded-sm absolute left-0 top-0" fill />
+          <Image src={ASSET_URL["back_to_school"]} alt="back_to_school" className="h-full w-full object-cover object-top rounded-sm absolute left-0 top-0" fill />
         </div>
         <div className="border w-full flex-1 rounded-tr-xl relative overflow-hidden py-14 md:py-32">
-          <Image src={ASSET_URL["donation_vanunload"]} alt="donation_vanunload" className="h-full w-full object-cover object-bottom rounded-sm absolute left-0 top-0" fill />
+          <Image src={ASSET_URL["anya_girlchild_group"]} alt="anya_girlchild_group" className="h-full w-full object-cover object-bottom rounded-sm absolute left-0 top-0" fill />
         </div>
         <div className="border w-full flex-1 rounded-br-xl relative overflow-hidden py-14 md:py-32">
           <Image src={ASSET_URL["anya_girlchild_logo"]} alt="anya_girlchild_logo" className="h-full w-full object-cover object-bottom rounded-sm absolute left-0 top-0" fill />

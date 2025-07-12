@@ -63,7 +63,7 @@ export default function ThematicSection({ total }: { total: number }) {
                                 thematicsData.slice(0, 6).map((el, index) => (
                                     <div onClick={() => toggleModal(index)} key={el.id} className="relative w-full h-28 md:h-40 overflow-hidden
                                      rounded-md">
-                                        <Image src={ASSET_URL['donation_vanunload']} alt={el.title} className='object-cover absolute top-0 left-0 h-full w-full opacity-80' fill />
+                                        <Image src={ASSET_URL['anya_girlchild_group']} alt={el.title} className='object-cover absolute top-0 left-0 h-full w-full opacity-80' fill />
                                         <p className="relative w-full h-full p-4 bg-primary/80 text-white text-center text-base md:text-lg font-semibold font-grotesk cursor-pointer grid place-items-center">{el.title}</p>
                                     </div>
                                 ))

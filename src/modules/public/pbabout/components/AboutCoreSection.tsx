@@ -8,7 +8,7 @@ export default function AboutCoreSection() {
         {
             id: "80q2e6uv10rpz750",
             title: "Back to School Initiative for the Girl Child (BSIG)",
-            image: ASSET_URL["group_donation"],
+            image: ASSET_URL["back_to_school"],
             description: "The Back to School Initiative for the Girl Child (BSIG) is the flagship intervention of Anya Girlchild Foundation, designed to tackle one of the most pressing challenges in underserved communities: educational exclusion among girls. The BSIG program is a restorative, inclusive, and empowering solution that gives girls a second chance at formal education while equipping them with the tools to succeed and remain in school.",
         },
         {
@@ -39,7 +39,7 @@ export default function AboutCoreSection() {
                             coreData.map((el) => (
                                 <aside key={el.id} className="relative flex flex-col sm:flex-row gap-4 w-full bg-white md:bg-transparent overflow-hidden p-3 md:p-4 rounded-lg shadow-lg shadow-backdrop md:shadow-transparent">
                                     <figure className="relative h-48 md:h-auto w-full md:max-w-md overflow-hidden rounded-md flex-shrink-0 border-2 md:border-8 border-slate-200 md:border-white md:shadow-lg">
-                                        <Image src={el.image} alt={el.title} className='object-cover object-top absolute top-0 left-0 h-full w-full opacity-80' fill />
+                                        <Image src={el.image} alt={el.title} className='object-cover object-top absolute top-0 left-0 h-full w-full' fill />
                                     </figure>
                                     <div className="flex-1 flex flex-col justify-center gap-2 md:gap-3 pb-4 md:py-6">
                                         <h4 className="text-xl md:text-2xl text-secondary text-center md:text-justify font-bold font-grotesk">{el.title}</h4>

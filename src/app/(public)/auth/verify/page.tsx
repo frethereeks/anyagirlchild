@@ -41,7 +41,7 @@ export default async function PBVerifyPage({ searchParams: { email, token } }: T
             <main className='flex flex-col md:flex-row gap-4 lg:gap-8 md:h-full'>
                 <section className="container mx-auto flex flex-col lg:flex-row gap-4 md:h-full">
                     <aside className="p-4 flex-1 hidden lg:flex flex-col gap-8 w-full lg:max-w-[40rem] py-40 relative bg-primary">
-                        <Image src={ASSET_URL["alms_donation"]} alt='alms_donation' className='object-cover object-top opacity-85' fill />
+                        <Image src={ASSET_URL["back_to_school"]} alt='back_to_school' className='object-cover object-top opacity-85' fill />
                     </aside>
                     <aside className='flex-1 md:px-20 flex flex-col gap-8 py-10 md:py-40'>
                         <div
@@ -68,7 +68,7 @@ export default async function PBVerifyPage({ searchParams: { email, token } }: T
         <main className='flex flex-col md:flex-row gap-4 lg:gap-8 md:h-full'>
             <section className="container mx-auto flex flex-col lg:flex-row gap-4 md:h-full">
                 <aside className="p-4 flex-1 hidden lg:flex flex-col gap-8 w-full lg:max-w-[40rem] py-40 relative bg-primary">
-                    <Image src={ASSET_URL["alms_donation"]} alt='alms_donation' className='object-cover object-top opacity-85' fill />
+                    <Image src={ASSET_URL["back_to_school"]} alt='back_to_school' className='object-cover object-top opacity-85' fill />
                 </aside>
                 <PBVerifyContainer data={data} />
             </section>
