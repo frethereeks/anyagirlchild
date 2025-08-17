@@ -119,14 +119,7 @@ const toolbarOptions = [
             setLoading(false)
         }
     }
-
-    // const handleEditorChange = React.useCallback((json: RemirrorJSON) => {
-    //     // Store the JSON in localStorage
-    //     console.log({ json })
-    //     setEditorContent(JSON.stringify(json))
-    // }, []);
-
-
+    
     return (
         <>
             <Form

@@ -71,7 +71,7 @@ export default function AdminContainer({ data, role }: { data: TAdminProps[], ro
           <div className="flex items-end gap-2">
             {/* { role !== "Owner" && ((selectedRowKeys.length > 0) && <button onClick={() => setDeleteModal(!deleteModal)} className="button py-2 px-4 bg-danger flex items-center gap-2"><AiOutlineDelete /> Delete All</button>)} */}
             {(selectedRowKeys.length > 0) && <button onClick={() => setDeleteModal(!deleteModal)} className="button rounded-sm py-2 px-4 bg-danger flex items-center gap-2"><AiOutlineDelete /> Delete All</button>}
-            <UpdateStatus key={"80234609234"} data={selectedRowKeys} table='user' />
+            <UpdateStatus key={"80234609234"} data={selectedRowKeys} table='user' statusType={$Enums.Status} />
           </div>
           <Table
             key={"82034798a09834"}

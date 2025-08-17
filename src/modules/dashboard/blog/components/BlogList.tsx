@@ -30,10 +30,10 @@ export default function BlogList({ data, role }: { data: TBlogItemProp[] | undef
           {(selectedRowKeys.length > 0) &&
             <div className="flex flex-col select-none">
               <p className="text-text text-xs">Delete selection</p>
-              <button onClick={() => setDeleteModal(!deleteModal)} className="button py-1 px-4 bg-danger flex items-center gap-1 w-max"><AiOutlineDelete /> Delete All</button>
+              <button onClick={() => setDeleteModal(!deleteModal)} className="button py-1 px-4 bg-danger flex items-center gap-1 w-max"><AiOutlineDelete /> Delete {selectedRowKeys.length ? "All" : ""}</button>
             </div>
           }
-          <UpdateStatus key="902384" data={selectedRowKeys} table='blog' />
+          <UpdateStatus key="902384" data={selectedRowKeys} table='blog' statusType={$Enums.ViewStatus} />
         </div>
         <Table
           key={"82034798a09834"}
