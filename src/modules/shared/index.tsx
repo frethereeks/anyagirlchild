@@ -1,5 +1,6 @@
 import AosProvider from "./AosProvider"
 import AppSlider from "./AppSlider"
+import {ContactEmail} from "./ContactEmail"
 import DeleteModal from "./DeleteModal"
 import GalleryImageViewer from "./GalleryImageViewer"
 import Peer from "./Peer"
@@ -9,6 +10,7 @@ import UpdateStatus from "./UpdateStatus"
 export {
     AosProvider,
     AppSlider,
+    ContactEmail,
     DeleteModal,
     GalleryImageViewer,
     Peer,

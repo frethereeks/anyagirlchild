@@ -18,6 +18,9 @@ import { TCommentProps } from "@/types";
 import { sendMail } from "@/lib/logAction";
 import path from "path";
 
+import {render} from "@react-email/render";
+import {ContactEmail} from "@/modules/shared/ContactEmail";
+
 // console.log({config})
 
 const limit = plimit(10)
@@ -99,14 +102,14 @@ export const handleReset = async (email: string) => {
         // User EMail
         const button = `<a href="${config.APP_PRIMARY_API_BASE_URL}/auth/verify?email=${email}&token=${token}" target="_blank" style="font-weight: 700; background: #16a394; color: #fff; text-decoration: none; border-radius: 6px; font-size: 14px; line-height: 20px; text-align: center; margin: 0 auto; width: max-content; padding: 4px 24px; margin-top: 4px;">Click Here</a>`;
         const message = `A password reset was initiated by <a href="${appRoutePaths.adminuser}" class="color: inherit !important; font-weight: 700;">#${user.id}: ${capitalize(fullname)}</a>`
-        await logAction({ userId: user.id, actionType: "reset", message, html: emailTemplate({ message: button, intro: `We have received your request to reset your password. Click the button below or ignore this message if you didn't initiate this action.` }), emailNotification: true, receiver: user.email })
+        await logAction({ userId: user.id, subject: "reset", message, html: emailTemplate({ message: button, intro: `We have received your request to reset your password. Click the button below or ignore this message if you didn't initiate this action.` }), emailNotification: true, receiver: user.email })
 
         // Admin EMail Copy
-        await logAction({ userId: user.id, actionType: "reset", message, html: emailTemplate({ message, intro: `${capitalize(fullname)} initiated a password reset!` }), emailNotification: true, })
+        await logAction({ userId: user.id, subject: "reset", message, html: emailTemplate({ message, intro: `${capitalize(fullname)} initiated a password reset!` }), emailNotification: true, })
         revalidatePath(appRoutePaths.signin)
         return { error: false, message: `Password Reset Link has been sent to your email...` };
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "reset", message: `Activity: Password Reset Handling. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "reset", message: `Activity: Password Reset Handling. Error: ${error}`, isError: true })
         return { error: true, message: `Something went wrong. We could not send the mail...Please, try again` };
     }
 }
@@ -122,11 +125,11 @@ export const handlePasswordReset = async ({ email, password: plainPassword }: { 
             data: { password, token: "" }
         })
         const fullname = `${user.firstname} ${user.lastname}`
-        await logAction({ userId: user.id, actionType: "reset", message: `<a href="${appRoutePaths.adminuser}" class="color: inherit !important; font-weight: 700;">#${user.id}: ${capitalize(fullname)}</a> successfully performed a password reset on ${new Date(user.updatedAt).toDateString()}` })
+        await logAction({ userId: user.id, subject: "reset", message: `<a href="${appRoutePaths.adminuser}" class="color: inherit !important; font-weight: 700;">#${user.id}: ${capitalize(fullname)}</a> successfully performed a password reset on ${new Date(user.updatedAt).toDateString()}` })
         revalidatePath(appRoutePaths.signin)
         return { error: false, message: `Password reset is successful.` };
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "reset", message: `Activity: Password Update/Change. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "reset", message: `Activity: Password Update/Change. Error: ${error}`, isError: true })
         return { error: true, message: `Something went wrong. We could not complete your request...Please, try again` };
     }
 }
@@ -136,11 +139,11 @@ export const handleTokenVerification = async (email: string, token: string) => {
         const validMail = await prisma.user.findFirst({ where: { email, token } })
         if (!validMail) return { error: true, message: `We do not have an account with these details...Perhaps, this is an old link` };
         else {
-            await logAction({ userId: "Visitor", actionType: "reset", message: `User with email: <a href="${appRoutePaths.adminuser}" class="color: inherit !important; font-weight: 700;">${capitalize(email)}</a> came for password reset` })
+            await logAction({ userId: "Visitor", subject: "reset", message: `User with email: <a href="${appRoutePaths.adminuser}" class="color: inherit !important; font-weight: 700;">${capitalize(email)}</a> came for password reset` })
             return { error: false, message: `Success! Please, complete the process by choosing a new password` }
         };
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "reset", message: `Activity: Email token verification. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "reset", message: `Activity: Email token verification. Error: ${error}`, isError: true })
         return { error: true, message: `Something went wrong. We could not complete your request...Please, try again` };
     }
 }
@@ -158,7 +161,7 @@ export const fetchDashboardData = async () => {
         ])
         return { error: false, message: 'Dashboard data fetched successfully', data: { adminData, donationData, galleryData, blogData } }
     } catch (error) {
-        await logAction({ userId: user.id, actionType: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
         return { error: true, message: 'Unable to fetch dashboard data. Please, try again', data: { adminData: [], donationData: [], galleryData: [], blogData: [] } }
     }
 }
@@ -229,7 +232,7 @@ export const createUser = async (data: FormData) => {
             return { error: false, message: `Welcome ${firstname} ${lastname}. A verification link has been sent to your email. Click to complete your registration.` }
         }
     } catch (error) {  
-        await logAction({ userId: user.id, actionType: "view", message: `Activity: Create Admin. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "view", message: `Activity: Create Admin. Error: ${error}`, isError: true })
         return { error: true, message: `Something went wrong. We could not complete your request` }
     }
 }
@@ -282,7 +285,7 @@ export const updateUser = async (data: FormData, type: "info" | "security") => {
             }
         }
     } catch (error) {  
-        await logAction({ userId: user.id, actionType: "update", message: `Activity: Update Admin Failed. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "update", message: `Activity: Update Admin Failed. Error: ${error}`, isError: true })
         return { error: true, message: `Something went wrong. We could not complete your request` }
     }
 }
@@ -323,7 +326,7 @@ export const fetchAllUsers = async () => {
         })
         return { error: true, message: `All users fetched successfully.`, data }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to delete blog. Please, try again.` }
     }
 }
@@ -336,7 +339,7 @@ export const fetchSingleUsers = async (id: string) => {
         })
         return { error: true, message: `User record found successfully.`, data }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "view", message: `Activity: Fetch Single Blog. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "view", message: `Activity: Fetch Single Blog. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to delete blog. Please, try again.` }
     }
 }
@@ -362,7 +365,7 @@ export const fetchBlogPosts = async (start?: number, end?: number) => {
         })
         return { error: false, message: `Blog post successfully fetched.`, data }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to fetch blog. Please, try again later or check your network connection.` }
     }
 }
@@ -400,7 +403,7 @@ export const fetchSingleBlogPost = async ({ slug }: { slug: string }) => {
         ])
         return { error: false, message: `Blog post successfully fetched.`, data, next, previous }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to fetch blog. Please, try again later or check your network connection.` }
     }
 }
@@ -422,10 +425,10 @@ export const createBlog = async (data: FormData) => {
             data: { image: file, slug, title: title.trim().toLowerCase(), text, status, userId: user.id }
         })
         const message = `A new post titled <a href="${appRoutePaths.blog}/${blog.slug}" class="color: inherit !important; font-weight: 700;">#${blog.id}: ${blog.title}</a> was created on ${new Date(blog.createdAt).toDateString()}` 
-        await logAction({ userId: user.id, actionType: "create", message, html: emailTemplate({ message, intro: `${user.name} created a new blog post!` }), emailNotification: true, })
+        await logAction({ userId: user.id, subject: "create", message, html: emailTemplate({ message, intro: `${user.name} created a new blog post!` }), emailNotification: true, })
         return { error: false, message: `Congratulations! Your new blog post has been created successfully.` }
     } catch (error) {  
-        await logAction({ userId: user.id, actionType: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "view", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -459,11 +462,11 @@ export const updateBlog = async (data: FormData) => {
                 where: { id }
             })
             const message = `${user.name} updated the post <a href="${appRoutePaths.blog}/${blog.slug}" class="color: inherit !important; font-weight: 700;">#${blog.id}: ${blog.title}</a> with status as (${blog.status}) on ${new Date(blog.updatedAt).toDateString()}` 
-            await logAction({ userId: user.id, actionType: "update", message})
+            await logAction({ userId: user.id, subject: "update", message})
         }
         return { error: false, message: `Your blog post has been updated successfully.` }
     } catch (error) {  
-        await logAction({ userId: user.id, actionType: "view", message: `Activity: Update Blog Failed. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "view", message: `Activity: Update Blog Failed. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -482,7 +485,7 @@ export const fetchComments = async ({ blogId }: { blogId: string }) => {
         })
         return { error: true, message: "Comments fetched Successfully", data }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "view", message: `Activity: Fetch Comment. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "view", message: `Activity: Fetch Comment. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -495,7 +498,7 @@ export const createComment = async (data: { blogId: string, fullname: string, em
         }) as TCommentProps
         return { error: false, message: `Comment posted successfully.`, data }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "create", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "create", message: `Activity: Fetch Dashbaord Data. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to post comment. Please, try again.` }
     }
 }
@@ -508,10 +511,10 @@ export const updateComment = async (data: { id: string, fullname: string, email:
             data: { fullname, email, text },
             where: { id }
         })
-        await logAction({ userId: session?.user?.id ?? "Visitor", actionType: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} updated comment with id ${id}.` })
+        await logAction({ userId: session?.user?.id ?? "Visitor", subject: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} updated comment with id ${id}.` })
         return { error: false, message: `Comment updated successfully.`, data: undefined }
     } catch (error) {  
-        await logAction({ userId: session?.user?.id ?? "Visitor", actionType: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} could not update comment #${id}. Error: ${error}`, isError: true })
+        await logAction({ userId: session?.user?.id ?? "Visitor", subject: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} could not update comment #${id}. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to update comment. Please, try again.` }
     }
 }
@@ -522,10 +525,10 @@ export const deleteComment = async (id: string) => {
         const comment = await prisma.comment.delete({
             where: { id },
         })
-        await logAction({ userId: session?.user?.id ?? "Visitor", actionType: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} deleted a comment by ${comment.fullname}.` })
+        await logAction({ userId: session?.user?.id ?? "Visitor", subject: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} deleted a comment by ${comment.fullname}.` })
         return { error: false, message: `Comment successfully deleted.` }
     } catch (error) {  
-        await logAction({ userId: session?.user?.id ?? "Visitor", actionType: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} could not delete comment #${id}. Error: ${error}`, isError: true })
+        await logAction({ userId: session?.user?.id ?? "Visitor", subject: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} could not delete comment #${id}. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to delete comment. Please, try again.` }
     }
 }
@@ -538,7 +541,7 @@ export const createReply = async (values: { commentId: string, fullname: string,
         })
         return { error: false, message: `Reply posted successfully.`, data }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "view", message: `Activity: User could not post reply. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "view", message: `Activity: User could not post reply. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to post reply. Please, try again.` }
     }
 }
@@ -549,10 +552,10 @@ export const deleteReply = async (id: string) => {
         const reply = await prisma.reply.delete({
             where: { id },
         })
-        await logAction({ userId: session?.user?.id ?? "Visitor", actionType: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} deleted a reply by ${reply.fullname} to the comment #${reply.commentId}.` })
+        await logAction({ userId: session?.user?.id ?? "Visitor", subject: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} deleted a reply by ${reply.fullname} to the comment #${reply.commentId}.` })
         return { error: false, message: `Reply successfully deleted.` }
     } catch (error) {
-        await logAction({ userId: session?.user?.id ?? "Visitor", actionType: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} could not delete reply #${id}. Error: ${error}`, isError: true })
+        await logAction({ userId: session?.user?.id ?? "Visitor", subject: "update", message: `Activity: ${session?.user?.name ?? "Visitor"} could not delete reply #${id}. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to delete reply. Please, try again.` }
     }
 }
@@ -566,7 +569,7 @@ export const fetchContact = async () => {
         })
         return { data }
     } catch (error) {  
-        await logAction({ userId: user.id, actionType: "view", message: `Activity: ${user.name} could not view contact list. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "view", message: `Activity: ${user.name} could not view contact list. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -577,10 +580,12 @@ export const createContact = async (data: FormData) => {
         await prisma.contact.create({
             data: { fullname, email, message }
         })
-        await logAction({ userId: "Visitor", actionType: "create", message, html: emailTemplate({ fullname, email, message, intro: `You have a <a href="${appRoutePaths.admincontact}" class="color: inherit !important; font-weight: 700;">new message</a> from ${fullname}.`}), emailNotification: true, receiver: email })
+        // await logAction({ userId: "Visitor", subject: "create", message, html: emailTemplate({ fullname, email, message, intro: `You have a <a href="${appRoutePaths.admincontact}" class="color: inherit !important; font-weight: 700;">new message</a> from ${fullname}.`}), emailNotification: true, receiver: email })
+        await logAction({ userId: "Visitor", subject: "create", message, html: await render(<ContactEmail key={"80166234"} fullname={fullname} email={email} message={message} />), emailNotification: true, receiver: email })
         return { error: false, message: `Thanks for contacting us ${fullname}. We will get back to you as soon as possible.` }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "create", message: `Activity: Send Contact Message Failed. Error: ${error}`, isError: true })
+        console.log('error', error)
+        await logAction({ userId: "Visitor", subject: "create", message: `Activity: Send Contact Message Failed. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -593,10 +598,10 @@ export const updateContactStatus = async (id: string) => {
             data: { status: "Read" }
         })
         const message = `${user.name} viewed the message by #${contact.id}: ${contact.fullname} on ${new Date(contact.updatedAt).toDateString()}`
-        await logAction({ userId: user.id, actionType: "update", message, })
+        await logAction({ userId: user.id, subject: "update", message, })
         return { error: false, message: `Contact message viewed.` }
     } catch (error) {  
-        await logAction({ userId: user.id, actionType: "update", message: `Unable to update. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "update", message: `Unable to update. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to delete contact. Please, try again.` }
     }
 }
@@ -609,10 +614,10 @@ export const createDonation = async (data: FormData) => {
             data: { amount: +amount, currency, fullname, email, message, status, reference }
         })
         const text = `${fullname} just made a <a href="${appRoutePaths.admindonations}" class="color: inherit !important; font-weight: 700;">donation</a> worth ${currency}${amount} on ${new Date(donation.createdAt).toDateString()}`
-        await logAction({ userId: "Visitor", actionType: "create", message: text, html: emailTemplate({ fullname, email, amount, message, intro: text }), emailNotification: true, })
+        await logAction({ userId: "Visitor", subject: "New Donation", message: text, html: emailTemplate({ fullname, email, amount, message, intro: text }), emailNotification: true, })
         return { error: false, message: `Thank you for your donation of ${currency}${amount} to our foundation.` }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "create", message: `Activity: ${fullname} Donation Failed. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "create", message: `Activity: ${fullname} Donation Failed. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to perform donation. Please, try again.` }
     }
 }
@@ -624,10 +629,10 @@ export const fetchDonations = async () => {
             orderBy: { createdAt: "desc" }
         })
         // await publicScreenLog("Activity: View Donations", { fullname: user.name!, email: user.email! }, "view", `A visiter named ${fullname} sent you a message`, true)
-        await logAction({ userId: user.id, actionType: "create", message: `${user.name} viewed the donation record`, })
+        await logAction({ userId: user.id, subject: "create", message: `${user.name} viewed the donation record`, })
         return { error: false, message: `Donation fetched successfully.`, data }
     } catch (error) {  
-        await logAction({ userId: user.id, actionType: "view", message: `Activity: View Donation Failed. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "view", message: `Activity: View Donation Failed. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -643,7 +648,7 @@ export const fetchGalleryImages = async (start?: number, end?: number) => {
         })
         return { error: false, message: `Gallery images fetched successfully`, data }
     } catch (error) {  
-        await logAction({ userId: "Visitor", actionType: "view", message: `Activity: Fetch Photos Gallery failed. Error: ${error}`, isError: true })
+        await logAction({ userId: "Visitor", subject: "view", message: `Activity: Fetch Photos Gallery failed. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to fetch gallery images`, data: [] }
     }
 }
@@ -673,10 +678,10 @@ export const createGalleryImage = async (data: FormData) => {
                 })
             )
         );
-        await logAction({ userId: user.id, actionType: "create", message: `${images.length} new gallery image${images.length ? 's' : ''} was created` })
+        await logAction({ userId: user.id, subject: "create", message: `${images.length} new gallery image${images.length ? 's' : ''} was created` })
         return { error: false, message: `New gallery image(s) uploaded successfully.` }
     } catch (error) {
-        await logAction({ userId: user.id, actionType: "create", message: `Activity: ${user.name} could not create gallery photo record: Error: ${error}` })
+        await logAction({ userId: user.id, subject: "create", message: `Activity: ${user.name} could not create gallery photo record: Error: ${error}` })
         return { error: true, message: `Unable to complete your request to upload image. Please, try again.` }
     }
 }
@@ -700,10 +705,10 @@ export const updateGalleryImage = async (data: FormData) => {
             where: { id }
         })
         const message = `${user.name} updated a photo ${newImage === "true" ? 'to a new one' : ` (${status})`} <a class="color: inherit !important; font-weight: 700;" href="${appRoutePaths.admingallery}">#${item.id}</a> on ${new Date(item.updatedAt).toDateString()}`
-        await logAction({ userId: user.id, actionType: "update", message, })
+        await logAction({ userId: user.id, subject: "update", message, })
         return { error: false, message: `Gallery image updated successfully.` }
     } catch (error) {
-        await logAction({ userId: user.id, actionType: "update", message: `${user.name} could not update gallery photo record. Error: ${error}` })
+        await logAction({ userId: user.id, subject: "update", message: `${user.name} could not update gallery photo record. Error: ${error}` })
         return { error: true, message: `Unable to complete your request to update image. Please, try again.` }
     }
 }
@@ -724,7 +729,7 @@ export const fetchLogs = async () => {
         }))
         return { error: false, message: `Partner fetched successfully.`, data }
     } catch (error) {
-        await logAction({ userId: user.id, actionType: "create", message: `Activity: Fetch Partners/Volunteers. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "create", message: `Activity: Fetch Partners/Volunteers. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -737,14 +742,14 @@ export const createPartner = async (data: { fullname: string, email: string, mes
             data: { fullname, email, message, type }
         })
         const activity = `${fullname} just showed an interest in the <a href="${appRoutePaths.admindonations}" class="color: inherit !important; font-weight: 700;">${type} form</a> on ${new Date(partner.createdAt).toDateString()}`
-        await logAction({ userId: "Visitor", actionType: "create", message: activity, html: emailTemplate({ fullname, email, message: partner.message!, intro: activity }), emailNotification: true })
+        await logAction({ userId: "Visitor", subject: "create", message: activity, html: emailTemplate({ fullname, email, message: partner.message!, intro: activity }), emailNotification: true })
         const userActivity = `Thank you for showing interest in being our ${type}. We are excited to start this journey with you find attached the ${type} form. Kindly fill it out and send back to us.`
         const fileName = type === "Volunteer" ? "/ANYA-GIRLCHILD-FOUNDATION-VOLUNTEER-FORM.docx" : "/ANYA-GIRLCHILD-FOUNDATION-PARTNERSHIP-PROPOSAL-LETTER.docx";
         const fileUrl = path.join(process.cwd(), 'public', fileName)
-        await sendMail({ receiver: email, actionType: "create", message: userActivity, html: emailTemplate({ fullname, email, message: partner.message!, intro: userActivity }), emailNotification: true, attachments: [{ filename: `Anyagirlchild Foundation ${capitalize(type)} Form`, path: fileUrl, encoding: "utf-8"}]  })
+        await sendMail({ receiver: email, subject: "create", message: userActivity, html: emailTemplate({ fullname, email, message: partner.message!, intro: userActivity }), emailNotification: true, attachments: [{ filename: `Anyagirlchild Foundation ${capitalize(type)} Form`, path: fileUrl, encoding: "utf-8"}]  })
         return { error: false, message: `Thank you for showing interest in being our ${type}. Please, check your mail for the ${type} form. Looking forward to receiving your response.` }
     } catch (error) {
-        await logAction({ userId: "Visitor", actionType: "update", message: `User could not become submit ${type} form. Error: ${error}` })
+        await logAction({ userId: "Visitor", subject: "update", message: `User could not become submit ${type} form. Error: ${error}` })
         return { error: true, message: `Unable to complete your request to become a ${type}. Please, try again.` }
     }
 }
@@ -758,7 +763,7 @@ export const fetchPartners = async () => {
         // await publicScreenLog("Activity: View Donations", { fullname: user.name!, email: user.email! }, "view", `A visiter named ${fullname} sent you a message`, true)
         return { error: false, message: `Partner fetched successfully.`, data }
     } catch (error) {
-        await logAction({ userId: user.id, actionType: "create", message: `Activity: Fetch Partners/Volunteers. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "create", message: `Activity: Fetch Partners/Volunteers. Error: ${error}`, isError: true })
         return { error: true, message: `Unable to complete your request to send message. Please, try again.` }
     }
 }
@@ -816,7 +821,7 @@ export const uploadEntityImage = async (id: string, data: FormData, table: IDENT
     } catch (error) {
         console.log({ error })
 
-        await logAction({ userId: user.id, actionType: "create", message: `Activity: Fetch Partners/Volunteers. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "create", message: `Activity: Fetch Partners/Volunteers. Error: ${error}`, isError: true })
         return { error: true, message: `Something went wrong while attempting to make your request, please, try again.` }
     }
 }
@@ -892,10 +897,10 @@ export const deleteEntity = async (id: string, table: IDENTIFIED_TABLES) => {
         const pageName = table + `${table === "contact" || table === "gallery" ? "" : "s"}`
         const path = `/dashboard/${pageName}`
         revalidatePath(path)
-        await logAction({ userId: user.id, actionType: "delete", message: `Activity: ${user.name} deleted ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} in ${table} list. `, })
+        await logAction({ userId: user.id, subject: "delete", message: `Activity: ${user.name} deleted ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} in ${table} list. `, })
         return { error: errorMsg !== "" ? true : false, message: errorMsg === "" ? `${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} has been successfully deleted` : errorMsg }
     } catch (error) {
-        await logAction({ userId: user.id, actionType: "delete", message: `Activity: ${user.name} could not delete ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} in ${table}. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "delete", message: `Activity: ${user.name} could not delete ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} in ${table}. Error: ${error}`, isError: true })
         return { error: true, message: `Something went wrong while attempting to make your request, please, try again.` }
     }
 }
@@ -979,12 +984,12 @@ export const updateEntity = async (id: string, status: string, table: IDENTIFIED
         const path = `/dashboard/${pageName}`
         revalidatePath(path)
         if (table !== "logger") {
-            await logAction({ userId: user.id, actionType: "update", message: `Activity: ${user.name} updated ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} to ${status} in ${table} list. `, })
+            await logAction({ userId: user.id, subject: "update", message: `Activity: ${user.name} updated ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} to ${status} in ${table} list. `, })
         }
         return { error: false, message: `${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} has been successfully updated` }
     } catch (error) {
         console.log({ error })
-        await logAction({ userId: user.id, actionType: "update", message: `Activity: ${user.name} could not update ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} in ${table}. Error: ${error}`, isError: true })
+        await logAction({ userId: user.id, subject: "update", message: `Activity: ${user.name} could not update ${entityIDs.length} record${entityIDs.length > 1 ? "s" : ""} in ${table}. Error: ${error}`, isError: true })
         return { error: true, message: `Something went wrong while attempting to make your request, please, try again.` }
     }
 }

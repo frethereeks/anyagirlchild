@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { ASSET_URL } from '@/assets'
 import PBGalleryContainer from '@/modules/public/pbgallery/PBGalleryContainer'
 import PBBreadCrumb from '@/modules/public/pblayout/PBBreadCrumb'

@@ -1,5 +1,5 @@
 export const config = {
-    APP_NAME: "Anyagirl Child Foundation",
+    APP_NAME: "Anya GirlChild Foundation",
     APP_DESECRIPTION: "Anya Girlchild Foundation was born from a deep-seated personal experience with the challenges many young girls face in pursuing an education and achieving their full potential.",
     APP_PRIMARY_API_BASE_URL: process.env.NEXT_PUBLIC_APP_PRIMARY_API_BASE_URL || "http://localhost:3000",
     APP_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",

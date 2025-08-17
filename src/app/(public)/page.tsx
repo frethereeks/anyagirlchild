@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { ASSET_URL } from '@/assets'
 import { config } from '@/config'
 import PBHomeContainer from '@/modules/public/pbhome/PBHomeContainer'

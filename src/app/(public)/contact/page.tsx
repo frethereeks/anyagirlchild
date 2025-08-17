@@ -1,6 +1,7 @@
 import React from 'react'
 import { Metadata } from 'next';
 import PBContactContainer from '@/modules/public/pbcontact/PBContactContainer';
+import {ContactEmail} from '@/modules/shared/ContactEmail';
 import { ASSET_URL } from '@/assets';
 
 
@@ -27,6 +28,9 @@ export default function ContactPage() {
         <main className='flex flex-col gap-4 py-10'>
             {/* <PBBreadCrumb image={ASSET_URL["anya_girlchild_group"]} /> */}
             <PBContactContainer />
+            <section className='relative container mx-auto py-10 bg-backdrop'>
+                <ContactEmail key={"80234"} fullname='Angela Jones' email='angelajones@gmail.com' message='Thanks for taking notice of me and showing interest.' />
+            </section>
         </main>
     )
 }

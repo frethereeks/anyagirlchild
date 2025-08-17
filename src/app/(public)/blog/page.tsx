@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import React from 'react'
 import { ASSET_URL } from '@/assets'
 import PBBreadCrumb from '@/modules/public/pblayout/PBBreadCrumb'

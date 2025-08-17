@@ -174,7 +174,7 @@ export default function CommentSection({ blog }: { blog: TBlogItemProp | undefin
                                             <div className="flex justify-between gap-4 translate-y-1 pb-2">
                                                 <div className="flex flex-wrap gap-2">
                                                     <h5 className="text-text text-sm md:text-base font-semibold font-grotesk">{item.fullname}</h5>
-                                                    <h5 className="text-text text-sm md:text-base font-semibold font-grotesk"> • ({item.email})</h5>
+                                                    {data?.user.role === "Owner" && <h5 className="text-text text-sm md:text-base font-semibold font-grotesk"> • ({item.email})</h5>}
                                                 </div>
                                                 <p className="text-text/60 text-xs font-grotesk select-none">{moment(item.createdAt).fromNow()}</p>
                                             </div>

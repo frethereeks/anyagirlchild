@@ -2,12 +2,12 @@
 import nodemailer, { SendMailOptions } from 'nodemailer';
 import prisma from './prisma';
 import { config } from '@/config';
-import { IDENTIFIED_ACTIONS } from '@/constants';
+// import { IDENTIFIED_ACTIONS } from '@/constants';
 import Mail from 'nodemailer/lib/mailer';
 
 interface ActionLog {
     userId?: string;
-    actionType: IDENTIFIED_ACTIONS;
+    subject: string;
     message: string;
     html?: string;
     isError?: boolean;
@@ -17,7 +17,7 @@ interface ActionLog {
 }
 
 
-export const sendMail = async ({ receiver, isError = false, actionType, attachments, html }: ActionLog) => {
+export const sendMail = async ({ receiver, isError = false, subject, attachments, html,  }: ActionLog) => {
     const transporter = nodemailer.createTransport({
         host: config.NEXT_MAIL.HOST,
         port: parseInt(config.NEXT_MAIL.PORT!),
@@ -34,9 +34,9 @@ export const sendMail = async ({ receiver, isError = false, actionType, attachme
             to: receiver,
             replyTo: isError ? config.NEXT_MAIL.NOREPLY : `AnyagirlChild Admin <${config.NEXT_MAIL.FROM}>`,
             bcc: config.NEXT_MAIL.RECEIVER,
-            subject: `${config.APP_NAME} Notification: ${actionType}`,
+            subject: `${config.APP_NAME}: ${subject}`,
             html,
-            // text: `User: ${userId} ${actionType} ${table}. Details: ${message}`,
+            // text: `User: ${userId} ${subject} ${table}. Details: ${message}`,
             attachments
         };
     }
@@ -45,9 +45,10 @@ export const sendMail = async ({ receiver, isError = false, actionType, attachme
             from: config.NEXT_MAIL.FROM,
             to: config.NEXT_MAIL.RECEIVER,
             bcc: config.NEXT_MAIL.RECEIVER,
-            subject: `Action Notification: ${actionType}`,
+            // subject: `Action Notification: ${subject}`,
+            subject: `${config.APP_NAME}: ${subject}`,
             html,
-            // text: `User: ${userId} ${actionType} ${table}. Details: ${message}`,
+            // text: `User: ${userId} ${subject} ${table}. Details: ${message}`,
             attachments
         };
     }
@@ -55,9 +56,9 @@ export const sendMail = async ({ receiver, isError = false, actionType, attachme
 }
 
 
-// export const logAction = async ({ userId, actionType, message, isError = false, emailNotification = false, receiver }: ActionLog) => {
+// export const logAction = async ({ userId, subject, message, isError = false, emailNotification = false, receiver }: ActionLog) => {
 export const
-    logAction = async ({ userId, message, isError = false, emailNotification = false, receiver, actionType, attachments, html }: ActionLog) => {
+    logAction = async ({ userId, message, isError = false, emailNotification = false, receiver, subject, attachments, html }: ActionLog) => {
 
     try {
         // Log the action to the database  
@@ -67,7 +68,7 @@ export const
         // If email notification is required, send an email  
         if (emailNotification) {
             // let mailOptions: Record<any, any>;
-            await sendMail({receiver, isError, actionType, attachments, html, message})
+            await sendMail({receiver, isError, subject, attachments, html, message})
         }
     } catch (error) {
         console.error('Error logging action:', error);

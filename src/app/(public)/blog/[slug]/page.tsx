@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic"
 import { fetchBlogPosts, fetchSingleBlogPost } from '@/app/action';
 import { ASSET_URL } from '@/assets';
 import PBBlogSingleWrapper from '@/modules/public/pbblog/pbblogsingle/PBBlogSingleWrapper';
